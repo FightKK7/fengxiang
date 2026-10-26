@@ -1,0 +1,143 @@
+/* G2 定价对照表（旧价 → 新价）。首页定价条与条目详情共用，独立文件，不并入 fengxiang.css。
+   版式取自设计定稿的定价块：
+   - 首页：整条 1px 墨上边线（与上一条的 1px 分线叠成一条），kicker 行（红底白字 PRICING CHANGE +
+     厂商）在标题之前，标题之后是 480px 宽的旧 → 新表；
+   - 详情页：同一张表放进 .fx-pricing 块里，顶部 2px 墨线切块（文章页的分块语言）。 */
+
+/* ---------- 首页：定价条（整条的线在条目一级，不在标题之后） ---------- */
+.fx-item-price {
+  margin-top: -1px;
+  border-top: 2px solid var(--ink);
+}
+
+.fx-price-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* 计费变化红标：中文标签不吃拉丁大写字距（.04em 以内） */
+.fx-price-tag,
+.fx-pricing-tag {
+  display: inline-block;
+  padding: 3px 7px;
+  background: var(--accent);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* 定稿 .price .head .vendor：11px、600、正文色，不吃大写字距 */
+.fx-price-vendor {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+}
+
+/* 生效日是站上数据多出来的内容（定稿样张没有），按元信息排，不抢红标 */
+.fx-price-when,
+.fx-pricing-when {
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+/* ---------- 表：定稿 .ptable / .prow ---------- */
+.fx-pricing-table {
+  max-width: 480px;
+  margin-top: 14px;
+  border-top: var(--hairline) solid var(--line);
+}
+
+.fx-pricing-row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) 14px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+  padding: 9px 0;
+  border-bottom: var(--hairline) solid var(--line);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.fx-pricing-lab {
+  color: var(--ink-4);
+  letter-spacing: 0.04em;
+}
+
+.fx-pricing-old {
+  color: var(--ink-4);
+  text-align: right;
+  text-decoration: line-through;
+  font-variant-numeric: tabular-nums;
+}
+
+.fx-pricing-arrow {
+  font-size: 11px;
+  text-align: center;
+  color: var(--ink-4);
+}
+
+.fx-pricing-new {
+  color: var(--accent);
+  font-weight: 700;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 详情页：独立的定价块 ---------- */
+.fx-pricing {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 2px solid var(--ink);
+}
+
+.fx-pricing-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 手机（≤640）：4 列在 390 宽下会把「¥1,200 + 调用费」折行、首行贴边 ——
+   标签单独一行（11px 元信息），下面 旧价 → 新价 一行；旧价删除线、新价红；行线仍是 1px。 */
+@media (max-width: 640px) {
+  .fx-pricing-table {
+    max-width: none;
+    width: 100%;
+  }
+  .fx-pricing-row {
+    grid-template-columns: minmax(0, 1fr) 14px minmax(0, 1fr);
+    grid-template-areas:
+      "lab lab lab"
+      "old arrow new";
+    gap: 6px 8px;
+    padding: 10px 0;
+  }
+  .fx-pricing-lab {
+    grid-area: lab;
+    font-size: 11px;
+    line-height: 1.6;
+  }
+  .fx-pricing-old {
+    grid-area: old;
+    font-size: 12.5px;
+  }
+  .fx-pricing-arrow {
+    grid-area: arrow;
+  }
+  .fx-pricing-new {
+    grid-area: new;
+    font-size: 12.5px;
+  }
+}

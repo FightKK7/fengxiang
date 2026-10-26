@@ -1,0 +1,19 @@
+# 默认按文本处理，仓库内统一 LF；二进制类型显式声明，避免 diff/行尾转换误伤。
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.zip binary
+*.gz binary
+*.dump binary
+*.pdf binary
+*.docx binary
+*.xlsx binary

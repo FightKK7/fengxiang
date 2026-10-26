@@ -1,0 +1,16 @@
+{
+  "name": "fengxiang",
+  "version": "0.1.0",
+  "private": true,
+  "description": "风向 · 全球企业服务资讯：官方一手动态聚合（读者面 + 后台 + 采集/分析/出刊流水线）",
+  "engines": {
+    "node": ">=24.11"
+  },
+  "scripts": {
+    "typecheck": "npm --prefix app run typecheck",
+    "build": "npm --prefix app run build -w @aihot/web",
+    "test": "npm --prefix app run test",
+    "dev": "npm --prefix app run dev",
+    "smoke": "cd app && node scripts/smoke.ts --base http://localhost:3000"
+  }
+}

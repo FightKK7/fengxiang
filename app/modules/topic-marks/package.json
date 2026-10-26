@@ -1,0 +1,13 @@
+{
+  "name": "@aihot/topic-marks",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./server": "./server.ts"
+  },
+  "dependencies": {
+    "@aihot/backend": "*",
+    "@aihot/contracts": "*"
+  }
+}

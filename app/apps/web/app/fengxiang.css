@@ -1,0 +1,2626 @@
+/* ============================================================================
+   风向 · 设计系统覆盖层
+   ----------------------------------------------------------------------------
+   这一层只做四件事，不在这里堆个案例外：
+     1. 换 token —— 白纸、近黑、单一绛红、暖灰细线
+     2. 零圆角、零阴影
+     3. 宋体标题 / 黑体正文
+     4. 壳层：0.5px 发丝线、250ms ease-out、红色只标编辑判断
+
+   组件结构（侧栏→刊头、卡片→条目、日报版面）在各自的组件里改。
+   数值来源：设计系统定稿（7 级字阶 + 白底实测对比度）。
+   ========================================================================== */
+
+/* 动效与发丝线（2026-10-23 壳层改造，UI 提示词 6/7）：
+   - 状态过渡只用 250ms ease-out 一个基准；主题切换不再做整页颜色渐变，点开关直接换色。
+   - 发丝线用 0.5px；非 Retina 屏（≤1dppx）回退 1px，避免线在低分屏上消失。 */
+:root {
+  --hairline: 0.5px;
+  --motion: 250ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (max-resolution: 1dppx) {
+  :root {
+    --hairline: 1px;
+  }
+}
+
+
+/* 浅色：白纸。暗色在下方单独一层（[data-theme="dark"]），只换色值，字号/圆角/阴影不动。 */
+:root {
+  /* 纸与墨 —— 全站只有这 6 个色值 */
+  --bg: #ffffff;
+  --bg-sunk: #ffffff;
+  --bg-muted: #ffffff; /* 归并：纸面只有白（旧 #f7f6f3 属 6 色之外） */
+  --well: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #ffffff;
+  --raised: #ffffff;
+  --sidebar: #ffffff;
+  --daybar: #ffffff;
+
+  --ink: #111110;      /* 标题 / 今日判断      18.9:1 */
+  --ink-2: #4e4e47;    /* 归并：6 色里没有“次黑”，强调文字并入正文（标题处单独写 --ink） */
+  --ink-3: #4e4e47;    /* 正文                 8.4:1  */
+  --ink-4: #6b6b63;    /* 元信息               5.4:1  */
+  --prose-ink: #4e4e47; /* 归并：长文正文并入 --ink-3 的色值 */
+
+  --line: #e2e0da;         /* 1px 细线 */
+  --line-strong: #e2e0da;  /* 归并：细线只有一种 #e2e0da */
+  --line-soft: #e2e0da;    /* 归并：同上 */
+
+  /* 全站唯一彩色：只标记编辑判断的痕迹 */
+  --accent: #c8102e;
+  --accent-ink: #a50d26; /* 悬停/按压的底色，不参与文字色收口 */
+  --accent-soft: rgba(200, 16, 46, 0.06);
+  --accent-softer: rgba(200, 16, 46, 0.035);
+  --accent-contrast: #ffffff;
+
+  --note: #6b6b63;
+  --hot: #c8102e;
+  --hot-soft: rgba(200, 16, 46, 0.06);
+  /* admin 仪表盘专用的状态色（公开 reader 面不使用；保留给后台的警示/成功标记） */
+  --amber: #8a6a35;
+  --amber-ink: #6b5126;
+  --amber-soft: rgba(138, 106, 53, 0.08);
+  --ok: #2f5d47;
+  --ok-soft: rgba(47, 93, 71, 0.08);
+  --ok-ink: #4e4e47; /* reader 面：正文代码块的“已复制”态，归并到正文色 */
+
+  /* 榜单序号：只有第一名是红的，其余全部归灰 —— 红色只标判断，不做装饰 */
+  --rank-1: #c8102e;
+  --rank-2: #6b6b63;
+  --rank-3: #6b6b63;
+  --rank-rest: #6b6b63;
+
+  /* 零圆角、零阴影 */
+  --radius-mark: 0;
+  --radius-control: 0;
+  --radius-tile: 0;
+  --radius-card: 0;
+  --radius-panel: 0;
+  --radius-sheet: 0;
+  --shadow-card: none;
+  --shadow-card-hover: none;
+  --shadow-soft: none;
+  --shadow-thumb: none;
+  --shadow-pop: none;
+
+  --code-bg: #ffffff;
+  --selection: rgba(200, 16, 46, 0.12);
+
+  /* 字体：正文黑体，标题宋体（见下方 base 规则） */
+  --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, sans-serif;
+  --font-serif: "Songti SC", "STSong", "Noto Serif SC", Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* 暗色：近黑纸（#0d0d0c）+ 暖白墨。只换色值；零圆角、零阴影、7 级字阶都不变。
+   红色提亮到 #e5485d（原红在深底上只有 3:1，不够）；细线用透明白，深灰线在近黑上会消失。 */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0d0d0c;
+  --bg-sunk: #0d0d0c;
+  --bg-muted: #0d0d0c;
+  --well: #141413;
+  --surface: #141413;
+  --surface-2: #1b1b19;
+  --raised: #141413;
+  --sidebar: #0d0d0c;
+  --daybar: #0d0d0c;
+
+  --ink: #f0ece3;
+  --ink-2: #c9c5bc;
+  --ink-3: #c9c5bc;
+  --ink-4: #8f8b82;
+  --prose-ink: #c9c5bc;
+
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.12);
+  --line-soft: rgba(255, 255, 255, 0.06);
+
+  --accent: #e5485d;
+  --accent-ink: #f0596b;
+  --accent-soft: rgba(229, 72, 93, 0.14);
+  --accent-softer: rgba(229, 72, 93, 0.08);
+  --accent-contrast: #0d0d0c;
+
+  --note: #8f8b82;
+  --hot: #e5485d;
+  --hot-soft: rgba(229, 72, 93, 0.14);
+
+  --amber: #d3b26a;
+  --amber-ink: #d3b26a;
+  --amber-soft: rgba(211, 178, 106, 0.12);
+  --ok: #5fc79a;
+  --ok-soft: rgba(95, 199, 154, 0.12);
+  --ok-ink: #7fd1ad;
+
+  --rank-1: #e5485d;
+  --rank-2: #8f8b82;
+  --rank-3: #8f8b82;
+  --rank-rest: #8f8b82;
+
+  --code-bg: #141413;
+  --selection: rgba(229, 72, 93, 0.22);
+}
+
+/* 暗色下的反白块（订阅黑块）：暗底上不能再「反白」，改成比纸亮一档的深块。 */
+[data-theme="dark"] .fx-sub {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+[data-theme="dark"] .fx-sub b {
+  color: var(--ink);
+}
+[data-theme="dark"] .fx-sub-btn {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* 杂志的骨架靠字，不靠色块：标题一律宋体。 */
+h1, h2, h3, h4, .serif {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* 卡片降到只剩一条细线：不要背景、不要圆角、不要阴影、hover 不位移。 */
+.card {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+.card-hover {
+  transition: border-color var(--motion) var(--ease-out);
+}
+.card-hover:hover {
+  box-shadow: none;
+  transform: none;
+  border-color: var(--ink);
+}
+
+/* 错误页（root.tsx 的 ErrorBoundary，只在 API 失败时出现）：同样守 7 级字阶，
+   状态码 12→11、标题 20→19、说明 13.5→14；按钮的方角/字号由 components/ui/Controls 统一。 */
+.min-h-\[70vh\] .mono { font-size: 11px; }
+.min-h-\[70vh\] h1 { font-size: 19px; line-height: 1.5; }
+.min-h-\[70vh\] p { font-size: 14px; line-height: 1.8; }
+
+/* 焦点：2px 墨线，不用浏览器默认蓝。 */
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--selection);
+}
+
+/* 数字等宽：价格、时间、计数三处必须对齐。 */
+.tabular,
+time,
+.price,
+.pricing-row {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================================
+   风向 · 刊头与日报头版
+   ----------------------------------------------------------------------------
+   这一层只有版式：刊头、期号行、今日判断、
+   四类筛选、条目、右侧栏、页脚、手机底栏。字号只走 7 级字阶（11 / 12.5 / 14 / 16 / 19 / 26 / 38），
+   红色只标编辑判断（今日判断标签、所以呢、榜单 01、订阅按钮、来源红字、筛选当前项）。
+   ========================================================================== */
+
+/* ---------- 刊头（桌面 ≥ 961px；手机上由首页自绘紧凑刊头） ---------- */
+.fx-mast {
+  display: none;
+}
+/* 品牌条常驻：往下滚动时整条报头（品牌 + 日期 + 2px 黑线）钉在视口顶部。 */
+.fx-mast-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding-top: 30px;
+  background: var(--surface);
+}
+.fx-mast-top {
+  /* 报头顶行：品牌在左，搜索与日期在右（同一行、同一字号、同一条底线）。 */
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: end;
+  gap: 30px;
+}
+.fx-wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  /* 报头不复用正文宋体：京華老宋体，42px 才撑得住刊头（2026-10-22 换字）；副题共用同一字面。 */
+  font-family: var(--font-wordmark);
+  font-size: 42px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  color: var(--ink);
+  text-decoration: none;
+}
+/* 标志：三条信息流（19:10 横标，内联 SVG 用 currentColor，深浅色自动跟随 --ink）。
+   比例照 AI 原稿：图标墨迹高 = 字标墨迹高 × 0.685。
+   字标 42px 时墨迹高 37.80px、墨迹中心在基线上方 14.75px → 图标 25.9px，
+   基线对齐后再上移 1.8px 才是按墨迹垂直居中；字标左侧还有 2.1px 字距，margin-right 把 flex 的 14px 收回到 3.1px，墨迹间距正好 5.2px。 */
+.fx-wordmark-mark {
+  align-self: baseline;
+  height: 25.9px;
+  width: auto;
+  flex-shrink: 0;
+  margin-right: -10.88px;
+  transform: translateY(-1.8px);
+}
+
+.fx-wordmark-en {
+  padding-bottom: 6px;
+  /* 副题与字标同一个显示字面（京華老宋体）。小字比黑体需要更大的字号与字距才不糊。 */
+  font-family: var(--font-wordmark);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  /* 与字标同色：浅色 #111110 / 深色 #F0ECE3，不降一档灰。 */
+  color: var(--ink);
+}
+/* 手机顶栏的小字标：同一字面、按光学缩一档（17px 太细，18px + .05em 才稳）。 */
+/* 手机顶栏的标：同一剪影的小尺寸变体（条 2.4、缝 1.4），11.1px 高。 */
+.fx-wordmark-mini-mark {
+  height: 10.8px;
+  width: auto;
+  flex-shrink: 0;
+  margin-right: 1px;
+  transform: translateY(1.3px); /* items-center 居中在行盒上，字标墨迹中心略低，补 1.3px */
+}
+
+.fx-wordmark-mini {
+  font-family: var(--font-wordmark);
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  color: var(--ink);
+  text-decoration: none;
+}
+.fx-mast-right {
+  justify-self: end;
+  padding-bottom: 3px;
+  text-align: right;
+  font-size: 11px;
+  letter-spacing: 0;
+  line-height: 1.7;
+  color: var(--ink-4);
+}
+.fx-mast-right b {
+  /* 与右侧搜索提示同一个色（--ink-4），日期不再单独压深。 */
+  color: var(--ink-4);
+  font-weight: 600;
+}
+.fx-rules {
+  /* 报头收尾只留 2px 黑线：原先下面还有一条 1px 灰线，
+     在「风向」和「全部动态」之间形成双线，看着多余。 */
+  height: 0;
+  margin-top: 16px;
+  border-top: 2px solid var(--ink);
+}
+.fx-nav {
+  display: flex;
+  align-items: stretch;
+  gap: 26px;
+  border-bottom: var(--hairline) solid var(--line);
+  /* 导航一档比筛选大（14 vs 12.5）：这一行是「去哪」，下面一行是「筛什么」。 */
+  font-size: 14px;
+}
+.fx-nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 0 11px;
+  border: 0;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  /* 中文标签不吃拉丁字距：14px × .04em = 0.56px 已越过旧口径的 0.5px（审计会 WARN）。 */
+  letter-spacing: 0;
+  color: var(--ink-3);
+  text-decoration: none;
+  cursor: pointer;
+}
+.fx-nav-on {
+  color: var(--ink);
+  font-weight: 600;
+}
+.fx-nav-on::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  /* 当前位置不是编辑判断：下划线用墨色，红只留给判断痕迹（UI 提示词 4） */
+  background: var(--ink);
+}
+/* 导航行右端的深浅色开关：图标按钮（当前浅色显示月亮、当前深色显示太阳）。 */
+.fx-theme-toggle {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  width: 30px;
+  height: 30px;
+  margin-left: auto;
+  margin-bottom: 1px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-4);
+  cursor: pointer;
+}
+.fx-theme-toggle:hover {
+  color: var(--ink);
+}
+.fx-theme-toggle:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+/* 月亮/太阳两个图标叠在同一格里，由 data-theme 决定谁可见：换主题时只做 250ms 交叉淡出，
+   整页不再做颜色渐变；reduced-motion 下直接换。 */
+.fx-theme-toggle > * {
+  grid-area: 1 / 1;
+  transition: opacity var(--motion) var(--ease-out);
+}
+.fx-theme-icon-sun {
+  opacity: 0;
+}
+html[data-theme="dark"] .fx-theme-icon-sun {
+  opacity: 1;
+}
+html[data-theme="dark"] .fx-theme-icon-moon {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-theme-toggle > * {
+    transition: none;
+  }
+}
+
+/* 导航行里的搜索：与 /all 的方框搜索同一套规格（1px 线、零圆角、透明底），
+   框里直接写「搜索标题、摘要…」并标出平台快捷键——搜索是高频入口，不做成一个「搜索 ／」的暗号。 */
+.fx-mast-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  /* 与右侧日期并排：同一字号（11px）、同一条底线（相同的行高与 padding-bottom），
+     不画框——它本质是打开搜索浮层的触发器。hover 只加深文字色。 */
+  align-self: end;
+  justify-self: end;
+  padding: 0 0 3px;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: var(--ink-4);
+  text-align: left;
+  cursor: pointer;
+}
+.fx-mast-search:hover {
+  color: var(--ink);
+}
+.fx-mast-search:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.fx-mast-search-icon {
+  flex-shrink: 0;
+  color: var(--ink-4);
+}
+.fx-mast-search-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fx-mast-search-kbd {
+  flex-shrink: 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--ink-4);
+}
+.fx-mast-search:hover .fx-mast-search-kbd {
+  color: var(--ink);
+}
+@media (min-width: 961px) {
+  .fx-mast {
+    display: block;
+  }
+}
+
+/* 版面列宽：壳已给出 1140 − 2×30 = 1080 的纸面（与定稿 .wrap 的内容同宽），页面不再二次加边距。 */
+.fx-front {
+  min-width: 0;
+}
+@media (min-width: 961px) {
+  .fx-front {
+    margin: -24px 0 0;
+  }
+}
+
+/* ---------- 期号行 ---------- */
+.fx-issuebar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding-top: 20px;
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+/* 定稿 .dateline .sq：NO. 前那颗 5×5 的绛红小方点 */
+.fx-issue-sq {
+  width: 5px;
+  height: 5px;
+  flex-shrink: 0;
+  background: var(--accent);
+}
+/* 第 047 期：中文刊号不吃拉丁大写字距，数字用 tabular */
+.fx-issue-no {
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 今日判断 ---------- */
+.fx-verdict {
+  margin: 22px 0 40px;
+  padding-top: 18px;
+  border-top: 3px solid var(--ink);
+}
+.fx-klabel {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--accent);
+}
+.fx-klabel::after {
+  content: "";
+  flex: 1;
+  height: var(--hairline);
+  background: var(--line);
+}
+.fx-verdict-h {
+  margin: 0;
+  max-width: 860px;
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.fx-verdict-p {
+  margin: 12px 0 0;
+  max-width: 860px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--ink-3);
+  text-wrap: balance;
+}
+
+/* ---------- 两栏 ---------- */
+.fx-cols {
+  display: flex;
+  align-items: flex-start;
+  gap: 54px;
+}
+.fx-main {
+  flex: 1;
+  min-width: 0;
+}
+.fx-rail {
+  width: 270px;
+  flex-shrink: 0;
+}
+
+/* ---------- 四类筛选 ---------- */
+.fx-filters {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  border-bottom: var(--hairline) solid var(--ink);
+  scrollbar-width: none;
+}
+.fx-filters::-webkit-scrollbar {
+  display: none;
+}
+.fx-filter {
+  position: relative;
+  margin-right: 22px;
+  padding: 9px 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--ink-4);
+  cursor: pointer;
+}
+.fx-filter-on {
+  color: var(--ink);
+  font-weight: 700;
+}
+.fx-filter-on::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--ink);
+}
+.fx-filter-count {
+  margin-left: 5px;
+  font-weight: 400;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 条目 ---------- */
+.fx-item {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 22px;
+  padding: 24px 0;
+  border-bottom: var(--hairline) solid var(--line);
+}
+.fx-time {
+  /* 与右边 19px 标题的字形顶部对齐：11px 行盒的字顶比 19px 的浅，给 2.5px 补偿（实测差 0.65px）。 */
+  padding-top: 2.5px;
+  line-height: 1.55;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+/* 日期精度的事件时间写「全天」：中文标签不适用数字字距。 */
+.fx-time-cn {
+  letter-spacing: 0;
+}
+.fx-item-body {
+  min-width: 0;
+}
+.fx-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+.fx-cat {
+  color: var(--ink);
+}
+.fx-sep {
+  width: 12px;
+  height: var(--hairline);
+  background: var(--line);
+}
+.fx-vendor {
+  color: var(--ink-3);
+  font-weight: 500;
+}
+.fx-h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.fx-h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+.fx-sum {
+  margin: 8px 0 0;
+  max-width: 620px;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--ink-3);
+  /* 摘要里可能带长 URL：不许把版心撑出屏幕。 */
+  overflow-wrap: anywhere;
+}
+.fx-so {
+  margin-top: 13px;
+  max-width: 620px;
+  padding: 10px 0 0;
+  border-top: var(--hairline) solid var(--line);
+}
+.fx-so-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--accent);
+}
+.fx-so-p {
+  margin: 0;
+  max-width: 620px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--ink);
+  /* 判断句里也可能有 URL/长串：同样按任意点折行。 */
+  overflow-wrap: anywhere;
+}
+.fx-src {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  margin-top: 12px;
+  font-size: 11px;
+  /* 定稿 .src 的 .04em（中文标签允许 ≤.04em） */
+  letter-spacing: 0.04em;
+  color: var(--ink-4);
+}
+.fx-src a {
+  color: var(--ink-3);
+  text-decoration: none;
+  border-bottom: var(--hairline) solid var(--line);
+}
+.fx-src a:hover {
+  color: var(--ink);
+}
+.fx-only {
+  color: var(--ink);
+  font-weight: 600;
+}
+.fx-empty {
+  margin: 0;
+  padding: 40px 0;
+  font-size: 14px;
+  color: var(--ink-4);
+}
+
+/* ---------- 右侧栏 ---------- */
+.fx-rail-title {
+  margin: 0;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--ink);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+.fx-rank {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 10px;
+  padding: 15px 0;
+  border-bottom: var(--hairline) solid var(--line);
+}
+.fx-rank-n {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+.fx-rank-1 .fx-rank-n {
+  color: var(--accent);
+}
+.fx-rank p {
+  margin: 0;
+  /* 定稿 v3.1：右栏榜单条目是 --fs-body（14 / 1.6），不是次级字 */
+  font-size: 14px;
+  line-height: 1.6;
+  /* 归并 6 色：榜单条目是“近黑”，用 --ink（旧 --ink-2 #2b2b27 越界） */
+  color: var(--ink);
+}
+.fx-rank p a {
+  color: inherit;
+  text-decoration: none;
+}
+.fx-rank p a:hover {
+  color: var(--ink);
+}
+.fx-box {
+  margin-top: 26px;
+}
+.fx-kv {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: var(--hairline) solid var(--line);
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+.fx-kv b {
+  color: var(--ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+/* 订阅黑块：只回 6 色 token —— 正文/标题 #ffffff，弱化字 #e2e0da（--line 的值），不用 mockup 里的 #f2f0eb / #a9a59c。 */
+.fx-sub {
+  margin-top: 28px;
+  padding: 18px;
+  background: var(--ink);
+  color: #ffffff;
+}
+.fx-sub b {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.fx-sub-btn {
+  display: inline-block;
+  margin-top: 13px;
+  padding: 7px 16px;
+  background: var(--accent);
+  color: #ffffff;
+  /* 定稿 v3.1：订阅按钮是 --fs-sub（12.5），不是元信息字号 */
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-decoration: none;
+}
+
+/* ---------- 统一返回 ---------- */
+/* 子页面顶部的返回：桌面显示（手机上各页用 PhoneBar 的返回，避免重复）。 */
+.fx-back {
+  display: inline-flex;
+  align-items: center;
+  margin: 10px 0 0;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--ink-4);
+  cursor: pointer;
+}
+.fx-back:hover {
+  color: var(--ink);
+}
+.fx-back:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+@media (max-width: 960px) {
+  .fx-back-phone-off {
+    display: none;
+  }
+}
+
+/* ---------- 收藏按钮 ---------- */
+/* 标题行：标题在左、收藏在右；标题换行时按钮仍钉在首行右侧。 */
+.fx-h2-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+.fx-h2-row > a {
+  min-width: 0;
+}
+.fx-h1-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.fx-h1-row > h1 {
+  min-width: 0;
+}
+.fx-star {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-top: 1px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-4);
+  cursor: pointer;
+}
+.fx-star:hover {
+  color: var(--ink);
+}
+.fx-star-on {
+  color: var(--ink);
+}
+.fx-star:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+/* 条目页 26px 标题：书签再往下 3px 与标题首行齐；桌面由右缘阅读工具接管，只留手机。 */
+.fx-star-title {
+  margin-top: 3px;
+}
+@media (min-width: 961px) {
+  .fx-star-title {
+    display: none;
+  }
+}
+
+/* ---------- 条目页右缘的阅读工具（桌面） ---------- */
+/* 收藏 / 字号 / 译文三枚同尺寸方角按钮竖排成一轨：44px 宽、1px 细线连成一列，右缘与报头
+   （品牌 / 搜索 / 日期）同一条竖线；点「Aa」在左侧展开 80%–130% 的滑动条面板。
+   规格同右下角「回到顶部」：零圆角、零阴影、11px 元信息。手机上不出现这条轨——
+   收藏回标题行、译文开关留在正文上方（见上面的 .fx-star-title 与 features/item/item.css）。 */
+.fx-reader-rail {
+  position: fixed;
+  top: 40%;
+  right: max(30px, calc((100vw - 1140px) / 2 + 30px));
+  z-index: 30;
+  display: none;
+  width: 44px;
+  transform: translateY(-50%);
+  border: var(--hairline) solid var(--line);
+  background: var(--surface);
+}
+@media (min-width: 961px) {
+  .fx-reader-rail {
+    display: block;
+  }
+}
+.fx-reader-cell {
+  position: relative;
+}
+.fx-reader-cell + .fx-reader-cell {
+  border-top: var(--hairline) solid var(--line);
+}
+.fx-reader-action {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-3);
+  line-height: 1;
+  letter-spacing: 0;
+  cursor: pointer;
+  transition: color 250ms var(--ease-out);
+}
+.fx-reader-action:hover,
+.fx-reader-action[aria-pressed="true"],
+.fx-reader-action[aria-expanded="true"] {
+  color: var(--ink);
+}
+.fx-reader-action:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -3px;
+}
+/* 已收藏 / 译文已开：墨色 + 2px 墨线，和站内「当前项」同一套标记。 */
+.fx-reader-action[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 5px;
+  height: 2px;
+  background: var(--ink);
+}
+/* 字号 / 译文字形直接当图标：和标题同一支宋体，不另画图标。 */
+.fx-reader-aa,
+.fx-reader-yi {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+/* 面板开在按钮左侧：和按钮垂直居中，宽度够放 A—滑条—A 和百分比。 */
+.fx-readsize-panel {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 10px);
+  width: 264px;
+  padding: 14px;
+  transform: translateY(-50%);
+  border: var(--hairline) solid var(--line);
+  background: var(--surface);
+}
+.fx-readsize-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 24px;
+  color: var(--ink-4);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+/* 当前百分比：点一下回到标准档（纯文本按钮，24px 高，够鼠标和触屏点）。 */
+.fx-readsize-reset {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-3);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: color 250ms var(--ease-out);
+}
+.fx-readsize-reset:hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.fx-readsize-reset:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+/* 滑条：A（小）—— 1px 轨道 / 2px 墨线 / 20px 方角滑块 —— A（大）。
+   零圆角、零阴影、零渐变；刻度只做十进位提示，拖动仍按 1% 连续。 */
+.fx-readsize-slider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+.fx-readsize-end {
+  flex-shrink: 0;
+  color: var(--ink-4);
+  font-family: var(--font-serif);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0;
+  user-select: none;
+}
+.fx-readsize-end-big {
+  font-size: 19px;
+}
+.fx-readsize-track {
+  position: relative;
+  flex: 1;
+  height: 26px;
+}
+.fx-readsize-track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: var(--hairline);
+  transform: translateY(-50%);
+  background: var(--line);
+}
+.fx-readsize-fill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+  background: var(--ink);
+}
+/* 十进位刻度：轨道上方 1px 短线，用元信息灰标出每 10%。 */
+.fx-readsize-tick {
+  position: absolute;
+  top: 3px;
+  width: var(--hairline);
+  height: 4px;
+  transform: translateX(-50%);
+  background: var(--ink-4);
+}
+.fx-readsize-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  cursor: grab;
+}
+.fx-readsize-range:active {
+  cursor: grabbing;
+}
+.fx-readsize-range::-webkit-slider-runnable-track {
+  height: 26px;
+  background: transparent;
+}
+.fx-readsize-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 20px;
+  margin-top: 3px;
+  border: 0;
+  border-radius: 0;
+  background: var(--ink);
+}
+.fx-readsize-range::-moz-range-track {
+  height: 26px;
+  background: transparent;
+}
+.fx-readsize-range::-moz-range-progress {
+  background: transparent;
+}
+.fx-readsize-range::-moz-range-thumb {
+  width: 10px;
+  height: 20px;
+  border: 0;
+  border-radius: 0;
+  background: var(--ink);
+}
+.fx-readsize-range:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ---------- 页脚 ---------- */
+.fx-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 56px;
+  padding-top: 16px;
+  border-top: 2px solid var(--ink);
+  font-size: 11px;
+  letter-spacing: 0;
+  line-height: 2;
+  color: var(--ink-4);
+}
+.fx-footer b {
+  color: var(--ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.fx-footer-tag {
+  margin-left: 10px;
+}
+
+/* ---------- 手机底栏（入口数量由导航决定：动态 / 日报 / 模块 tab / 我的） ---------- */
+.fx-tabbar {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 40;
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  background: var(--surface);
+  border-top: var(--hairline) solid var(--line);
+}
+/* 不写死列数：入口数量会变（周报撤出导航后只剩三个，模块还会加 tab）。固定 4 列会让
+   3 个入口全挤在左边、最后一格空着；auto-columns 让 N 个入口各自均分整行。 */
+.fx-tabbar-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  height: 50px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.fx-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  letter-spacing: 0;
+  color: var(--ink-4);
+  text-decoration: none;
+}
+.fx-tab-on {
+  color: var(--ink);
+  font-weight: 700;
+}
+/* 当前项：2px 墨线用 ::after 实体线画，不用 inset 阴影（零阴影） */
+.fx-tab-on::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--ink);
+}
+
+/* ---------- 手机版式 ---------- */
+@media (max-width: 960px) {
+  .fx-cols {
+    display: block;
+  }
+  .fx-rail {
+    width: auto;
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 2px solid var(--ink);
+  }
+  .fx-verdict {
+    margin-bottom: 32px;
+  }
+}
+
+/* 今日判断 hidden while it repeats the lead entry (no verdict field yet, gap G4): the issue line keeps
+   the block's breathing room, so the front page does not read as a missing row. */
+.fx-issuebar + .fx-cols {
+  margin-top: 36px;
+}
+
+/* ============================================================================
+   P2-B · 全部动态（/all）与搜索浮层
+   ----------------------------------------------------------------------------
+   与首页同一套语言：细线索引、无卡片无圆角、宋体标题、红色只标编辑判断。
+   这一段只追加，不改上面的规则。
+   ========================================================================== */
+
+/* ---------- 页面骨架：与首页同一条左右边线（桌面内容左缘 = 刊头 + 30px） ---------- */
+/* 与首页同一条纸面边线：壳已给出 1080 宽的内容列，页面不再二次加 30px 边距 */
+.fx-all {
+  min-width: 0;
+}
+@media (min-width: 961px) {
+  .fx-all {
+    margin: -24px 0 0;
+  }
+}
+.fx-all-col {
+  min-width: 0;
+}
+@media (min-width: 961px) {
+  .fx-all-col {
+    max-width: 760px;
+  }
+}
+
+/* ---------- 标题行 ---------- */
+.fx-all-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 20px;
+}
+.fx-all-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.fx-all-meta {
+  margin: 0;
+  font-size: 11px;
+  /* 中文标签不吃拉丁字距（定稿 v3.1） */
+  letter-spacing: 0;
+  line-height: 1.8;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+.fx-all-head .fx-all-meta {
+  padding-bottom: 4px;
+  white-space: nowrap;
+}
+@media (max-width: 960px) {
+  .fx-all-head {
+    display: none;
+  }
+}
+
+/* ---------- 筛选行 + 方框搜索：同一行，一条 1px 墨线下边 ---------- */
+.fx-all-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 16px;
+  border-bottom: var(--hairline) solid var(--ink);
+}
+/* 筛选行沿用 v3.1 定稿的 --fs-sub（12.5px、字距 0），与首页的筛选行同字号。 */
+.fx-afilters {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.fx-afilters::-webkit-scrollbar {
+  display: none;
+}
+.fx-afilter {
+  position: relative;
+  margin-right: 22px;
+  padding: 9px 0 10px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 400;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--ink-4);
+  text-decoration: none;
+}
+.fx-afilter:hover {
+  color: var(--ink);
+}
+.fx-afilter-on {
+  color: var(--ink);
+  font-weight: 700;
+}
+.fx-afilter-on::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--ink);
+}
+.fx-afilter-count {
+  margin-left: 5px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 首页 · 厂商筛选（导航行之下、日期分组之上） ---------- */
+/* 常驻一行、单选、带条数；与 /all 的筛选行同一套字号与选中态，只多一个「展开全部 / 收起」。 */
+.fx-brandbar {
+  display: flex;
+  align-items: stretch;
+  border-bottom: var(--hairline) solid var(--line);
+}
+.fx-brands {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.fx-brands::-webkit-scrollbar {
+  display: none;
+}
+.fx-brandbar .fx-afilter {
+  display: inline-flex;
+  align-items: baseline;
+  flex-shrink: 0;
+}
+/* 展开：换行显示全部主体（不再横向滚动），「收起」跟在最后一个主体后面。 */
+.fx-brands-expanded {
+  flex-wrap: wrap;
+}
+/* 行尾的操作组（展开/收起、排列 / 恢复默认、完成）：钉在右上角，位置不随内容跳。 */
+.fx-brands-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: flex-start;
+  gap: 16px;
+  margin-left: 16px;
+}
+.fx-brands-more {
+  flex-shrink: 0;
+  padding: 9px 0 10px;
+  border: 0;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: var(--ink-4);
+  cursor: pointer;
+}
+.fx-brands-more:hover {
+  color: var(--ink);
+}
+.fx-brands-more:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+/* 页头多出这一行之后：第一条日期与右栏「推荐阅读」顶对齐（左右都从同一条起跑线开始），
+   后续日期之间仍留 26px；日期行本身还有下边框，所以不再额外加段间距。 */
+.fx-brandbar + .fx-cols {
+  padding-top: 12px;
+}
+.fx-brandbar + .fx-cols .fx-day {
+  margin-top: 26px;
+}
+.fx-brandbar + .fx-cols .fx-main section:first-of-type > .fx-day {
+  margin-top: 0;
+}
+
+/* 日期行可折叠：整行是一个按钮（日期 + 条数 + 箭头）；朝下=展开，朝右=折叠。 */
+.fx-day-toggle {
+  width: 100%;
+  border: 0;
+  border-bottom: var(--hairline) solid var(--line-strong);
+  background: none;
+  padding: 0 0 9px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.fx-day-toggle:hover .fx-day-right,
+.fx-day-toggle:focus-visible .fx-day-right {
+  color: var(--ink);
+}
+.fx-day-toggle:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.fx-day-chevron {
+  display: block;
+  color: var(--ink-4);
+  /* 不做过渡动画：设计系统零动效（审计的动画预算也不收 transform 过渡）。 */
+}
+.fx-day-toggle:hover .fx-day-chevron {
+  color: var(--ink);
+}
+.fx-day-chevron-closed {
+  transform: rotate(-90deg);
+}
+
+/* 方框搜索：1px 细线、零圆角、零阴影、零背景 */
+.fx-asearch {
+  position: relative;
+  width: 220px;
+  flex-shrink: 0;
+  margin-bottom: 6px;
+}
+.fx-asearch-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 46px 0 27px;
+  border: var(--hairline) solid var(--line-strong);
+  border-radius: 0;
+  background: transparent;
+  appearance: none;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--ink);
+  outline: none;
+}
+.fx-asearch-input::placeholder {
+  color: var(--ink-4);
+}
+.fx-asearch:focus-within .fx-asearch-input {
+  border-color: var(--ink);
+}
+.fx-asearch-icon {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-4);
+  pointer-events: none;
+}
+.fx-asearch-clear {
+  position: absolute;
+  right: 1px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  width: 26px;
+  height: 30px;
+  place-items: center;
+  border: 0;
+  background: none;
+  color: var(--ink-4);
+  cursor: pointer;
+}
+.fx-asearch-clear:hover {
+  color: var(--ink);
+}
+.fx-asearch-kbd {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--ink-4);
+  pointer-events: none;
+}
+
+/* ---------- 搜索结果排序（文字开关） ---------- */
+.fx-sort {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 14px;
+}
+.fx-sort-items {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+}
+.fx-sort-link {
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  font-size: 11px;
+  /* 中文标签不吃拉丁字距（定稿 v3.1） */
+  letter-spacing: 0;
+  color: var(--ink-4);
+  text-decoration: none;
+}
+.fx-sort-link:hover {
+  color: var(--ink);
+}
+.fx-sort-on {
+  border-bottom-color: var(--ink);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* ---------- 日期行（索引的一天） ---------- */
+.fx-day {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 34px;
+  padding-bottom: 9px;
+  border-bottom: var(--hairline) solid var(--line-strong);
+}
+.fx-day-date {
+  font-size: 11px;
+  font-weight: 700;
+  /* 中文标签不吃拉丁字距（定稿 v3.1 排版修正） */
+  letter-spacing: 0;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.fx-day-right {
+  display: flex;
+  /* 箭头与「N 条」按中线对齐，不是基线：图标没有基线，按 baseline 会浮在数字上方。
+     gap 与条目行的「展开查看 ˅」对齐（6px），两处图标与文字的间距一致。 */
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  /* 中文标签不吃拉丁字距（定稿 v3.1） */
+  letter-spacing: 0;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 同一件事：精选收录的是另一篇 */
+.fx-same {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--ink-4);
+}
+.fx-same a {
+  color: var(--ink-3);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 2px;
+}
+.fx-same a:hover {
+  color: var(--ink);
+}
+
+/* ---------- 分页（主题页）：一条 2px 墨线下的文字行 ---------- */
+.fx-pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 44px;
+  padding-top: 14px;
+  border-top: 2px solid var(--ink);
+  font-size: 11px;
+  /* 中文标签不吃拉丁字距（定稿 v3.1） */
+  letter-spacing: 0;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+.fx-pager-step {
+  color: var(--ink-3);
+  text-decoration: none;
+}
+.fx-pager-step:hover {
+  color: var(--ink);
+}
+.fx-pager-off {
+  /* 不可点的上一页/下一页仍是文字：保持 4.5:1 以上，不用细线色 */
+  color: var(--ink-4);
+}
+.fx-pager-nums {
+  display: flex;
+  align-items: baseline;
+  gap: 13px;
+}
+.fx-pager-num {
+  font-size: 11px;
+  color: var(--ink-4);
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+.fx-pager-num:hover {
+  color: var(--ink);
+}
+.fx-pager-num-on {
+  color: var(--ink);
+  font-weight: 700;
+}
+.fx-pager-gap {
+  /* 分隔省略号也是文字：用元信息色（≥5:1），不用细线色 */
+  color: var(--ink-4);
+}
+
+/* ---------- 时间线的尽头：一条安静的状态行，没有页码、没有按钮 ---------- */
+.fx-stream-end {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 26px 0 10px;
+  font-size: 11px;
+  /* 中文标签不吃拉丁字距（定稿 v3.1） */
+  letter-spacing: 0;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+.fx-stream-mark {
+  width: 13px;
+  height: 13px;
+  color: var(--ink-4);
+}
+/* 加载失败时状态行本身就是重试入口：文字按钮，不描边、不填充。 */
+.fx-stream-retry {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: var(--ink-3);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.fx-stream-retry:hover {
+  color: var(--ink);
+  text-decoration-color: var(--ink);
+}
+
+/* ---------- 手机：筛选在用时的方形标签、搜索模式下的查询框 ---------- */
+.fx-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 0 0;
+}
+.fx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  max-width: 100%;
+  padding: 3px 8px;
+  border: var(--hairline) solid var(--line-strong);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+  text-decoration: none;
+}
+.fx-chip:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.fx-phone-q {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  height: 34px;
+  padding: 0 10px;
+  border: var(--hairline) solid var(--line-strong);
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--ink-2);
+  text-align: left;
+}
+.fx-phone-q span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 手机刊头里的 精选 / 全部 切换：文字 + 2px 红下划线 */
+.fx-switch {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.fx-switch-link {
+  padding: 2px 0 4px;
+  border-bottom: 2px solid transparent;
+  font-size: 11px;
+  /* 中文标签不吃拉丁字距（定稿 v3.1 排版修正） */
+  letter-spacing: 0;
+  color: var(--ink-4);
+  text-decoration: none;
+}
+.fx-switch-on {
+  border-bottom-color: var(--ink);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* 手机页栏里的报头「风向」：框架用 17px（不在 7 级字阶上），按条目标题字 19px 排；
+   首页手机刊头另有 26px 的大报头。 */
+[data-phone-bar] a.serif {
+  font-size: 19px;
+}
+
+/* 空态与提示（不带卡片） */
+.fx-empty {
+  padding: 44px 0;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--ink-4);
+}
+.fx-link {
+  color: var(--ink-3);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 2px;
+}
+.fx-link:hover {
+  color: var(--ink);
+}
+
+/* ---------- 搜索浮层：全屏纸面，无遮罩、无圆角、无阴影 ---------- */
+.fx-search {
+  position: fixed;
+  inset: 0;
+  z-index: 75;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--surface);
+  padding-right: env(safe-area-inset-right);
+  padding-left: env(safe-area-inset-left);
+}
+.fx-search-inner {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 28px 16px 64px;
+}
+@media (min-width: 961px) {
+  .fx-search-inner {
+    padding: 54px 30px 96px;
+  }
+}
+.fx-search-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--ink);
+}
+.fx-search-kicker {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.fx-search-title {
+  margin: 6px 0 0;
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+.fx-search-close {
+  flex-shrink: 0;
+  padding: 6px 10px;
+  border: var(--hairline) solid var(--line-strong);
+  border-radius: 0;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  /* 中文标签不吃拉丁字距（定稿 v3.1） */
+  letter-spacing: 0;
+  color: var(--ink-3);
+  cursor: pointer;
+}
+.fx-search-close:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.fx-search-form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+.fx-search-input {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 12px;
+  border: var(--hairline) solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  appearance: none;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--ink);
+  outline: none;
+}
+.fx-search-input::placeholder {
+  color: var(--ink-4);
+}
+.fx-search-clear {
+  flex-shrink: 0;
+  align-self: center;
+  border: 0;
+  background: none;
+  padding: 0 2px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  /* 中文标签不吃拉丁字距（定稿 v3.1） */
+  letter-spacing: 0;
+  color: var(--ink-4);
+  cursor: pointer;
+}
+.fx-search-clear:hover {
+  color: var(--ink);
+}
+.fx-search-submit {
+  flex-shrink: 0;
+  height: 44px;
+  padding: 0 18px;
+  border: var(--hairline) solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  /* 中文标签不吃拉丁字距（定稿 v3.1） */
+  letter-spacing: 0;
+  color: var(--ink);
+  cursor: pointer;
+}
+.fx-search-submit:hover {
+  background: var(--ink);
+  color: var(--surface);
+}
+.fx-search-sec {
+  margin-top: 34px;
+}
+.fx-search-sec-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 8px;
+  border-bottom: var(--hairline) solid var(--ink);
+}
+.fx-search-sec-title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  /* 中文标签不吃拉丁字距（定稿 v3.1） */
+  letter-spacing: 0;
+  color: var(--ink);
+}
+.fx-search-sec-more {
+  border: 0;
+  background: none;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  /* 中文标签不吃拉丁字距（定稿 v3.1） */
+  letter-spacing: 0;
+  color: var(--ink-4);
+  cursor: pointer;
+}
+.fx-search-sec-more:hover {
+  color: var(--ink);
+}
+.fx-search-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-height: 40px;
+  padding: 10px 0;
+  border-bottom: var(--hairline) solid var(--line);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  text-decoration: none;
+}
+a.fx-search-row:hover {
+  color: var(--ink);
+}
+.fx-search-row-n {
+  width: 22px;
+  flex-shrink: 0;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+.fx-search-row-n1 {
+  /* 热榜第一不是编辑判断，不用红；靠字重区分（UI 提示词 4） */
+  color: var(--ink);
+}
+.fx-search-row-trunc {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fx-search-empty {
+  margin: 0;
+  padding: 26px 0;
+  font-size: 14px;
+  color: var(--ink-4);
+}
+.fx-search-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 40px;
+  padding-top: 12px;
+  border-top: var(--hairline) solid var(--line-strong);
+  font-size: 11px;
+  /* 中文标签不吃拉丁字距（定稿 v3.1） */
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+.fx-kbd {
+  display: inline-block;
+  margin-right: 3px;
+  padding: 1px 5px;
+  border: var(--hairline) solid var(--line-strong);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+/* ---------- 搜索繁忙页：同一张纸 ---------- */
+.fx-busy {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px 0 80px;
+}
+.fx-busy-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.fx-busy-p {
+  margin: 12px 0 0;
+  max-width: 34em;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--ink-3);
+}
+.fx-busy-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 22px;
+  margin-top: 26px;
+  padding-top: 14px;
+  border-top: var(--hairline) solid var(--line-strong);
+  font-size: 11px;
+  /* 中文标签不吃拉丁字距（定稿 v3.1） */
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+/* ============================================================================
+   风向 · 日报存档面（/daily、/daily/:key、/daily/archive）
+   ----------------------------------------------------------------------------
+   报头用全站那一套（桌面壳刊头 / 手机 PhoneBar），页面不再自绘报头、不再有右轨：
+   760 单栏读一期，期号/期日期/条数收在正文报眼，往期与合订本收在页脚。
+   红线只留给「所以呢」，分节标题是 2px 黑上框 + 11px 小黑字，不是色块。
+   ========================================================================== */
+
+/* NAV.hidden 里已声明隐藏 /hot；壳刊头还没消费这个清单，先只把导航链接藏掉（页面本身可开）。 */
+.fx-nav a[href="/hot"] {
+  display: none;
+}
+
+/* ---------- 版面：760 单栏（与条目页、事件页同一阅读宽度） ---------- */
+.fx-report-main {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* ---------- 报眼：全页唯一一处期号 / 期日期 / 条数 ---------- */
+.fx-report-issue {
+  margin: 0;
+  padding: 14px 0 0;
+}
+@media (min-width: 961px) {
+  .fx-report-issue {
+    padding-top: 0;
+  }
+}
+
+/* ---------- 合订本与「尚未出刊」的页头：38px 宋体标题 + 一行元信息 ---------- */
+.fx-report-head {
+  padding-top: 16px;
+}
+@media (min-width: 961px) {
+  .fx-report-head {
+    padding-top: 0;
+  }
+}
+.fx-report-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.fx-report-meta {
+  margin: 12px 0 0;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  color: var(--ink-4);
+}
+
+/* ---------- 分节：2px 黑上框 + 11px 小黑字 ---------- */
+.fx-report-section {
+  margin-top: 42px;
+  padding-top: 12px;
+  border-top: 2px solid var(--ink);
+}
+.fx-report-section:first-child {
+  margin-top: 12px;
+}
+.fx-report-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: var(--hairline) solid var(--line);
+}
+.fx-report-section-label {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+.fx-report-section-count {
+  flex-shrink: 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+.fx-report-section-sum {
+  margin: 14px 0 0;
+  max-width: 680px;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--ink-3);
+}
+
+/* ---------- 条目：分类 · 厂商 / 19px 宋体标题 / 14px 摘要 / 所以呢 / 来源 ---------- */
+.fx-report-entry {
+  padding: 24px 0;
+  border-bottom: var(--hairline) solid var(--line);
+}
+.fx-report-entry:last-child {
+  padding-bottom: 8px;
+  border-bottom: 0;
+}
+.fx-report-entry .fx-h2 {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.5;
+}
+.fx-report-entry .fx-h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+.fx-report-entry .fx-h2 a:hover {
+  color: var(--ink-3);
+}
+.fx-report-entry .fx-sum {
+  max-width: 660px;
+}
+.fx-report-entry .fx-so {
+  margin-top: 13px;
+  max-width: 660px;
+}
+.fx-report-entry .fx-src {
+  margin-top: 12px;
+}
+.fx-report-gone {
+  margin-left: 8px;
+  font-size: 11px;
+  color: var(--ink-4);
+}
+
+/* ---------- 页脚：站名 · 前后期 · 合订本 ---------- */
+.fx-report-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: var(--hairline) solid var(--line);
+  font-size: 11px;
+  line-height: 2;
+  color: var(--ink-4);
+}
+.fx-report-foot-link {
+  color: var(--ink-3);
+  text-decoration: none;
+}
+.fx-report-foot-link:hover {
+  color: var(--ink);
+}
+/* 页脚中栏：前一日 / 后一日（往期入口收成一行，不再单起一个 pager 块）。 */
+.fx-report-foot-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
+.fx-report-foot-nav a {
+  color: var(--ink-3);
+  text-decoration: none;
+}
+.fx-report-foot-nav a:hover {
+  color: var(--ink);
+}
+
+/* ---------- 合订本：按月分组的细线目录 ---------- */
+.fx-archive-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fx-archive-row {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: var(--hairline) solid var(--line);
+  text-decoration: none;
+}
+.fx-archive-row:hover .fx-archive-title {
+  color: var(--ink);
+}
+.fx-archive-day {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+.fx-archive-big {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.fx-archive-small {
+  font-size: 11px;
+}
+.fx-archive-title {
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-3);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fx-archive-count {
+  font-size: 11px;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 960px) {
+  .fx-archive-row {
+    grid-template-columns: 64px minmax(0, 1fr);
+  }
+  .fx-archive-count {
+    display: none;
+  }
+  .fx-archive-title {
+    white-space: normal;
+  }
+}
+
+/* ============================================================================
+   P4 · 早报：事实在前，判断退到第二层
+   ----------------------------------------------------------------------------
+   刊头只写「早报 + 这期覆盖的窗口（契约里的 windowStart/windowEnd，原样打印）」；
+   条目先标题/定价/摘要/来源，编辑判断排在细线之后；判断块（今日判断）移到右轨。
+   ========================================================================== */
+
+/* ---------- 期号行：早报与覆盖窗口 ---------- */
+.fx-issue-paper {
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+.fx-issue-window {
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.fx-issue-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  margin: 6px 0 0;
+  font-size: 11px;
+  letter-spacing: 0;
+  line-height: 1.7;
+  color: var(--ink-4);
+}
+.fx-issue-meta a {
+  color: var(--ink-3);
+  text-decoration: none;
+  border-bottom: var(--hairline) solid var(--line);
+}
+.fx-issue-meta a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+/* ---------- 条目里的判断：细线隔开事实与判断 ---------- */
+.fx-edit-note {
+  max-width: 620px;
+  margin-top: 16px;
+  padding-top: 13px;
+  border-top: var(--hairline) solid var(--line);
+}
+.fx-edit-note .fx-so {
+  margin-top: 0;
+}
+
+/* ---------- 右轨的今日判断：模块保留，权重降到条目之后 ---------- */
+.fx-rail-verdict-h {
+  margin: 12px 0 0;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.fx-rail-verdict-p {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--ink-3);
+}
+/* 期号行下：早报的元信息（条数 / 原始变更入口），再接两栏。 */
+.fx-issue-meta + .fx-cols {
+  margin-top: 30px;
+}
+
+/* ---------- 本期数据里的原始变更入口 ---------- */
+.fx-kv-link {
+  color: var(--ink-3);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: var(--hairline) solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+.fx-kv-link:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+.fx-rail-more {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: 0;
+  color: var(--ink-4);
+  text-decoration: none;
+}
+.fx-rail-more:hover {
+  color: var(--ink);
+}
+
+/* ============================================================================
+   P4 · 全部动态：时间口径说明、变更类型行标签、批次组头
+   ========================================================================== */
+
+/* ---------- 顶部一行时间口径：首页与全部用同一个事件时间 ---------- */
+.fx-time-note {
+  margin: 12px 0 0;
+  font-size: 11px;
+  letter-spacing: 0;
+  line-height: 1.8;
+  color: var(--ink-4);
+}
+.fx-time-note-label {
+  margin-right: 8px;
+  font-weight: 700;
+  color: var(--ink-3);
+}
+.fx-time-note-link {
+  margin-left: 8px;
+  color: var(--ink-3);
+  text-decoration: none;
+  border-bottom: var(--hairline) solid var(--line);
+}
+.fx-time-note-link:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+/* ---------- 变更类型筛选行：给第二行 tab 一个明确的标签 ---------- */
+.fx-kindrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 2px;
+}
+.fx-kindrow-label {
+  flex-shrink: 0;
+  font-size: 11px;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+.fx-kindrow .fx-afilters {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 同源一次抓取的多条不再折成组头（2026-10-23 移除）：每条都是独立条目，.fx-batch-* 样式一并删除。 */
+
+/* ============================================================================
+   P5 · 首页 = 时间线（2026-10-22）
+   ----------------------------------------------------------------------------
+   主栏是变更流水：期号行 → 分类/变更类型筛选 → 按日分组的时间线 → 分页。
+   右栏是早报（今日判断 + 精选目录）、本周风向榜、本期数据、订阅。
+   早报的整期版面留在 /daily；首页不再复制报纸头版。
+   ========================================================================== */
+
+/* ---------- 期号行：左边是刊号与窗口，右边是心跳与整期入口 ---------- */
+.fx-stream-issuebar {
+  padding-top: 18px;
+}
+.fx-stream-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 14px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+.fx-stream-right b {
+  color: var(--ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.fx-stream-read {
+  color: var(--ink-3);
+  text-decoration: none;
+  border-bottom: var(--hairline) solid var(--line-strong);
+}
+.fx-stream-read:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+/* ---------- 主栏：时间线紧接着期号行，不另加标题块 ---------- */
+.fx-stream .fx-cols {
+  margin-top: 26px;
+}
+.fx-stream .fx-all-bar {
+  margin-top: 0;
+}
+
+/* ---------- 右栏模块 ---------- */
+.fx-rail-block + .fx-rail-block {
+  margin-top: 30px;
+}
+.fx-rail-p {
+  margin: 12px 0 0;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--ink-3);
+}
+.fx-rail-links {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+/* ---------- 右栏的精选目录：01–05，序号在左，标题 14px 宋体 ---------- */
+.fx-picks {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.fx-pick {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: var(--hairline) solid var(--line);
+}
+.fx-pick-n {
+  padding-top: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+/* 第 1 条是当期头版：只有它的序号用绛红 */
+.fx-pick-1 .fx-pick-n {
+  color: var(--accent);
+}
+.fx-pick a {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.fx-pick a:hover {
+  border-bottom: var(--hairline) solid var(--ink);
+}
+
+/* ---------- 时间线里的精选标记：红方点是编辑判断的痕迹 ---------- */
+.fx-pick-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent);
+  font-weight: 700;
+}
+.fx-pick-tag::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+}
+
+/* ---------- 手机：期号行分两行，心跳与入口另起一行 ---------- */
+@media (max-width: 960px) {
+  .fx-stream-issuebar {
+    gap: 10px;
+  }
+  .fx-stream-right {
+    width: 100%;
+    margin-left: 0;
+    gap: 14px;
+  }
+}
+
+/* 手机：今日判断压成一条眉题；桌面右栏已有完整一块，不重复。 */
+.fx-stream-verdict {
+  display: none;
+}
+@media (max-width: 960px) {
+  .fx-stream-verdict {
+    display: block;
+    margin-top: 16px;
+    padding-top: 13px;
+    border-top: var(--hairline) solid var(--line);
+    text-decoration: none;
+  }
+  .fx-stream-verdict-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--accent);
+  }
+  .fx-stream-verdict-h {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.6;
+    letter-spacing: 0.005em;
+    color: var(--ink);
+  }
+}
+
+/* 右栏早报卡片：期号前的绛红方点（期号与覆盖窗口归早报，不再混在动态页顶部）。 */
+.fx-rail-title .fx-issue-sq {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 8px;
+  background: var(--ink);
+  vertical-align: 2px;
+}
+.fx-rail-window {
+  margin: 8px 0 0;
+  font-size: 11px;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+/* ---------- 右栏推荐阅读：人工风向榜或自动入选，第 1 条绛红序号 ---------- */
+.fx-reading {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+/* 条目页：返回紧贴导航行（main 的 24px 呼吸在这里压到 10px），别把第一屏让给空白。 */
+@media (min-width: 1024px) {
+  main:has(article.fx-reading) {
+    padding-top: 10px;
+  }
+}
+.fx-reading-item {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: var(--hairline) solid var(--line);
+}
+.fx-reading-n {
+  padding-top: 1px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+.fx-reading-1 .fx-reading-n {
+  color: var(--accent);
+}
+.fx-reading-body {
+  min-width: 0;
+}
+.fx-reading-body a {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.fx-reading-body a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 2px;
+}
+.fx-reading-why {
+  display: -webkit-box;
+  margin: 3px 0 0;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 1.65;
+  letter-spacing: 0;
+  color: var(--ink-4);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* 首页没有筛选行之后，时间线直接接在导航下面（原来靠期号行隔着 36px）。 */
+.fx-stream .fx-cols {
+  margin-top: 28px;
+}
+
+/* 日报页报头的期号方点：与旧首页期号行同一规则（5px 绛红，只标这一处）。 */
+.fx-mast-right .fx-issue-sq {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 7px;
+  background: var(--accent);
+  vertical-align: 2px;
+}
+
+/* 来源行里的标签：和来源同为 11px 灰字，不抢标题。 */
+.fx-src {
+  gap: 7px;
+}
+.fx-src .fx-cat {
+  color: var(--ink-3);
+  font-weight: 400;
+}
+.fx-src .fx-vendor {
+  color: var(--ink-3);
+  font-weight: 400;
+}
+.fx-src .fx-pick-tag {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* 时间线来源行的公司标：和来源名同一行，16px，不裁剪、不改色；深色单色标在暗色下反白。 */
+.fx-src-mark {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+[data-theme="dark"] .fx-src-mark-invert {
+  filter: invert(1);
+}
+
+/* ============================================================================
+   读者面兜底（2026-10-23，UI 提示词 6/10）
+   ----------------------------------------------------------------------------
+   1) 共享组件（授权头像、Tabs、Lightbox、Menu、Sheet 等）自带的 Tailwind 圆角类
+      在读者面一律方角：设计系统是零卡片、零圆角。
+   2) Tailwind 的 border / border-t / border-b / border-l / border-r 默认 1px，
+      统一成 0.5px 发丝线；2px 的版式黑线都在 CSS 里显式写成 2px，不受影响。
+   ========================================================================== */
+/* 只有 rounded-full 是硬编码的 9999px；其余 rounded-* 都读 --radius-*，已在 token 层归零。 */
+.rounded-full {
+  border-radius: 0;
+}
+.border { border-width: var(--hairline); }
+.border-t { border-top-width: var(--hairline); }
+.border-b { border-bottom-width: var(--hairline); }
+.border-l { border-left-width: var(--hairline); }
+.border-r { border-right-width: var(--hairline); }
+.border-x { border-left-width: var(--hairline); border-right-width: var(--hairline); }
+.border-y { border-top-width: var(--hairline); border-bottom-width: var(--hairline); }
+.divide-y > :not([hidden]) ~ :not([hidden]) { border-top-width: var(--hairline); }
+.divide-x > :not([hidden]) ~ :not([hidden]) { border-left-width: var(--hairline); }

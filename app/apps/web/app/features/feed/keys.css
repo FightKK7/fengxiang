@@ -1,0 +1,27 @@
+/* ============================================================================
+   风向 · 条目键盘跳条（features/feed/EntryKeys）
+   ----------------------------------------------------------------------------
+   被 j/k 选中的条目用全站统一的焦点环：2px 实线 --ink + 2px offset。
+   条目在 DOM 里带 tabindex={-1}，鼠标点它不算键盘焦点（:focus-visible 不会亮），
+   只有从键盘协议聚焦时才画环。
+   ========================================================================== */
+
+.fx-item:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* 滚动到最后一条时给页脚留出余量，焦点环不被视口边缘切掉。 */
+.fx-item[data-fx-entry] {
+  scroll-margin-top: 88px;
+  scroll-margin-bottom: 88px;
+}
+
+/* 右栏订阅按钮从 <a> 改成 <button>：清掉浏览器默认外观，尺寸与字体和定稿按钮逐像素一致。 */
+.fx-sub-btn {
+  border: 0;
+  appearance: none;
+  font-family: var(--font-sans);
+  line-height: inherit;
+  text-align: start;
+}

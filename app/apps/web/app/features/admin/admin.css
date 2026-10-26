@@ -1,0 +1,1288 @@
+/* ============================================================================
+   风向 · 后台版式层（admin）
+   ----------------------------------------------------------------------------
+   后台沿用读者面的设计系统，不另起一套：
+     1. 只有 6 个色值（纸 #fff / 墨 #111110 / 正文 #4e4e47 / 元信息 #6b6b63 /
+        细线 #e2e0da / 绛红 #c8102e）；后台的状态色 --amber / --ok 只用于
+        状态文字与状态点，不进入正文与标题。
+     2. 七级字阶：38 / 26 / 19 / 16 / 14 / 12.5 / 11。没有第八级。
+     3. 零圆角、零阴影：分区只用 1px 细线与 2px 黑线，按钮与输入框都是方角。
+     4. 标题宋体、正文黑体；数字 tabular（时间、金额、计数必须对齐）。
+     5. 红色只标编辑判断与需要处理的告警（失败 / 下架 / 删除 / 草稿），
+        链接、导航、装饰一律墨色。
+   这一层只有后台的骨架与控件；页面自己不再写颜色/字号/圆角。
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- 骨架 */
+
+.adm-shell {
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--ink-3);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.adm-wrap {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+@media (max-width: 640px) {
+  .adm-wrap {
+    padding: 0 16px;
+  }
+}
+
+/* ---------------------------------------------------------------- 刊头 */
+
+.adm-mast {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 26px;
+}
+
+@media (max-width: 640px) {
+  .adm-mast {
+    align-items: flex-start;
+    padding-top: 18px;
+  }
+}
+
+.adm-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  color: var(--ink);
+  text-decoration: none;
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  /* 中文报头字距：官网字标同样用 .16em，属报头例外 */
+  letter-spacing: 0.16em;
+}
+
+.adm-wordmark-sub {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+.adm-mast-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  text-align: right;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+.adm-mast-meta b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.adm-mast-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.adm-mast-links a,
+.adm-mast-links button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-4);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.adm-mast-links a:hover,
+.adm-mast-links button:hover {
+  color: var(--ink);
+}
+
+@media (max-width: 640px) {
+  .adm-mast-meta {
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+
+/* 双线：刊头下面 2px 黑线 + 1px 细线，和读者面完全一致 */
+.adm-rules {
+  height: 4px;
+  margin-top: 14px;
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------------------------------------------------------------- 导航 */
+
+.adm-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.adm-nav {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.adm-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.adm-nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 0 11px;
+  border: 0;
+  background: none;
+  color: var(--ink-3);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 400;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.adm-nav-link:hover {
+  color: var(--ink);
+}
+
+.adm-nav-on {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.adm-nav-on::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.adm-nav-count {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+
+.adm-nav-count--bad {
+  color: var(--hot);
+}
+
+.adm-nav-sep {
+  flex: none;
+  width: 1px;
+  margin: 11px 0;
+  background: var(--line);
+}
+
+@media (max-width: 640px) {
+  .adm-nav {
+    gap: 18px;
+  }
+}
+
+/* ---------------------------------------------------------------- 页头 */
+
+.adm-page {
+  padding-top: 24px;
+  padding-bottom: 88px;
+}
+
+.adm-head {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.adm-head-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 900px) {
+  .adm-head-row {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 30px;
+  }
+}
+
+.adm-head-main {
+  min-width: 0;
+}
+
+.adm-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+@media (max-width: 640px) {
+  .adm-title {
+    font-size: 19px;
+    line-height: 1.55;
+  }
+}
+
+/* 标题下的一行数据：ID、来源、窗口、最近检查时间；只放事实，不写说明句。 */
+.adm-page-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+.adm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+.adm-body {
+  margin-top: 28px;
+}
+
+/* 工具栏：搜索 + 筛选，一行；下面用 1px 细线接表格 */
+.adm-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 0 0 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* 连续两条工具条（筛选 + 批量操作）：第二条与上一条的细线、与下方表格都留出同样的间距，
+   不再叠一条收底细线——否则按钮看起来和边框挤在一起。 */
+.adm-toolbar + .adm-toolbar {
+  padding: 12px 0;
+  border-bottom: 0;
+}
+
+.adm-toolbar-grow {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.adm-toolbar-side {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.adm-body > * + * {
+  margin-top: 28px;
+}
+
+/* ---------------------------------------------------------------- 区块 */
+
+.adm-sec {
+  min-width: 0;
+  border-top: 2px solid var(--ink);
+  padding-top: 10px;
+}
+
+.adm-sec-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 2px;
+}
+
+.adm-sec-title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+.adm-sec-meta {
+  flex: none;
+  max-width: 60%;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+.adm-sec-body {
+  padding-top: 8px;
+  min-width: 0;
+}
+
+.adm-sec-body--pad {
+  padding-bottom: 6px;
+}
+
+/* 可滚动的区块：表头吸顶，tabindex 让键盘也能滚 */
+.adm-sec--scroll {
+  display: flex;
+  min-height: 0;
+  max-height: 480px;
+  flex-direction: column;
+}
+
+.adm-sec--scroll .adm-sec-body {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.adm-scroll {
+  min-height: 0;
+  overflow: auto;
+}
+
+.adm-scroll:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------- 数据表 */
+
+.adm-table-wrap {
+  min-width: 0;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.adm-sec--scroll .adm-table-wrap {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.adm-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+.adm-table th {
+  padding: 7px 14px 7px 0;
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.5;
+  white-space: nowrap;
+  color: var(--ink-4);
+  vertical-align: bottom;
+}
+
+.adm-table td {
+  padding: 9px 14px 9px 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  color: var(--ink-3);
+}
+
+.adm-table th:last-child,
+.adm-table td:last-child {
+  padding-right: 0;
+}
+
+.adm-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.adm-table tbody tr:hover td {
+  background: rgba(17, 17, 16, 0.025);
+}
+
+.adm-table--dense th {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.adm-table--dense td {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.adm-table .adm-num,
+.adm-table .num {
+  font-variant-numeric: tabular-nums;
+}
+
+.adm-sec--scroll .adm-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--bg);
+}
+
+.adm-row-link {
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------- 数据带 */
+
+.adm-figs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+
+.adm-fig {
+  flex: 1 1 170px;
+  min-width: 0;
+  padding: 10px 20px 12px 0;
+}
+
+.adm-fig + .adm-fig {
+  padding-left: 20px;
+  border-left: 1px solid var(--line);
+}
+
+@media (max-width: 640px) {
+  .adm-fig {
+    flex-basis: 128px;
+    padding-right: 12px;
+  }
+  .adm-fig + .adm-fig {
+    padding-left: 12px;
+  }
+}
+
+.adm-fig-label {
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+.adm-fig-value {
+  margin-top: 2px;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.adm-fig-hint {
+  margin-top: 1px;
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+@media (max-width: 480px) {
+  .adm-fig-value {
+    font-size: 16px;
+  }
+}
+
+/* 数据带里的状态色（只用于状态数字，不用于正文） */
+.adm-tone-bad {
+  color: var(--hot);
+}
+.adm-tone-warn {
+  color: var(--amber);
+}
+.adm-tone-ok {
+  color: var(--ok);
+}
+
+/* ---------------------------------------------------------------- 按钮 */
+
+.adm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 120ms linear, border-color 120ms linear, color 120ms linear;
+}
+
+.adm-btn:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.adm-btn:disabled {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--ink-4);
+  cursor: not-allowed;
+}
+
+.adm-btn--primary:disabled {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--ink-4);
+}
+
+.adm-btn--danger:disabled {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--ink-4);
+}
+
+.adm-btn--primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.adm-btn--primary:hover:not(:disabled) {
+  background: var(--ink-2);
+  border-color: var(--ink-2);
+  color: var(--bg);
+}
+
+.adm-btn--danger {
+  border-color: var(--hot);
+  color: var(--hot);
+}
+
+.adm-btn--danger:hover:not(:disabled) {
+  background: var(--hot);
+  border-color: var(--hot);
+  color: #ffffff;
+}
+
+.adm-btn--ghost {
+  border-color: transparent;
+  color: var(--ink-3);
+}
+
+.adm-btn--ghost:hover:not(:disabled) {
+  background: transparent;
+  color: var(--ink);
+}
+
+.adm-btn--sm {
+  height: 24px;
+  padding: 0 8px;
+  font-size: 11px;
+}
+
+.adm-btn-spinner {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid currentColor;
+  border-right-color: transparent;
+  /* 架构测试的半径白名单：不在 --radius-* 里的一律用 9999px（圆形同视觉效果）。 */
+  border-radius: 9999px;
+  animation: adm-spin 0.8s linear infinite;
+}
+
+@keyframes adm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 文本链接：墨色 + 下划线只在 hover 出现 */
+.adm-link {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.adm-link:hover {
+  border-bottom-color: var(--ink);
+}
+
+.adm-link-muted {
+  color: var(--ink-4);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.adm-link-muted:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+/* ---------------------------------------------------------------- 表单 */
+
+.adm-field {
+  display: block;
+  min-width: 0;
+}
+
+.adm-label {
+  display: block;
+  margin-bottom: 5px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+.adm-hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+.adm-input,
+.adm-textarea,
+.adm-select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  padding: 5px 9px;
+  transition: border-color 120ms linear;
+}
+
+.adm-input::placeholder,
+.adm-textarea::placeholder {
+  color: var(--ink-4);
+}
+
+.adm-input:focus,
+.adm-textarea:focus,
+.adm-select:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+
+.adm-input:focus-visible,
+.adm-textarea:focus-visible,
+.adm-select:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -1px;
+}
+
+/* 勾选框：方角、1px 细线，选中墨底白勾；批量操作的「本页全选」用 indeterminate 半选态。 */
+.adm-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  background: var(--surface);
+  cursor: pointer;
+  position: relative;
+  vertical-align: -2px;
+  transition: background-color 120ms linear, border-color 120ms linear;
+}
+
+.adm-checkbox:hover {
+  border-color: var(--ink);
+}
+
+.adm-checkbox:checked,
+.adm-checkbox:indeterminate {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.adm-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border-right: 1.5px solid var(--surface);
+  border-bottom: 1.5px solid var(--surface);
+  transform: rotate(45deg);
+}
+
+.adm-checkbox:indeterminate::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 6px;
+  width: 6px;
+  height: 1.5px;
+  background: var(--surface);
+}
+
+.adm-checkbox:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* 表格里的勾选列：窄、不换行，行本身仍可点进详情。 */
+.adm-pick {
+  width: 34px;
+}
+
+
+.adm-textarea {
+  min-height: 84px;
+  resize: vertical;
+  line-height: 1.85;
+}
+
+.adm-select {
+  appearance: none;
+  padding-right: 26px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path d='M3 4.5l3 3 3-3' fill='none' stroke='%23111110' stroke-width='1.2'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 10px;
+}
+
+.adm-select--auto {
+  width: auto;
+}
+
+/* ---------------------------------------------------------------- 标签与状态点 */
+
+.adm-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: max-content;
+  max-width: 100%;
+  padding: 0 4px;
+  border: 1px solid var(--line-strong);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--ink-3);
+  vertical-align: baseline;
+}
+
+.adm-tag--ok {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+.adm-tag--warn {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.adm-tag--bad,
+.adm-tag--accent {
+  border-color: var(--hot);
+  color: var(--hot);
+}
+
+.adm-tag--muted {
+  border-color: var(--line-strong);
+  color: var(--ink-4);
+}
+
+.adm-tag--info {
+  border-color: var(--line-strong);
+  color: var(--ink-2);
+}
+
+.adm-dot {
+  display: inline-block;
+  flex: none;
+  width: 5px;
+  height: 5px;
+  background: var(--ink-4);
+}
+
+.adm-dot--ok {
+  background: var(--ok);
+}
+.adm-dot--warn {
+  background: var(--amber);
+}
+.adm-dot--bad {
+  background: var(--hot);
+}
+.adm-dot--accent {
+  background: var(--accent);
+}
+.adm-dot--muted {
+  background: var(--ink-4);
+}
+
+/* ---------------------------------------------------------------- 页签式筛选 */
+
+.adm-tabs {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--ink);
+  scrollbar-width: none;
+}
+
+.adm-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.adm-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-right: 22px;
+  padding: 7px 0 8px;
+  border: 0;
+  background: none;
+  color: var(--ink-4);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.adm-tab:hover {
+  color: var(--ink);
+}
+
+.adm-tab-on {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.adm-tab-on::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+}
+
+.adm-toolbar .adm-tabs {
+  border-bottom: 0;
+}
+
+.adm-tab-count {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------- 分页 */
+
+.adm-pager {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 18px;
+  font-size: 12.5px;
+  color: var(--ink-4);
+}
+
+.adm-pager .adm-num {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+}
+
+/* ---------------------------------------------------------------- 空态 / KV / JSON */
+
+.adm-empty {
+  padding: 28px 0;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--ink-4);
+}
+
+.adm-kv {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: 18px;
+  row-gap: 5px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.adm-kv dt {
+  color: var(--ink-4);
+  font-size: 11px;
+  line-height: 2.2;
+}
+
+.adm-kv dd {
+  margin: 0;
+  min-width: 0;
+  color: var(--ink-3);
+  overflow-wrap: anywhere;
+}
+
+.adm-json {
+  border: 1px solid var(--line);
+}
+
+.adm-json > summary {
+  padding: 3px 8px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--ink-4);
+}
+
+.adm-json > summary:hover {
+  color: var(--ink-2);
+}
+
+.adm-json pre {
+  margin: 0;
+  max-height: 420px;
+  overflow: auto;
+  padding: 0 8px 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+/* ---------------------------------------------------------------- 弹窗 */
+
+.adm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 75;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 12px;
+}
+
+@media (min-width: 641px) {
+  .adm-overlay {
+    align-items: center;
+  }
+}
+
+.adm-overlay-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(17, 17, 16, 0.32);
+  border: 0;
+  padding: 0;
+  cursor: default;
+}
+
+/* 抓取器列表的启停开关：方角轨道 + 方块滑块（零圆角，整块可点）。 */
+.adm-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ink-4);
+  font: inherit;
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+
+.adm-switch:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.adm-switch-track {
+  position: relative;
+  flex: none;
+  width: 28px;
+  height: 16px;
+  border: 1px solid var(--ink-4);
+  background: var(--bg);
+  transition: background 0.14s, border-color 0.14s;
+}
+
+.adm-switch-track::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 10px;
+  height: 10px;
+  background: var(--ink-4);
+  transition: transform 0.14s, background 0.14s;
+}
+
+.adm-switch[aria-checked="true"] {
+  color: var(--ink);
+}
+
+.adm-switch[aria-checked="true"] .adm-switch-track {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+
+.adm-switch[aria-checked="true"] .adm-switch-track::after {
+  transform: translateX(12px);
+  background: var(--bg);
+}
+
+/* 抓取器试抓结果：标题 + 每层结果 + 前几条会推什么。 */
+.adm-preview {
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+}
+
+.adm-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  border-top: 2px solid var(--ink);
+  background: var(--bg);
+  padding: 20px 20px 18px;
+}
+
+.adm-dialog-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+
+.adm-dialog-desc {
+  margin-top: 6px;
+  font-size: 12.5px;
+  line-height: 1.8;
+  letter-spacing: 0;
+  color: var(--ink-3);
+}
+
+.adm-dialog-body {
+  margin-top: 16px;
+}
+
+.adm-dialog-body > * + * {
+  margin-top: 12px;
+}
+
+.adm-dialog-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+/* ---------------------------------------------------------------- toast */
+
+.adm-toasts {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  padding: 0 16px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.adm-toast {
+  pointer-events: auto;
+  max-width: 460px;
+  padding: 6px 12px;
+  border: 1px solid var(--ink);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 12.5px;
+  line-height: 1.7;
+  letter-spacing: 0;
+}
+
+.adm-toast--ok {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.adm-toast--error {
+  border-color: var(--hot);
+  background: var(--hot);
+  color: #ffffff;
+}
+
+/* ---------------------------------------------------------------- 登录页 */
+
+.adm-login {
+  display: flex;
+  min-height: 100dvh;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: var(--bg);
+}
+
+.adm-login-box {
+  width: 100%;
+  max-width: 360px;
+}
+
+.adm-login-wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.adm-login-wordmark span:first-child {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1;
+}
+
+.adm-login-wordmark span:last-child {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-4);
+}
+
+.adm-login-form {
+  margin-top: 30px;
+  padding-top: 14px;
+  border-top: 2px solid var(--ink);
+}
+
+.adm-login-form .adm-btn {
+  width: 100%;
+  height: 34px;
+}
+
+.adm-login-error {
+  margin-top: 10px;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--hot);
+}
+
+.adm-login-foot {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink-4);
+}
+
+/* ---------------------------------------------------------------- 工具类 */
+
+.adm-mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-4);
+  overflow-wrap: anywhere;
+}
+
+.adm-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.adm-nowrap {
+  white-space: nowrap;
+}
+
+.adm-pre-wrap {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

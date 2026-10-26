@@ -1,0 +1,335 @@
+{
+  "groups": [
+    {
+      "key": "company",
+      "name": "公司",
+      "blurb": "按公司追踪产品、能力、定价、组织与地区动作"
+    },
+    {
+      "key": "field",
+      "name": "方向",
+      "blurb": "按方向看：AI 产品与 Agent、企业软件形态、定价与打包、生态与集成、资本与组织"
+    },
+    {
+      "key": "genre",
+      "name": "内容类型",
+      "blurb": "按变化的类型浏览：产品能力、定价打包、生态合作、资本与组织、市场与地区"
+    }
+  ],
+  "topics": [
+    {
+      "slug": "feishu",
+      "name": "飞书",
+      "group": "company",
+      "entityId": "feishu",
+      "aliases": [
+        "Lark"
+      ],
+      "definition": "飞书的产品形态与协作能力：文档、表格、多维表格、会议与 AI 能力更新，定价与套餐、开放接口与集成，以及组织与地区市场动作。"
+    },
+    {
+      "slug": "wecom",
+      "name": "企业微信",
+      "group": "company",
+      "entityId": "wecom",
+      "aliases": [
+        "WeCom"
+      ],
+      "definition": "企业微信的产品与能力更新：客户联系、通讯录与协作能力、接口与生态开放，以及行业方案、定价套餐与地区市场动作。"
+    },
+    {
+      "slug": "dingtalk",
+      "name": "钉钉",
+      "group": "company",
+      "entityId": "dingtalk",
+      "definition": "钉钉的产品与 AI 能力更新、平台开放与生态集成，以及定价套餐、组织调整与地区市场动作。"
+    },
+    {
+      "slug": "wps",
+      "name": "金山办公 / WPS",
+      "group": "company",
+      "entityId": "wps",
+      "aliases": [
+        "WPS",
+        "金山办公"
+      ],
+      "definition": "金山办公与 WPS 的产品形态与 AI 能力更新、订阅与定价打包，以及开放集成、组织与地区经营动作。"
+    },
+    {
+      "slug": "yonyou",
+      "name": "用友",
+      "group": "company",
+      "entityId": "yonyou",
+      "definition": "用友的产品线与云化进展、AI 能力、订阅与打包方式，以及生态集成、组织与地区市场动作。"
+    },
+    {
+      "slug": "kingdee",
+      "name": "金蝶",
+      "group": "company",
+      "entityId": "kingdee",
+      "definition": "金蝶的云产品更新、AI 能力与订阅定价，以及生态伙伴、组织与地区经营变化。"
+    },
+    {
+      "slug": "slack",
+      "name": "Slack",
+      "group": "company",
+      "entityId": "slack",
+      "definition": "Slack 的产品与能力更新、定价与套餐、与 Salesforce 的集成方式，以及生态集成与组织地区动作。"
+    },
+    {
+      "slug": "notion",
+      "name": "Notion",
+      "group": "company",
+      "entityId": "notion",
+      "definition": "Notion 的产品形态与 AI 能力、团队版与企业管理能力、定价与打包，以及生态集成与地区可用性变化。"
+    },
+    {
+      "slug": "salesforce",
+      "name": "Salesforce",
+      "group": "company",
+      "entityId": "salesforce",
+      "definition": "Salesforce 的产品与 AI 能力（Agentforce）、定价与套餐、生态集成与市场进入，以及资本与组织变化。"
+    },
+    {
+      "slug": "microsoft-365",
+      "name": "Microsoft 365",
+      "group": "company",
+      "entityId": "microsoft-365",
+      "aliases": [
+        "M365",
+        "微软 365"
+      ],
+      "definition": "Microsoft 365 的产品与 AI 能力（Copilot）、套餐与定价打包、生态集成，以及组织与地区可用性变化。"
+    },
+    {
+      "slug": "google-workspace",
+      "name": "Google Workspace",
+      "group": "company",
+      "entityId": "google-workspace",
+      "aliases": [
+        "G Suite",
+        "谷歌 Workspace"
+      ],
+      "definition": "Google Workspace 的产品与 AI 能力（Gemini）、套餐与定价打包、集成与生态，以及地区可用性变化。"
+    },
+    {
+      "slug": "monday",
+      "name": "Monday.com",
+      "group": "company",
+      "entityId": "monday",
+      "aliases": [
+        "monday.com"
+      ],
+      "definition": "Monday.com 的产品更新与 AI 能力、按席位与按用量的定价打包，以及生态集成与组织经营变化。"
+    },
+    {
+      "slug": "asana",
+      "name": "Asana",
+      "group": "company",
+      "entityId": "asana",
+      "definition": "Asana 的产品与 AI 能力（AI Studio）、定价与套餐、集成与生态，以及组织与经营变化。"
+    },
+    {
+      "slug": "atlassian",
+      "name": "Atlassian",
+      "group": "company",
+      "entityId": "atlassian",
+      "aliases": [
+        "Jira",
+        "Confluence"
+      ],
+      "definition": "Atlassian 的 Jira/Confluence 产品与 AI 能力更新、云迁移与定价、企业版打包，以及生态集成与组织经营变化。"
+    },
+    {
+      "slug": "zoom",
+      "name": "Zoom",
+      "group": "company",
+      "entityId": "zoom",
+      "definition": "Zoom 的产品与 AI 能力（AI Companion）、套餐与定价打包，以及生态集成与地区市场动作。"
+    },
+    {
+      "slug": "hubspot",
+      "name": "HubSpot",
+      "group": "company",
+      "entityId": "hubspot",
+      "definition": "HubSpot 的 CRM 与 AI 能力更新、套餐与定价打包、应用市场与集成，以及组织与地区市场动作。"
+    },
+    {
+      "slug": "pricing-packaging",
+      "name": "定价与打包",
+      "group": "field",
+      "tags": [
+        "定价与打包"
+      ],
+      "definition": "官方公告的定价、套餐、计费方式、免费额度与增购项变化：旧价到新价、计费单位、生效时间与适用对象。不靠价格页 diff 或价格监控。"
+    },
+    {
+      "slug": "channel-partner",
+      "name": "生态与伙伴",
+      "group": "field",
+      "tags": [
+        "生态与伙伴"
+      ],
+      "definition": "官方伙伴与集成机制：伙伴计划、生态合作、接口与集成、应用市场上架，以及分成与授权机制的公告变化。"
+    },
+    {
+      "slug": "ai-monetization",
+      "name": "AI 产品与 Agent",
+      "group": "field",
+      "tags": [
+        "AI 产品与 Agent"
+      ],
+      "definition": "AI 功能的定价与打包：进基础版还是单独加价、按用量计费、配额与免费额度，以及企业与团队版差异，以官方公告为准。"
+    },
+    {
+      "slug": "mna-funding",
+      "name": "资本与并购",
+      "group": "field",
+      "tags": [
+        "资本与并购"
+      ],
+      "definition": "并购、收购、融资、IPO、估值与战略投资的官方公告，以及它们对产品线与组织的影响。"
+    },
+    {
+      "slug": "earnings-business",
+      "name": "财报与经营",
+      "group": "field",
+      "tags": [
+        "财报与经营"
+      ],
+      "definition": "财报与经营指标：ARR 与续费率、客户数、客单价、区域收入结构，以及裁员与重组等官方披露。"
+    },
+    {
+      "slug": "ecosystem-integration",
+      "name": "生态与集成",
+      "group": "field",
+      "tags": [
+        "生态与集成"
+      ],
+      "definition": "官方伙伴、集成与平台开放机制：API 与集成、ISV 与白标、OEM、应用市场上架与平台开放政策的变化。"
+    },
+    {
+      "slug": "sales-gtm",
+      "name": "市场与地区",
+      "group": "field",
+      "tags": [
+        "市场与地区"
+      ],
+      "definition": "市场进入与销售组织：新地区、新行业进入、行业方案与打包、销售组织调整，以及市场发布等官方动作。"
+    },
+    {
+      "slug": "region-vertical",
+      "name": "区域与行业化",
+      "group": "field",
+      "tags": [
+        "区域与行业化"
+      ],
+      "definition": "地区与行业化：出海、区域扩张、本地化与垂直行业方案，以及不同地区的产品可用性与合规变化。"
+    },
+    {
+      "slug": "pricing-changes",
+      "name": "定价变化",
+      "group": "genre",
+      "tags": [
+        "定价与打包"
+      ],
+      "definition": "官方公告的定价与套餐变化：旧价到新价、计费单位、免费额度、生效时间与适用对象。"
+    },
+    {
+      "slug": "feature-releases",
+      "name": "功能更新",
+      "group": "genre",
+      "tags": [
+        "产品与能力"
+      ],
+      "definition": "官方公告的产品与能力更新：AI 产品、Agent、Copilot、AI 办公与企业软件的版本、能力边界与开放范围变化。"
+    },
+    {
+      "slug": "channel-policy",
+      "name": "生态政策",
+      "group": "genre",
+      "tags": [
+        "生态与集成"
+      ],
+      "definition": "官方伙伴与生态机制的公告变化：伙伴计划、集成上架、应用市场规则与分成授权机制。"
+    },
+    {
+      "slug": "org-people",
+      "name": "组织变动",
+      "group": "genre",
+      "tags": [
+        "组织与人事"
+      ],
+      "definition": "高管任免、组织调整、裁员与团队重组的官方公告，以及它们对产品线与市场动作的影响。"
+    },
+    {
+      "slug": "openai",
+      "name": "OpenAI",
+      "group": "company",
+      "entityId": "openai",
+      "definition": "OpenAI 的产品与能力更新、模型接入与企业团队使用、定价与打包，以及 API 计费、地区可用性与生态合作变化。"
+    },
+    {
+      "slug": "anthropic",
+      "name": "Anthropic",
+      "group": "company",
+      "entityId": "anthropic",
+      "definition": "Anthropic 的 Claude 产品与能力更新、模型接入方式、企业与团队使用、API 定价与打包，以及地区可用性变化。"
+    },
+    {
+      "slug": "cursor",
+      "name": "Cursor",
+      "group": "company",
+      "entityId": "cursor",
+      "definition": "Cursor 的产品与能力更新、模型接入与企业团队使用、定价与打包，以及部署集成与地区可用性变化。"
+    },
+    {
+      "slug": "replit",
+      "name": "Replit",
+      "group": "company",
+      "entityId": "replit",
+      "definition": "Replit 的产品发布与 AI 能力、企业与团队使用、套餐与用量计费，以及部署与集成能力变化。"
+    },
+    {
+      "slug": "vercel",
+      "name": "Vercel",
+      "group": "company",
+      "entityId": "vercel",
+      "definition": "Vercel 的产品与能力更新、团队与企业使用、套餐与用量计费，以及集成生态与地区可用性变化。"
+    },
+    {
+      "slug": "zapier",
+      "name": "Zapier",
+      "group": "company",
+      "entityId": "zapier",
+      "definition": "Zapier 的自动化产品与 AI 能力更新、应用集成与生态、套餐与任务计费，以及企业与团队使用方式变化。"
+    },
+    {
+      "slug": "google-ai",
+      "name": "Google AI",
+      "group": "company",
+      "entityId": "google-ai",
+      "definition": "Google 的 Gemini 与 DeepMind 产品与能力更新、模型接入、企业版定价与打包，以及地区可用性变化。"
+    },
+    {
+      "slug": "dsh",
+      "name": "DSH",
+      "group": "company",
+      "entityId": "dsh",
+      "aliases": [
+        "DeepSeek Harness"
+      ],
+      "definition": "DSH（DeepSeek Harness）的 Agent 产品与能力更新、企业与团队使用、开放接口与集成，以及定价与地区可用性变化。"
+    },
+    {
+      "slug": "deepseek",
+      "name": "DeepSeek",
+      "group": "company",
+      "entityId": "deepseek",
+      "aliases": [
+        "深度求索"
+      ],
+      "definition": "DeepSeek 的模型与 API 能力更新、模型接入与定价打包、企业版与私有化部署，以及地区可用性与生态合作变化。"
+    }
+  ]
+}

@@ -1,0 +1,359 @@
+/*
+ * 风向 · 条目详情页的阅读版式。
+ * 只做两件事：把通用 .prose 的正文换成 14px/1.85 的风向正文，并把正文里的
+ * 装饰值收回到 token（颜色、零圆角、零阴影由 fengxiang.css 负责）。
+ * 新增色值一律取自 --ink / --ink-3 / --ink-4 / --line / --accent。
+ */
+
+/* 单栏阅读版式：760px，页面内居中；手机上随根壳的 gutter 收窄。 */
+.fx-reading {
+  display: block;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 8px 0 40px;
+  /* 正文字号：读者在页缘的阅读工具里按 80%–130% 连续缩放阅读正文（默认 1 = 14px 正文）。
+     --fx-reading-scale 由 components/ui/ReaderRail 写到 <html>；这里只按同一倍数取既有字号，
+     标题 / 摘要 / 判断 / 译文之间的相对层级保持不变。 */
+  --fx-read-14: calc(14px * var(--fx-reading-scale, 1));
+  --fx-read-16: calc(16px * var(--fx-reading-scale, 1));
+  --fx-read-19: calc(19px * var(--fx-reading-scale, 1));
+  --fx-read-125: calc(12.5px * var(--fx-reading-scale, 1));
+}
+
+/* 所以呢的标签：v3.1 的中文标签不走拉丁字距，黑体小字。 */
+.fx-verdict-label {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--accent);
+}
+
+/* 摘要与「风向观察」正文：跟正文同一档缩放（基准 16px）。 */
+.fx-lede,
+.fx-verdict-body {
+  font-size: var(--fx-read-16);
+}
+
+/* ---------- 原文：能站内展示的全文；没有时只留一句为什么 ---------- */
+/* 全文入口已经收在标题行右上，这里不再挂「原文」标题和第二个链接。 */
+.fx-body {
+  padding-top: 14px;
+  border-top: var(--hairline) solid var(--line);
+}
+/* 译文开关：正文上方右端，不抢标题区的焦点；桌面由右缘阅读工具接管，只留手机。 */
+.fx-body-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 4px;
+}
+@media (min-width: 961px) {
+  .fx-body-tools {
+    display: none;
+  }
+}
+/* 全文读完后的一句版权归属；不是装饰，别省。 */
+.fx-body-note {
+  margin: 20px 0 0;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+/* 没有站内全文时：说清为什么；原文链接已经在标题行右上，这里不再重复。 */
+.fx-body-fallback {
+  max-width: 680px;
+  font-size: 12.5px;
+  line-height: 1.85;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+.fx-reading .prose {
+  color: var(--ink-3);
+  font-size: var(--fx-read-14);
+  line-height: 1.85;
+  letter-spacing: 0;
+}
+.fx-reading .prose > * + * {
+  margin-top: 1.2em;
+}
+.fx-reading .prose p {
+  margin: 0;
+}
+.fx-reading .prose p + p {
+  margin-top: 1.2em;
+}
+.fx-reading .prose :is(h2, h3, h4, h5) {
+  color: var(--ink);
+  letter-spacing: 0;
+  /* 原文正文的 h2–h5 继承 app.css 的 650 字重：宋体子集只有 400/600/700 三个字面，650 会匹配到
+     700 字面（它的 unicode-range 只含数字与标点），拉丁字母于是掉到系统宋体。设计系统里标题是宋 600，
+     这里显式写 600，既回到字阶也保证英文标题由当期子集渲染。 */
+  font-weight: 600;
+}
+.fx-reading .prose h2 {
+  font-size: var(--fx-read-19);
+  line-height: 1.5;
+  margin-top: 2.2em;
+}
+.fx-reading .prose h3 {
+  font-size: var(--fx-read-16);
+  line-height: 1.55;
+  margin-top: 1.8em;
+}
+.fx-reading .prose h4,
+.fx-reading .prose h5 {
+  font-size: var(--fx-read-14);
+  line-height: 1.6;
+  margin-top: 1.5em;
+}
+.fx-reading .prose a {
+  color: var(--ink-3);
+  text-decoration-color: var(--line);
+}
+.fx-reading .prose a:hover {
+  color: var(--ink);
+  text-decoration-color: var(--ink);
+}
+.fx-reading .prose strong,
+.fx-reading .prose b {
+  color: var(--ink);
+}
+.fx-reading .prose blockquote {
+  border-left: 2px solid var(--line);
+  color: var(--ink-3);
+}
+.fx-reading .prose li::marker {
+  color: var(--ink-4);
+}
+.fx-reading .prose code {
+  background: transparent;
+  border: var(--hairline) solid var(--line);
+  border-radius: 0;
+  color: var(--ink);
+  font-size: var(--fx-read-125);
+}
+.fx-reading .prose pre {
+  background: transparent;
+  border: var(--hairline) solid var(--line);
+  border-radius: 0;
+  font-size: var(--fx-read-125);
+  line-height: 1.7;
+}
+.fx-reading .prose pre code {
+  border: 0;
+}
+.fx-reading .prose img,
+.fx-reading .prose video {
+  background: transparent;
+  border-radius: 0;
+}
+.fx-reading .prose figure {
+  margin: 1.5em 0;
+}
+.fx-reading .prose figcaption {
+  color: var(--ink-4);
+  font-size: var(--fx-read-125);
+}
+.fx-reading .prose .code-block {
+  background: transparent;
+  border: var(--hairline) solid var(--line);
+  border-radius: 0;
+}
+.fx-reading .prose .code-block-head {
+  border-color: var(--line);
+  color: var(--ink-4);
+  font-size: var(--fx-read-125);
+}
+.fx-reading .prose .code-block-copy {
+  background: transparent;
+  border: var(--hairline) solid var(--line);
+  border-radius: 0;
+  color: var(--ink-3);
+  font-size: var(--fx-read-125);
+}
+
+/* ---------- 标题上方元信息：公司 · 分类 · 事件时间（右端：阅读原文） ---------- */
+/* 一行说清谁、什么事、什么时候，以及去哪看原文；时间跟着公司分类走，不单独占一行。
+   全页只有这一个时钟；「本站收录」与源站时区注解已收掉。 */
+.fx-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+  margin-top: 12px;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0;
+}
+.fx-meta-left {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+/* 公司名是这一行的锚点：墨色 600，比分类和时间重。 */
+.fx-meta-org {
+  font-weight: 600;
+  color: var(--ink);
+}
+.fx-meta-cat,
+.fx-meta-sep {
+  color: var(--ink-4);
+}
+/* 事件时间：日期与「多新」是一组，不拆行。 */
+.fx-meta-time {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.fx-meta-rel {
+  font-weight: 400;
+  color: var(--ink-4);
+}
+/* 唯一的「去哪看原文」入口：带一次域名，不点也知道去向。窄屏换行时仍靠右对齐。 */
+.fx-meta-link {
+  flex-shrink: 0;
+  margin-left: auto;
+  white-space: nowrap;
+  color: var(--ink-4);
+  text-decoration: none;
+  transition: color 250ms ease;
+}
+.fx-meta-link:hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---------- 原文／译文逐块对照 ---------- */
+/* 每块一对：原文在上，同块译文紧跟在下。.fx-pair 只是排版容器，块间距与正文段落节奏一致。 */
+.fx-pair + .fx-pair {
+  margin-top: 1.2em;
+}
+/* 块内首元素不吃段落上边距，否则会和 .fx-pair 的间距叠成两倍。 */
+.fx-reading .prose .fx-pair > :first-child {
+  margin-top: 0;
+}
+
+/* 译文块：左侧 2px 竖线，贴近上方原文段，明确属于同一段；字号比原文小半档、颜色退到正文灰。
+   竖线用元信息灰而不是绛红：红只留给编辑判断（所以呢、定价变化），译文是站点加的第二层，不是判断。 */
+.fx-tr {
+  margin-top: 0.45em;
+  padding-left: 14px;
+  border-left: 2px solid var(--ink-4);
+  font-size: var(--fx-read-14);
+  line-height: 1.85;
+  letter-spacing: 0;
+  color: var(--ink-3);
+}
+/* 译文里的标题降一档（取字阶里的 16 / 14）：宋体墨色、上边距收紧，不压过上方原文标题。 */
+.fx-reading .prose .fx-tr :is(h2, h3, h4, h5) {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0;
+}
+.fx-reading .prose .fx-tr h2 {
+  margin-top: 0.9em;
+  font-size: var(--fx-read-16);
+  line-height: 1.5;
+}
+.fx-reading .prose .fx-tr h3 {
+  margin-top: 0.8em;
+  font-size: var(--fx-read-14);
+  line-height: 1.55;
+}
+.fx-reading .prose .fx-tr h4,
+.fx-reading .prose .fx-tr h5 {
+  margin-top: 0.7em;
+  font-size: var(--fx-read-14);
+  line-height: 1.6;
+}
+.fx-reading .prose .fx-tr > :first-child {
+  margin-top: 0;
+}
+
+/* 关闭译文：只隐藏译文块，正文仍是同一份 HTML，不重新排版、不请求接口。 */
+.fx-tr-off .fx-tr {
+  display: none;
+}
+/* 首帧：head 里的内联脚本按存储值把关闭状态标在 <html> 上，水合前也不会闪出一帧译文。 */
+html[data-fx-translation="off"] .fx-tr {
+  display: none;
+}
+
+/* ---------- 译文开关：正文上方右端的紧凑开关 ---------- */
+/* 零圆角、零阴影：一条细轨道 + 一个方块滑块；开=墨色轨道，关=细线色轨道。 */
+.fx-tr-toggle {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 7px;
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: color 250ms ease;
+}
+.fx-tr-toggle:hover {
+  color: var(--ink);
+}
+.fx-tr-toggle-track {
+  position: relative;
+  display: inline-block;
+  width: 26px;
+  height: 14px;
+  border: var(--hairline) solid var(--line);
+  background: transparent;
+  transition: background-color 250ms ease, border-color 250ms ease;
+}
+.fx-tr-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 8px;
+  height: 8px;
+  background: var(--ink-4);
+  transition: transform 250ms ease, background-color 250ms ease;
+}
+.fx-tr-toggle[aria-checked="true"] .fx-tr-toggle-track {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+.fx-tr-toggle[aria-checked="true"] .fx-tr-toggle-thumb {
+  background: var(--bg);
+  transform: translateX(12px);
+}
+
+/* 未完整翻译时的一句说明：紧跟正文，和版权行贴近。 */
+.fx-body-note + .fx-body-note {
+  margin-top: 6px;
+}
+
+/* 手机上标题行收窄间距；域名在窄屏收起，保住「时间 + 阅读原文」同一行。 */
+@media (max-width: 480px) {
+  .fx-meta {
+    gap: 2px 12px;
+  }
+  .fx-meta-host {
+    display: none;
+  }
+}

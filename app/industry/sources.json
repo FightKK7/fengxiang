@@ -1,0 +1,228 @@
+{
+  "$comment": "示范信源（内容源）：首次启动时导入（scripts/seed.ts），已存在的不会被覆盖。2026-10-23 起示范信源只放官方一手 news/blog（内容源）；roadmap、changelog、日志、价格页、帮助中心这类变更监控，以及媒体与分析，本期不进示范。字段说明见 app 的 docs/customize.md；信源配置见 app/docs/sources.md。",
+  "sources": [
+    {
+      "id": "rss-google-workspace-updates",
+      "name": "Google Workspace Updates",
+      "kind": "rss",
+      "config": {
+        "displayTimeZone": "America/Los_Angeles",
+        "feedUrl": "https://workspaceupdates.googleblog.com/feeds/posts/default",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        },
+        "changeKind": "diff"
+      },
+      "tier": "T1",
+      "owner_entity_id": "google-workspace",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "官方",
+        "更新日志"
+      ],
+      "site_fulltext": true,
+      "syndicate_fulltext": false,
+      "enabled": true
+    },
+    {
+      "id": "rss-openai-news",
+      "name": "OpenAI News",
+      "kind": "rss",
+      "config": {
+        "_aihot": {
+          "initialBackfillLimit": 8
+        },
+        "feedUrl": "https://openai.com/news/rss.xml"
+      },
+      "tier": "T1",
+      "owner_entity_id": "openai",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "官方"
+      ],
+      "site_fulltext": true,
+      "syndicate_fulltext": false,
+      "enabled": true
+    },
+    {
+      "id": "rss-salesforce-news",
+      "name": "Salesforce Newsroom",
+      "kind": "rss",
+      "config": {
+        "displayTimeZone": "America/New_York",
+        "feedUrl": "https://www.salesforce.com/news/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        },
+        "changeKind": "announcement"
+      },
+      "tier": "T1",
+      "owner_entity_id": "salesforce",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "官方",
+        "新闻"
+      ],
+      "site_fulltext": true,
+      "syndicate_fulltext": false,
+      "enabled": true
+    },
+    {
+      "id": "rss-salesforce-blog",
+      "name": "Salesforce Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.salesforce.com/blog/feed/"
+      },
+      "tier": "T1",
+      "owner_entity_id": "salesforce",
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "博客"
+      ],
+      "site_fulltext": true,
+      "syndicate_fulltext": false,
+      "enabled": true
+    },
+    {
+      "id": "rss-slack-blog",
+      "name": "Slack Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://slack.com/blog/rss",
+        "_aihot": {
+          "initialBackfillMonths": 0
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": "slack",
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "博客"
+      ],
+      "site_fulltext": true,
+      "syndicate_fulltext": false,
+      "enabled": true
+    },
+    {
+      "id": "rss-hubspot-blog",
+      "name": "HubSpot 博客",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://blog.hubspot.com/feed"
+      },
+      "tier": "T1",
+      "owner_entity_id": "hubspot",
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "博客"
+      ],
+      "site_fulltext": true,
+      "syndicate_fulltext": false,
+      "enabled": true
+    },
+    {
+      "id": "rss-zapier-blog",
+      "name": "Zapier Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://zapier.com/blog/feeds/latest/"
+      },
+      "tier": "T1",
+      "owner_entity_id": "zapier",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "官方",
+        "博客"
+      ],
+      "site_fulltext": true,
+      "syndicate_fulltext": false,
+      "enabled": true
+    },
+    {
+      "id": "web-anthropic-engineering",
+      "name": "Anthropic Engineering",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.anthropic.com/engineering",
+        "parseMode": "html",
+        "itemSelector": "article",
+        "linkSelector": "a[href^=\"/\"]",
+        "titleSelector": "h2, h3",
+        "publishedAtSelector": "time"
+      },
+      "tier": "T1",
+      "owner_entity_id": "anthropic",
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "官方",
+        "博客"
+      ],
+      "site_fulltext": true,
+      "syndicate_fulltext": false,
+      "enabled": true
+    },
+    {
+      "id": "web-cursor-blog",
+      "name": "Cursor Blog",
+      "kind": "web_list",
+      "config": {
+        "url": "https://cursor.com/blog",
+        "parseMode": "html",
+        "itemSelector": "article",
+        "linkSelector": "a[href]",
+        "titleSelector": "p",
+        "allowUrlPrefixes": [
+          "https://cursor.com/"
+        ],
+        "publishedAtSelector": "time"
+      },
+      "tier": "T1",
+      "owner_entity_id": "cursor",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "官方",
+        "博客"
+      ],
+      "site_fulltext": true,
+      "syndicate_fulltext": false,
+      "enabled": true
+    },
+    {
+      "id": "web-deepseek-news",
+      "name": "DeepSeek 官网动态",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.deepseek.com/news",
+        "parseMode": "html",
+        "itemSelector": "a.ds-news-list-item",
+        "titleSelector": "h3",
+        "publishedAtSelector": "span.text-ds-description",
+        "publishedAtUtcOffset": "+08:00"
+      },
+      "tier": "T1",
+      "owner_entity_id": "deepseek",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "官方",
+        "公告"
+      ],
+      "site_fulltext": true,
+      "syndicate_fulltext": false,
+      "enabled": true
+    }
+  ]
+}

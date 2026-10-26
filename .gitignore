@@ -1,0 +1,59 @@
+# ---- 本地状态、备份与密钥（绝不入库） ----
+.local/
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+
+# ---- 密钥 / 备份类文件形态（防御性） ----
+*.pem
+*.key
+*.p12
+*.dump
+*.bundle
+*.sql.gz
+
+# ---- 依赖（应用有自己的 .gitignore，这里补根级兜底） ----
+node_modules/
+app/node_modules/
+app/.env
+app/.env.*
+!app/.env.example
+app/.data/
+app/.local/
+app/.font-src/
+app/apps/web/build/
+app/apps/web/.react-router/
+app/package/
+app/fontsource-noto-sans-sc-*.tgz
+app/playwright-report/
+app/test-results/
+v4/node_modules/
+v4/dist/
+
+# ---- 生成物与缓存 ----
+design/**/.cache/
+design/**/node_modules/
+audit/.cache/
+*.tsbuildinfo
+*.log
+
+# ---- 编辑器 ----
+.idea/
+.vscode/
+
+# 本地阅读笔记 / 一次性产物（不属于站点仓库）
+reading/
+
+# ---- 内部资料：只在本地保留，不进入仓库（只忽略仓库根） ----
+/AGENTS.md
+/PROJECT-BRIEF.md
+/design/
+/audit/
+/typeset/
+/v4/
+/docs/
+/scripts/
+/app/AGENTS.md
+/app/CLAUDE.md

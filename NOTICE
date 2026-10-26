@@ -1,0 +1,29 @@
+AIHOT
+Copyright (c) 2026 数字生命卡兹克. Upstream AIHOT code is licensed under the MIT License (app/LICENSE); the original 风向 parts are under the root LICENSE (learning-use, noncommercial).
+
+The name "AIHOT" and the AIHOT logo are not licensed under the MIT License. Please use your own name
+and logo for your site.
+
+「风向」是基于 AIHOT 的二次开发版本：修改代码、站点文案、编辑标准与内容数据由「风向」项目维护。
+「风向」项目原创部分按仓库根 [LICENSE](LICENSE) 的「学习使用许可（非商业）」授权：仅限个人学习、
+研究使用，禁止商业用途。上游 AIHOT 框架代码仍按 MIT 许可证（全文见 [app/LICENSE](app/LICENSE)），
+MIT 允许商业使用；上述限制不改变上游代码依 MIT 取得的权利。「风向」的名称、站点内容与品牌素材
+不在 MIT 许可范围内。
+
+This repository also contains third-party material under its own terms:
+
+- app/assets/og-fonts/: Noto Sans SC, SIL Open Font License 1.1 (app/assets/og-fonts/LICENSE).
+- app/apps/web/public/fonts/: 思源宋体 / Source Han Serif、Inter 等，SIL Open Font License 1.1
+  （同目录 OFL 文本）；京華老宋体见 app/apps/web/public/fonts/KingHwa-OldSong-NOTICE.md。
+- app/apps/web/public/brand/：公司 / 产品标识归各自权利人所有，仅用于识别与展示，
+  不构成背书，也不随 MIT 许可分发。
+
+The demo sources in app/industry/sources.json are public feeds of their publishers. Their content belongs
+to them; by default the site shows only a summary and a link to the original.
+
+本仓库只包含应用代码与开发文档；站点内容、产品规划、运营与内部资料不在仓库中。
+
+## 使用限制
+
+本仓库原创部分仅供个人学习、研究使用，禁止任何商业用途；上游 AIHOT 代码的 MIT 许可不受此限制影响。
+如需商业授权，请联系仓库维护者。

@@ -1,0 +1,379 @@
+/*
+ * 风向 · 事件页（story）。
+ * 和条目页同一套阅读版式：760px 单栏、2px 黑线分节、11px 小黑字标签、宋体标题。
+ * 不排右轨、分节 tab 和重复的计数/时间标签：一页只留「标题 + 一行元信息 + 综述 + 报道时间线」。
+ * 新色值一律取自 --ink / --ink-3 / --ink-4 / --line / --accent。
+ */
+
+.fx-story {
+  max-width: 760px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+/* ---------- 页面头：返回 / 报刊式标题 / 一行元信息 ---------- */
+.fx-story-crumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  padding-top: 16px;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+.fx-story-crumb a {
+  color: var(--ink-3);
+  text-decoration: none;
+  transition: color 250ms ease;
+}
+.fx-story-crumb a:hover {
+  color: var(--ink);
+}
+
+.fx-story-head {
+  padding-top: 2px;
+}
+.fx-story-title {
+  margin: 12px 0 0;
+  font-family: var(--font-serif);
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+/* 全页唯一的一行元信息：几篇报道、是否还在更新；不再重复报道来源、更新时间。 */
+.fx-story-meta {
+  margin: 12px 0 0;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  color: var(--ink-4);
+}
+.fx-story-meta .num {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---------- 综述：无标签，正文 + 一行来源/生成说明 ---------- */
+.fx-story-overview {
+  margin-top: 26px;
+}
+.fx-story-lede {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0;
+  color: var(--ink);
+  white-space: pre-line;
+}
+.fx-story-lede-note {
+  margin: 10px 0 0;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+.fx-story-empty {
+  margin: 22px 0 0;
+  font-size: 12.5px;
+  line-height: 1.85;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+/* ---------- 事件进展：只有多进展事件才出现 ---------- */
+.fx-story-developments {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.fx-story-development {
+  padding: 14px 0;
+  border-bottom: var(--hairline) solid var(--line);
+}
+.fx-story-development:last-child {
+  border-bottom: 0;
+}
+.fx-story-dev-meta {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+.fx-story-dev-title {
+  display: inline-block;
+  margin-top: 4px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.fx-story-dev-title:hover {
+  color: var(--ink-3);
+}
+.fx-story-dev-src {
+  margin: 4px 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+/* ---------- 报道时间线：筛选只在能筛时出现 ---------- */
+.fx-story-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 22px;
+  padding: 10px 0 6px;
+  border-bottom: var(--hairline) solid var(--line);
+}
+.fx-story-filter {
+  padding: 3px 0 7px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.5;
+  letter-spacing: 0;
+  color: var(--ink-4);
+  cursor: pointer;
+  transition: color 250ms ease;
+}
+.fx-story-filter:hover {
+  color: var(--ink);
+}
+.fx-story-filter-on {
+  color: var(--ink);
+  font-weight: 700;
+  border-bottom-color: var(--ink);
+}
+.fx-story-filter-count {
+  margin-left: 5px;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 时间线：北京日分组 + 时间列 + 报道 */
+.fx-story-day {
+  padding-top: 18px;
+}
+.fx-story-day-label {
+  margin: 0;
+  padding-bottom: 6px;
+  border-bottom: var(--hairline) solid var(--line);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.fx-story-report {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 0 16px;
+  padding: 16px 0;
+  border-bottom: var(--hairline) solid var(--line);
+  list-style: none;
+}
+.fx-story-report:last-child {
+  border-bottom: 0;
+}
+.fx-story-report-time {
+  padding-top: 2px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+}
+.fx-story-report-body {
+  min-width: 0;
+}
+.fx-story-report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+.fx-story-report-src {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* 精选 = 编辑判断，全站唯一允许的红色用法 */
+.fx-story-mark {
+  font-weight: 700;
+  color: var(--accent);
+}
+.fx-story-report-title {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.fx-story-report-title:hover {
+  color: var(--ink-3);
+}
+.fx-story-report-sum {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin: 6px 0 0;
+  font-size: 14px;
+  line-height: 1.85;
+  letter-spacing: 0;
+  color: var(--ink-3);
+}
+.fx-story-report-sum-open {
+  display: block;
+  overflow: visible;
+}
+.fx-story-more {
+  margin-top: 3px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--ink-4);
+  cursor: pointer;
+  transition: color 250ms ease;
+}
+.fx-story-more:hover {
+  color: var(--ink);
+}
+.fx-story-note {
+  margin: 14px 0 0;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+
+/* ---------- 关联事件 ---------- */
+.fx-story-related {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.fx-story-related-item {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: var(--hairline) solid var(--line);
+}
+.fx-story-related-item:last-child {
+  border-bottom: 0;
+}
+.fx-story-related-kind {
+  flex-shrink: 0;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: var(--ink-4);
+}
+.fx-story-related-title {
+  min-width: 0;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.fx-story-related-title:hover {
+  color: var(--ink-3);
+}
+
+/* ---------- 热度图（HeatChart，仅事件页使用） ---------- */
+/* 数字用宋体 26px（判断标题级），范围开关和报道筛选同一套纸面文字开关。 */
+.fx-heat-stat {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.fx-heat-range {
+  display: flex;
+  flex-shrink: 0;
+  align-items: baseline;
+  gap: 16px;
+}
+.fx-heat-range-item {
+  padding: 3px 0 5px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--ink-4);
+  cursor: pointer;
+  transition: color 250ms ease;
+}
+.fx-heat-range-item:hover {
+  color: var(--ink);
+}
+.fx-heat-range-on {
+  color: var(--ink);
+  font-weight: 700;
+  border-bottom-color: var(--ink);
+}
+
+/* ---------- 窄屏 ---------- */
+@media (max-width: 1023px) {
+  /* 手机条已经给了返回和标题，页面自己的返回不重复 */
+  .fx-story-crumb {
+    display: none;
+  }
+}
+@media (max-width: 640px) {
+  .fx-story-title {
+    font-size: 26px;
+  }
+  .fx-story-report {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .fx-story-report-time {
+    padding: 0 0 3px;
+  }
+}

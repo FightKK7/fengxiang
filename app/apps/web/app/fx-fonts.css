@@ -1,0 +1,145 @@
+/* ============================================================================
+   风向 · 字体层（fx-fonts.css）
+   ----------------------------------------------------------------------------
+   设计真源：2026-10-21 16:01 的字体决定
+     · 标题：思源宋体 600 子集（构建期按当期用字生成，全站字符覆盖）
+     · 判断正文 / 导语 / 「所以呢」16px：思源宋体 400 子集（同一套全站字符）
+     · 报头「风向」+ 副题：京華老宋体 400（单独子集，10 个字；2026-10-22 换字，2026-10-23 加副题）
+     · 数字：Inter 400 / 600，只接管数字与数字标点，tabular 等宽
+     · 正文：系统黑体（苹方 / 微软雅黑）
+     · 字体栈：-apple-system 优先（拉丁字母走 SF Pro，汉字回落苹方）
+
+   这个文件只放字体：@font-face + 三个 token 的覆盖值 + 数字等宽开关。
+   版式、字号、字重仍归 fengxiang.css / 组件。
+
+   加载顺序：在 root.tsx 里 import 于 fengxiang.css 之后。
+   下面用 html:root（优先级 0,1,1）压过 fengxiang.css 的 :root / [data-theme]
+   （0,1,0），所以即使先后顺序被改动，字体 token 也不会失效。
+
+   字体文件：apps/web/public/fonts/*.woff2（源字体不进 git，见 docs/fonts.md）
+   GB2312 基线分片与 @font-face 在生成文件 fx-fonts-base.css（build-fonts.mjs 产物）。
+   ========================================================================== */
+
+/* ---------- 1. 思源宋体 400：判断正文 / 导语 / 所以呢 -------------------- */
+/* brief §五：判断正文 16px 宋 400、导语 16px 宋 400。
+   没有这个字面时，400 的请求会被匹配到 600 字面，等于全站判断句被悄悄加重
+   （改字体前的系统宋体有 400）。子集与 600 用同一套全站字符，不设 unicode-range。 */
+@font-face {
+  font-family: "FX Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/fx-serif-400.woff2") format("woff2");
+}
+
+/* ---------- 2. 思源宋体 600：标题 / 判决 -------------------------------- */
+/* 覆盖当期全站可见字符（含 ASCII 与中文标点），不设 unicode-range；
+   子集之外的字（未上线的新文案）回落宋体字体栈里的 Songti SC / STSong / SimSun。 */
+@font-face {
+  font-family: "FX Serif";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/fx-serif-600.woff2") format("woff2");
+}
+
+/* ---------- 3. 思源宋体 700：只给榜单序号 + 数字标点 ---------------------- */
+/* 子集只有数字与数字标点（榜单序号 .fx-rank-n 是宋体 700 + tabular）。
+   报头已在 2026-10-22 改用京華老宋体（见下面第 5 节），不再用这个字面。
+   unicode-range 锁死这些字：其他汉字在 700 时回落到同族 600（不会掉到系统宋体）。 */
+@font-face {
+  font-family: "FX Serif";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/fx-serif-700.woff2") format("woff2");
+  unicode-range: U+0025, U+002B-003A, U+00B7, U+00D7;
+}
+
+/* ---------- 3b. 系统宋体回落层：度量对齐到思源宋体 -------------------- */
+/* 第三层兜底：当期子集与 GB2312 基线都没有的字（人名、异体、古字、错字）才走到这里。
+   用系统宋体时把行高度量对齐到思源宋体（Noto Serif SC：hhea 1151/-286/0，upm 1000），
+   免得同一个位置的字因为字体度量不同而上下跳、行距不齐。size-adjust 保持 100%：
+   两者 CJK 的字面都是 1em，放大反而会让回落字比旁边大一圈。
+   local() 按顺序找：macOS Songti SC / Windows SimSun；都没有就继续走字体栈后面的系统宋体。 */
+@font-face {
+  font-family: "FX Serif Fallback";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Songti SC Regular"), local("Songti SC"), local("STSong"), local("SimSun");
+  size-adjust: 100%;
+  ascent-override: 115.1%;
+  descent-override: 28.6%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "FX Serif Fallback";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local("Songti SC Bold"), local("Songti SC"), local("STSong"), local("SimSun");
+  size-adjust: 100%;
+  ascent-override: 115.1%;
+  descent-override: 28.6%;
+  line-gap-override: 0%;
+}
+
+/* ---------- 4. Inter 数字 400 / 600 --------------------------------------- */
+/* 只接管：0-9 与 . , : % / + - × ~ ( ) $ ¥。
+   拉丁字母不在 unicode-range 内 → 继续走 -apple-system（SF Pro）；
+   汉字不在内 → 回落苹方。子集里带 tnum，配合 html 上的 tabular-nums 得到等宽数字。
+   必须和 scripts/fonts/site-text.mjs 的 NUMBER_TEXT 保持一致。 */
+@font-face {
+  font-family: "FX Number";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/fx-number-400.woff2") format("woff2");
+  unicode-range: U+0024, U+0025, U+0028-0029, U+002B-003A, U+007E, U+00A5, U+00D7;
+}
+
+@font-face {
+  font-family: "FX Number";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/fx-number-600.woff2") format("woff2");
+  unicode-range: U+0024, U+0025, U+0028-0029, U+002B-003A, U+007E, U+00A5, U+00D7;
+}
+
+/* ---------- 5. 京華老宋体 400：报头「风向」+ 副题「全球企业服务资讯」 ------ */
+/* 2026-10-22 换字：报头不再复用思源宋体 700。
+   思源宋体是标题字，做正文/标题那套（600/400）没问题，但当报头缺「报纸刊头」的性格；
+   京華老宋体是北京新华字模厂旧 61-1 铅字的数字化复刻，横细竖粗、起笔带刀刻感，
+   38px 以上才撑得住。源字体只进 .font-src/，这里是从它裁出的 10 个字（5.4 KB）。
+   unicode-range 锁死这 10 个字（通风 + 副题）：导航等其他汉字不会命中这个字面。
+   许可：作者声明免费商用（非 OFL），见 public/fonts/KingHwa-OldSong-NOTICE.md。 */
+@font-face {
+  font-family: "FX Wordmark";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/fx-wordmark.woff2") format("woff2");
+  unicode-range: U+4E1A, U+4F01, U+5168, U+52A1, U+5411, U+670D, U+7403, U+8BAF, U+8D44, U+98CE;
+}
+
+/* ---------- 6. 字体栈 ----------------------------------------------------- */
+/* 标题：真宋体在前，系统宋体兜底（Windows 也有 SimSun 可用）。 */
+html:root {
+  /* 四层：当期子集（快、预加载）→ GB2312 基线分片（按需）→ 度量对齐的系统宋体 → 系统宋体。 */
+  --font-serif: "FX Serif", "FX Serif Base", "FX Serif Fallback", "Songti SC", "STSong", "SimSun", serif;
+  /* 报头字标：京華老宋体在前；子集缺字（未上线的新刊头文案）回落思源宋体 400。 */
+  --font-wordmark: "FX Wordmark", "FX Serif", "FX Serif Base", "FX Serif Fallback", "Songti SC", "STSong", "SimSun", serif;
+  /* 正文：数字先命中 Inter（unicode-range 限定），拉丁走 -apple-system，
+     汉字回落苹方 / 冬青黑体 / 雅黑。 */
+  --font-sans: "FX Number", -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+/* ---------- 7. 数字等宽（设计决定：tabular） ------------------------------ */
+/* Inter 默认数字是比例宽度（1 窄 4 宽），报纸版式里时间列、榜单、价格必须对齐，
+   所以在根元素打开 tabular-nums（只影响带 tnum 特性的数字字形）。
+   组件里已有的 font-variant-numeric 不受影响。 */
+html {
+  font-variant-numeric: tabular-nums;
+}
