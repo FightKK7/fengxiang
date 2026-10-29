@@ -1,72 +1,96 @@
-# 风向 · 全球企业服务资讯
+# 风向应用
 
-> 状态：当前有效 · 最后核对：2026-10-26
+简体中文 | [English](README.en.md)
 
-**给全球企业服务从业者的 AI 时代资讯平台：把官方一手的变化整理成中文信息流与每日精选。**
+> 状态：当前有效 · 最后核对：2026-10-29
 
-风向把全球企业服务领域的官方一手发布收进来，整理成中文标题、摘要与时间线，每天编一期「每日精选」；读者可以按公司、方向与内容类型浏览，也可以把同一份数据接给 Agent（RSS / 公开 API / MCP）。
+本目录包含风向的网页、后台、API，以及内容采集、模型处理和定时出刊任务。产品介绍与界面截图见[仓库首页](../README.md)。
 
-## 这是什么
+当前行业配置关注全球企业服务与 AI 产品，将信源内容整理为中文标题、摘要、动态时间线和每日精选。网页、RSS、公开 API、MCP 与 Agent Markdown 共用发布数据；读者浏览页面不会触发模型调用。
 
-- **只收官方一手**：公司博客、官方公告、产品与生态信息；当前版本不收媒体、分析与营销内容。
-- **信息流为主入口**：全部动态按时间排列，支持厂商筛选；每日精选是第二层，不替读者下结论。
-- **AI 主线**：AI 产品、Agent、Copilot、AI 原生应用与 AI 办公，同时保留传统企业软件的形态变化。
-- **判断可选**：少数条目附「风向观察」，没有就不写；不承诺每条都有判断。
-- **同一份数据多个出口**：网页、RSS、公开 API、MCP、Agent Markdown、`llms.txt` 都从同一个读取层输出。
+## 部署运行
 
-## 技术栈
+需要 Node.js 24.11 或更新的 24.x 版本，以及带 Compose 的 Docker。自动生成内容还需要兼容 OpenAI API 的模型服务。
 
-Node.js 24 · TypeScript · React Router（服务端渲染）· Fastify · PostgreSQL · pg-boss · Tailwind CSS · Docker Compose
-
-## 本地运行
-
-需要 Docker、Node.js 24，以及一个 OpenAI 兼容的模型 API Key（DeepSeek、千问、智谱等均可）。
+以下命令均在仓库的 `app/` 目录执行：
 
 ```bash
-# 在仓库的 app/ 目录执行
-node scripts/init-env.ts --llm-key <你的模型 API Key>
+node scripts/init-env.ts
+```
+
+脚本会生成 `.env`，填入随机密钥和管理员密码。随后编辑 `.env`：
+
+- 填写 `LLM_API_KEY`，核对 `LLM_BASE_URL` 和 `LLM_MODEL`；示例使用 DeepSeek。
+- 本机访问保留 `SITE_URL=http://localhost:3000`；部署到服务器时改为实际访问地址。
+- 示例中的 `COLLECT_ENABLED` 和 `MODEL_CALLS_ENABLED` 均为 `true`，启动后会采集内容并调用模型，费用按服务商规则计算。仅调试界面时，将两项设为 `false`。
+
+配置完成后启动：
+
+```bash
 docker compose up -d --build
 ```
 
-打开 <http://localhost:3000>。后台在 `/admin`，管理员密码在 `.env` 的 `ADMIN_PASSWORD` 里。
+打开 [http://localhost:3000](http://localhost:3000)，后台位于 `/admin`，使用 `.env` 中的 `ADMIN_PASSWORD` 登录。首次启动导入预置信源配置，文章和往期内容不会随仓库附带。
 
-- 模型与采集默认需要显式打开：`.env` 里的 `COLLECT_ENABLED`、`MODEL_CALLS_ENABLED` 设为 `true` 才会真实抓取和调用模型。开发调试时保持 `false`。
-- 数据库、迁移、域名与 HTTPS、中国大陆部署、成本与备份，见 [部署文档](docs/deploy.md)。
-- 只想跑测试时不需要模型 Key；测试库名必须以 `_test` 或 `_ci` 结尾。
+更多部署方式、域名与 HTTPS、更新和备份说明见[部署文档](docs/deploy.md)。
 
-## 目录
+## 技术栈与目录
 
-| 目录 | 内容 |
+Node.js 24、TypeScript、React Router（服务端渲染）、Fastify、PostgreSQL 17、pg-boss、Tailwind CSS 和 Docker Compose。
+
+| 目录 | 用途 |
 |---|---|
-| `site/` | 站名与全站文案（`site.ts`）、品牌、发布在网站根目录的固定文件、更新日志 |
-| `industry/` | 分类与标签（`taxonomy.ts`）、主题（`topics.json`）、示范信源（`sources.json`）、提示词（`prompts/`）、入选门槛（`selection.ts`） |
-| `apps/` | `web` 读者面与后台、`api` 公开接口与 MCP、`worker` 采集与模型任务 |
-| `packages/` | 后端领域代码、公开读取层、契约与站点配置 |
-| `scripts/` | 初始化、采集/发布/出刊运维、字体、审计与自检脚本 |
-| `docs/` | 框架文档：架构、部署、信源、精选、归组、后台等 |
-| `modules/` | 本仓库启用的可插拔模块 |
+| `site/` | 站名与文案、导航、出刊时间、模型配置和品牌素材 |
+| `industry/` | 信源、分类、标签、主题、提示词和入选门槛 |
+| `apps/web/` | 读者页面与管理后台 |
+| `apps/api/` | 供网页使用的接口、公开 API 与 MCP |
+| `apps/worker/` | 采集、模型处理与定时任务 |
+| `packages/` | 后端业务逻辑、发布数据读取、接口契约与配置类型 |
+| `modules/` | 按需启用的扩展模块 |
+| `scripts/` | 初始化、数据运维、字体构建与检查脚本 |
+| `docs/` | 架构、部署、定制及各功能说明 |
 
-## 文档
+## 定制与管理
 
-- **仓库说明与产品截图**：[`../README.md`](../README.md)
-- **应用文档索引**：[`docs/`](docs/)（`admin-ui.md`、`sources.md` 由本站维护）
-- **框架文档**：[架构](docs/architecture.md)、[部署](docs/deploy.md)、[信源](docs/sources.md)、[精选与校准](docs/selection.md)、[事件归组](docs/grouping.md)、[后台](docs/admin-ui.md)、[定制](docs/customize.md)
+更换行业时，从 `site/site.ts` 与 `industry/` 入手，调整站名、信源、分类、主题和提示词。完整步骤见[定制指南](docs/customize.md)。
 
-## 开发与验收
+运行期间可通过后台管理信源和条目，在出刊台保存草稿、调整选稿、发布或回滚精选，并查看模型用量、运行任务与操作记录。
+
+- [信源配置与抓取](docs/sources.md)
+- [精选规则与校准](docs/selection.md)
+- [事件归组](docs/grouping.md)
+- [后台界面规范](docs/admin-ui.md)
+
+## 开发与验证
+
+以下命令在 `app/` 目录执行。需要使用上述 Node.js 版本，并先安装依赖：
 
 ```bash
+npm ci
 npm run typecheck
-DATABASE_URL=postgres://127.0.0.1:5432/<名字>_test npm test
-npm run build -w @aihot/web && node --test apps/web/tests/*.test.ts
-node scripts/smoke.ts --base http://localhost:3000   # 站点跑起来后
+npm run build -w @aihot/web
+node --test apps/web/tests/*.test.ts
+npm run test:standalone
 ```
 
-改分类、标签、提示词或公开输出时，先读 `docs/architecture.md` 与相关文档；改动完成后同步更新对应的 `docs/` 文档。不要提交 `.env`、密钥或 `.data/`。
+后端集成测试需要本机 PostgreSQL。下面的命令使用专用测试库；测试库名必须以 `_test` 或 `_ci` 结尾，数据库账号需要有建库权限：
 
-## 反馈与来源方请求
+```bash
+DATABASE_URL=postgres://127.0.0.1:5432/fengxiang_test npm test
+```
 
-功能建议、内容更正、来源方更正与下架请求，请通过站内「反馈」页提交；安全问题的报告方式见 [SECURITY.md](../SECURITY.md)。
+测试不需要模型密钥，也不会调用真实的采集或模型服务。站点运行后，可检查主要页面与接口：
 
-## 许可
+```bash
+node scripts/smoke.ts --base http://localhost:3000
+```
 
-代码使用 [MIT 许可证](../LICENSE)（上游 AIHOT 副本见 [LICENSE](LICENSE)）。原始版权与第三方素材说明见 [NOTICE](NOTICE)；上游名称与 Logo 不在许可范围内，本站使用自己的名称与品牌。
+修改前先阅读[架构说明](docs/architecture.md)与相关功能文档，完成后同步更新文档。仓库级流程见[贡献指南](../CONTRIBUTING.md)。不要提交 `.env`、密钥或 `.data/`。
+
+## 反馈与内容更正
+
+产品建议、内容更正及来源方的下架或展示调整请求，可通过站内「反馈」页提交。安全问题的报告方式见 [SECURITY.md](../SECURITY.md)。
+
+## 许可与来源
+
+代码采用仓库根目录的 [MIT 许可证](../LICENSE)，上游 AIHOT 许可证副本保留在 [LICENSE](LICENSE)。原始版权与第三方素材说明见 [NOTICE](../NOTICE)。「风向」名称、站点内容和品牌素材不在 MIT 许可范围内。

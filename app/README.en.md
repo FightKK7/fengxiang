@@ -1,72 +1,98 @@
-# 风向 · Global Enterprise-Service News
+# Fengxiang Application
 
-> Status: current · last reviewed 2026-10-26
+[简体中文](README.md) | English
 
-**Official first-party updates from global enterprise services, in Chinese.**
+> Status: current · Last reviewed: October 29, 2026
 
-风向 collects first-party official updates from companies and products in global enterprise services, turns them into Chinese headlines, summaries and a timeline, and publishes a curated daily issue (每日精选). Readers can browse by company, direction and content type, or feed the same data to agents via RSS, the public API or MCP.
+This directory contains Fengxiang's website, admin console, API, content collection, model processing and scheduled publishing jobs. See the [repository overview](../README.en.md) for a product introduction and screenshots.
 
-## What it is
+The current configuration covers enterprise software, services and AI products worldwide. It turns source content into Chinese headlines, summaries, a chronological feed and daily editions. The website, RSS, public API, MCP and Agent Markdown share the same publication data. Browsing the website does not trigger model calls.
 
-- **First-party sources only**: company blogs, official announcements, product and ecosystem news. No media, analysis or marketing content in this version.
-- **The feed is the main entry**: all updates in chronological order with company filters; the daily issue is a second layer and does not make decisions for readers.
-- **AI-first**: AI products, agents, Copilot, AI-native apps and AI-powered office software, alongside traditional enterprise-software changes.
-- **Observation is optional**: selected items may carry a short "风向观察"; it is not promised on every item.
-- **One dataset, many exits**: website, RSS, public API, MCP, agent Markdown and `llms.txt` all read from the same publication layer.
+## Run the application
 
-## Stack
+Requirements: Node.js 24.11 or a later 24.x release, and Docker with Compose. Automatic content generation also needs an OpenAI-compatible model service.
 
-Node.js 24 · TypeScript · React Router (SSR) · Fastify · PostgreSQL · pg-boss · Tailwind CSS · Docker Compose
-
-## Run locally
-
-Requirements: Docker, Node.js 24, and an OpenAI-compatible model API key (DeepSeek, Qwen, Zhipu, etc.).
+Run the following commands from the repository's `app/` directory:
 
 ```bash
-# from the app/ directory
-node scripts/init-env.ts --llm-key <your model API key>
+node scripts/init-env.ts
+```
+
+The script generates `.env` with random secrets and an administrator password. Then edit `.env`:
+
+- Set `LLM_API_KEY`, and check `LLM_BASE_URL` and `LLM_MODEL`. The example uses DeepSeek.
+- Keep `SITE_URL=http://localhost:3000` for local use. For a server deployment, set it to the address readers will use.
+- The example sets both `COLLECT_ENABLED` and `MODEL_CALLS_ENABLED` to `true`. Starting the services enables collection and model calls, billed according to your provider's terms. Set both to `false` when working only on the interface.
+
+Start the services after configuration:
+
+```bash
 docker compose up -d --build
 ```
 
-Open <http://localhost:3000>. The admin console is at `/admin`; the admin password is in `.env` (`ADMIN_PASSWORD`).
+Open [http://localhost:3000](http://localhost:3000). The admin console is at `/admin`; sign in with `ADMIN_PASSWORD` from `.env`. The first startup imports the bundled source configuration. Articles and past editions are not included in the repository.
 
-- Real collection and model calls require `COLLECT_ENABLED=true` and `MODEL_CALLS_ENABLED=true` in `.env`; keep both `false` while developing.
-- Database, migrations, domain/HTTPS, deployment in mainland China, costs and backups: see [deploy](docs/deploy.md).
-- Tests do not need a model key; test database names must end with `_test` or `_ci`.
+See the [deployment guide](docs/deploy.md) for other deployment options, domains, HTTPS, updates and backups.
 
-## Layout
+## Stack and layout
 
-| Directory | Contents |
+Node.js 24, TypeScript, React Router with server-side rendering, Fastify, PostgreSQL 17, pg-boss, Tailwind CSS and Docker Compose.
+
+| Directory | Purpose |
 |---|---|
-| `site/` | Site name and copy (`site.ts`), brand assets, root-level static files, changelog |
-| `industry/` | Categories and tags (`taxonomy.ts`), topics (`topics.json`), demo sources (`sources.json`), prompts, selection thresholds (`selection.ts`) |
-| `apps/` | `web` (reader UI and admin), `api` (public API and MCP), `worker` (collection and model jobs) |
-| `packages/` | Backend domain code, public read layer, contracts and site config |
-| `scripts/` | Setup, ops, fonts, audit and self-check scripts |
-| `docs/` | Framework docs: architecture, deployment, sources, selection, grouping, admin |
-| `modules/` | Optional modules enabled by this repository |
+| `site/` | Site identity and copy, navigation, publication times, model configuration and branding |
+| `industry/` | Sources, categories, tags, topics, prompts and selection thresholds |
+| `apps/web/` | Reader pages and admin console |
+| `apps/api/` | Website endpoints, public API and MCP |
+| `apps/worker/` | Collection, model processing and scheduled jobs |
+| `packages/` | Backend logic, publication data access, interface contracts and configuration types |
+| `modules/` | Optional extensions |
+| `scripts/` | Setup, data operations, font builds and validation scripts |
+| `docs/` | Architecture, deployment, customization and feature documentation |
 
-## Documentation
+## Customization and administration
 
-- **Repository overview & screenshots**: [`../README.md`](../README.md)
-- **App docs**: [`docs/`](docs/) (`admin-ui.md` and `sources.md` are maintained here)
-- **Framework docs**: [architecture](docs/architecture.md), [deploy](docs/deploy.md), [sources](docs/sources.md), [selection](docs/selection.md), [grouping](docs/grouping.md), [admin](docs/admin-ui.md), [customize](docs/customize.md)
+To adapt the site to another industry, start with `site/site.ts` and `industry/`. Update the site name, sources, categories, topics and prompts. See the [customization guide](docs/customize.md) for the full process.
 
-## Development checks
+The admin console supports source and article management, edition drafts, selection and ordering, publication and rollback. It also provides model usage, job status and operation history.
+
+- [Source configuration and collection](docs/sources.md)
+- [Selection rules and calibration](docs/selection.md)
+- [Event grouping](docs/grouping.md)
+- [Admin interface guidelines](docs/admin-ui.md)
+
+## Development and validation
+
+Run these commands from `app/` using the Node.js version listed above. Install dependencies first:
 
 ```bash
+npm ci
 npm run typecheck
-DATABASE_URL=postgres://127.0.0.1:5432/<name>_test npm test
-npm run build -w @aihot/web && node --test apps/web/tests/*.test.ts
-node scripts/smoke.ts --base http://localhost:3000   # with the site running
+npm run build -w @aihot/web
+node --test apps/web/tests/*.test.ts
+npm run test:standalone
 ```
 
-Read `docs/architecture.md` and the relevant docs before changing categories, tags, prompts or public output; update the matching docs afterwards. Never commit `.env`, keys or `.data/`.
+Backend integration tests require a local PostgreSQL instance. Use a dedicated database whose name ends in `_test` or `_ci`; the database account needs permission to create databases:
 
-## Feedback and source requests
+```bash
+DATABASE_URL=postgres://127.0.0.1:5432/fengxiang_test npm test
+```
 
-Use the site's feedback page for product suggestions, content corrections, and source correction/takedown requests. Security reports: see [SECURITY.md](../SECURITY.md).
+Tests require no model key and do not call real collection or model services. With the site running, check its main pages and endpoints:
 
-## License
+```bash
+node scripts/smoke.ts --base http://localhost:3000
+```
 
-The code is under the [MIT License](../LICENSE); the upstream AIHOT copy is in [LICENSE](LICENSE). See [NOTICE](NOTICE) for copyright and third-party notices; the upstream name and logo are not covered by the license.
+Read the [architecture guide](docs/architecture.md) and relevant feature documentation before making changes, then update the matching documentation. See the [contributing guide](../CONTRIBUTING.md) for repository-wide procedures. Never commit `.env`, credentials or `.data/`.
+
+Most detailed documentation is in Chinese.
+
+## Feedback and content corrections
+
+Use the site's feedback page for product suggestions, content corrections, and source requests to remove content or adjust its display. See [SECURITY.md](../SECURITY.md) to report a security issue.
+
+## License and attribution
+
+The code is released under the repository's [MIT License](../LICENSE). A copy of the upstream AIHOT license is retained in [LICENSE](LICENSE). See [NOTICE](../NOTICE) for copyright and third-party materials. The Fengxiang name, site content and brand assets are outside the MIT license.

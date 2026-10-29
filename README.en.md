@@ -14,7 +14,7 @@ Deploy the current configuration, or replace the sources, categories, prompts an
 
 ![Company directory grouping updates from OpenAI, Google Workspace, Salesforce, Feishu, Notion and others](assets/readme/topics.png)
 
-The company directory gathers each company's latest updates in one place; the homepage also supports filtering by company.
+The company directory brings together the updates collected for each company. Open a company page to browse its coverage, or filter the homepage by company.
 
 ## Content and reading
 
@@ -24,7 +24,7 @@ The repository includes official sources from OpenAI, Google Workspace, Salesfor
 
 ![Daily edition](assets/readme/daily.png)
 
-By default, an issue is published at 08:00 Beijing time each day. It presents a small selection of updates from the reporting window, organized by section. When no content qualifies, the issue explains that rather than adding filler.
+By default, an issue is published at 08:00 Beijing time each day. It presents a small selection of updates from the preceding 24 hours, organized by section. When no content meets the selection criteria, the issue says so.
 
 ### Chinese summaries and bilingual reading
 
@@ -101,7 +101,7 @@ docker compose up -d --build
 
 Open [http://localhost:3000](http://localhost:3000). The admin console is at `/admin`; sign in with `ADMIN_PASSWORD` from `.env`.
 
-The first startup imports the bundled source configuration. Background jobs then generate articles, summaries and translations, while daily editions follow the configured schedule. A new deployment does not contain the articles or past issues shown in the screenshots.
+The first startup imports the bundled source configuration. Content appears as collection and processing jobs finish; daily editions follow the configured schedule. A new deployment does not contain the articles or past issues shown in the screenshots.
 
 See the [deployment guide](app/docs/deploy.md) for domains, HTTPS, updates and backups.
 
