@@ -1,6 +1,6 @@
 # 风向 (Fengxiang) · Global Enterprise Software and Services News
 
-[简体中文](README.md) | English
+[简体中文](../README.md) | English
 
 <!-- Status: current · Last reviewed: October 29, 2026 -->
 
@@ -12,7 +12,7 @@ Deploy the current configuration, or replace its sources, categories, prompts an
 
 [Online preview](https://fightkk7.github.io/fengxiang/): a static demo of the interface and sample content. Live collection and API services require a running deployment.
 
-![Company directory grouping updates from OpenAI, Google Workspace, Salesforce, Feishu, Notion and others](assets/readme/topics.png)
+![Company directory grouping updates from OpenAI, Google Workspace, Salesforce, Feishu, Notion and others](../demo/assets/topics.png)
 
 The company directory brings together the updates collected for each company. Open a company page to browse its coverage, or filter the homepage by company.
 
@@ -22,13 +22,13 @@ The repository includes official sources from OpenAI, Google Workspace, Salesfor
 
 ### A curated daily edition
 
-![Daily edition](assets/readme/daily.png)
+![Daily edition](../demo/assets/daily.png)
 
 By default, an issue is published at 08:00 Beijing time each day. It presents a small selection of updates from the preceding 24 hours, organized by section. When no content meets the selection criteria, the issue says so.
 
 ### Chinese summaries and bilingual reading
 
-![Article page with a Chinese summary and bilingual text](assets/readme/item.png)
+![Article page with a Chinese summary and bilingual text](../demo/assets/item.png)
 
 Article pages begin with a Chinese headline, summary and source. Full text is available when retrieval succeeds and on-site display is permitted. Articles with generated translations support paragraph-by-paragraph comparison with the original. Other entries provide a link to the source.
 
@@ -41,14 +41,14 @@ Browse the directory by company, topic and content type. Topic pages bring toget
 ### Mobile reading
 
 <p align="center">
-  <img src="assets/readme/mobile.png" width="300" alt="Mobile homepage">
+  <img src="../demo/assets/mobile.png" width="300" alt="Mobile homepage">
 </p>
 
 The mobile interface has three main sections: feed, daily edition and personal settings. It supports light and dark themes and bookmarks.
 
 ## Subscriptions and agent access
 
-![Agent integration page](assets/readme/agent.png)
+![Agent integration page](../demo/assets/agent.png)
 
 The website, RSS, public API and MCP use the same publication data. Public read access requires no account or API key.
 
@@ -73,7 +73,7 @@ Site and industry configuration are kept in dedicated directories:
 | Prompts for summaries, selection and translation | `app/industry/prompts/` |
 | Brand assets | `app/site/brand/` |
 
-See the [customization guide](app/docs/customize.md) for details. The admin console also lets you manage sources, edit entries, arrange and publish editions, and review jobs, model usage and operation history.
+See the [customization guide](../app/docs/customize.md) for details. The admin console also lets you manage sources, edit entries, arrange and publish editions, and review jobs, model usage and operation history.
 
 ## Quick start
 
@@ -105,22 +105,22 @@ Open [http://localhost:3000](http://localhost:3000). The admin console is at `/a
 
 The first startup imports the bundled source configuration. Content appears as collection and processing jobs finish; daily editions follow the configured schedule. A new deployment does not contain the articles or past issues shown in the screenshots.
 
-See the [deployment guide](app/docs/deploy.md) for domains, HTTPS, updates and backups.
+See the [deployment guide](../app/docs/deploy.md) for domains, HTTPS, updates and backups.
 
 ## Development and documentation
 
 The project uses Node.js, TypeScript, React Router with server-side rendering, Fastify, PostgreSQL 17 and pg-boss, with Docker Compose for deployment. Application code lives in `app/`.
 
-- [Application development guide](app/README.en.md)
-- [Architecture and database migrations](app/docs/architecture.md)
-- [Source configuration and collection](app/docs/sources.md)
-- [Selection rules and calibration](app/docs/selection.md)
-- [Contributing guide](CONTRIBUTING.md) and [CI configuration](.github/workflows/check.yml)
+- [Application development guide](../app/README.en.md)
+- [Architecture and database migrations](../app/docs/architecture.md)
+- [Source configuration and collection](../app/docs/sources.md)
+- [Selection rules and calibration](../app/docs/selection.md)
+- [Contributing guide](CONTRIBUTING.md) and [CI configuration](workflows/check.yml)
 
 Most detailed documentation is in Chinese.
 
 ## License and attribution
 
-The code is released under the [MIT License](LICENSE). Fengxiang is based on the AIHOT framework and retains its copyright notices. See [NOTICE](NOTICE) for attribution and third-party materials. The Fengxiang name, site content and brand assets are outside the MIT license.
+The code is released under the [MIT License](../LICENSE). Fengxiang is based on the AIHOT framework and retains its copyright notices. See [NOTICE](NOTICE) for attribution and third-party materials. The Fengxiang name, site content and brand assets are outside the MIT license.
 
 See [SECURITY.md](SECURITY.md) to report a security issue.

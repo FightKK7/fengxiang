@@ -1,6 +1,6 @@
 # 风向 · 全球企业服务资讯
 
-简体中文 | [English](README.en.md)
+简体中文 | [English](.github/README.en.md)
 
 <!-- 状态：当前有效 · 最后核对：2026-10-29 -->
 
@@ -12,7 +12,7 @@
 
 [在线预览](https://fightkk7.github.io/fengxiang/)：静态演示，用于浏览界面与示例内容；实时采集与接口服务需自行部署。
 
-![企业厂商目录：按公司追踪 OpenAI、Google Workspace、Salesforce、飞书、Notion 等公司的最新动态](assets/readme/topics.png)
+![企业厂商目录：按公司追踪 OpenAI、Google Workspace、Salesforce、飞书、Notion 等公司的最新动态](demo/assets/topics.png)
 
 企业厂商目录汇总各公司的已收录动态，进入公司页可继续查看相关内容；首页也支持按厂商筛选。
 
@@ -20,19 +20,19 @@
 
 ### 首页
 
-![首页：按时间排列的全球企业服务官方动态](assets/readme/hero.png)
+![首页：按时间排列的全球企业服务官方动态](demo/assets/hero.png)
 
 首页按时间展示动态，支持按厂商筛选；右侧提供推荐阅读和订阅入口。
 
 ### 每日精选
 
-![每日精选页面](assets/readme/daily.png)
+![每日精选页面](demo/assets/daily.png)
 
 默认每天 08:00（北京时间）出刊，从此前 24 小时的动态中选取少量条目，按栏目编排。当期没有符合精选标准的内容时，页面会明确说明。
 
 ### 中文摘要与原文对照
 
-![条目页：中文摘要与中英对照正文](assets/readme/item.png)
+![条目页：中文摘要与中英对照正文](demo/assets/item.png)
 
 条目页先展示中文标题、摘要和出处。正文获取成功且允许站内展示时，可在站内阅读；已生成译文的文章支持原文与中文逐段对照。未获取正文或仅展示摘要的条目，提供原文入口。
 
@@ -41,14 +41,14 @@
 ### 手机阅读
 
 <p align="center">
-  <img src="assets/readme/mobile.png" width="300" alt="手机端首页">
+  <img src="demo/assets/mobile.png" width="300" alt="手机端首页">
 </p>
 
 手机端提供「动态」「每日精选」「我的」三个主要入口，支持深浅色切换与收藏。
 
 ### Agent 接入
 
-![Agent 接入页](assets/readme/agent.png)
+![Agent 接入页](demo/assets/agent.png)
 
 网页、RSS、公开 API 和 MCP 共用同一套发布数据。公开读取无需注册或 API Key。
 
@@ -131,10 +131,10 @@ docker compose up -d --build
 - [架构与数据库迁移](app/docs/architecture.md)
 - [信源配置与抓取](app/docs/sources.md)
 - [精选规则与校准](app/docs/selection.md)
-- [贡献指南](CONTRIBUTING.md)与 [CI 配置](.github/workflows/check.yml)
+- [贡献指南](.github/CONTRIBUTING.md)与 [CI 配置](.github/workflows/check.yml)
 
 ## 许可与来源
 
-代码采用 [MIT 许可证](LICENSE)。风向基于 AIHOT 框架二次开发，保留上游版权声明；原始版权与第三方素材说明见 [NOTICE](NOTICE)。「风向」名称、站点内容和品牌素材不在 MIT 许可范围内。
+代码采用 [MIT 许可证](LICENSE)。风向基于 AIHOT 框架二次开发，保留上游版权声明；原始版权与第三方素材说明见 [NOTICE](.github/NOTICE)。「风向」名称、站点内容和品牌素材不在 MIT 许可范围内。
 
-安全问题的报告方式见 [SECURITY.md](SECURITY.md)。
+安全问题的报告方式见 [SECURITY.md](.github/SECURITY.md)。

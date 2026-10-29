@@ -31,7 +31,7 @@
 | 契约与站点配置类型 | `app/packages/contracts/` |
 | 仓库级 CI、Issue / PR 模板 | `.github/` |
 
-应用结构与命令见 [`app/README.md`](app/README.md)，架构见 [`app/docs/architecture.md`](app/docs/architecture.md)。
+应用结构与命令见 [`app/README.md`](../app/README.md)，架构见 [`app/docs/architecture.md`](../app/docs/architecture.md)。
 
 ## 提交前检查
 
@@ -43,13 +43,13 @@ npm run build -w @aihot/web && node --test apps/web/tests/*.test.ts
 node scripts/smoke.ts --base http://localhost:3000   # 站点跑起来后
 ```
 
-测试库名必须以 `_test` 或 `_ci` 结尾；测试不访问生产数据、不调用外部付费服务。数据库迁移规则见 [`app/docs/architecture.md`](app/docs/architecture.md)。
+测试库名必须以 `_test` 或 `_ci` 结尾；测试不访问生产数据、不调用外部付费服务。数据库迁移规则见 [`app/docs/architecture.md`](../app/docs/architecture.md)。
 
 ## 提交约定
 
 - 从仓库根提交；一次提交解决一个清楚的问题，不夹带无关重构；提交说明写清「改了什么、为什么、怎么验证」。
 - 不提交依赖锁文件的无关变更、二进制文件、密钥或未授权素材。
-- 代码使用 MIT 许可（根 [LICENSE](LICENSE)；上游 AIHOT 副本见 [app/LICENSE](app/LICENSE)）。上游 AIHOT 的名称与 Logo 不在 MIT 许可范围内，本站使用自己的名称与品牌。
+- 代码使用 MIT 许可（根 [LICENSE](../LICENSE)；上游 AIHOT 副本见 [app/LICENSE](../app/LICENSE)）。上游 AIHOT 的名称与 Logo 不在 MIT 许可范围内，本站使用自己的名称与品牌。
 
 ## 对外贡献
 
