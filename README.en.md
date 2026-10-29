@@ -4,11 +4,11 @@
 
 <!-- Status: current · Last reviewed: October 29, 2026 -->
 
-> A customizable news aggregation platform with a Chinese-language feed and a curated daily edition.
+> A customizable information platform for individuals tracking topics they care about and businesses bringing together high-value sources.
 
 Fengxiang follows developments in enterprise software and services worldwide, including AI products, agents, pricing changes and market expansion. It collects content from configured sources, generates Chinese headlines and summaries, presents updates chronologically, and compiles a daily edition called 每日精选.
 
-Deploy the current configuration, or replace the sources, categories, prompts and branding to build a news site for another industry.
+Deploy the current configuration, or replace its sources, categories, prompts and branding to build a personal information site or a business-focused hub.
 
 [Online preview](https://fightkk7.github.io/fengxiang/): a static demo of the interface and sample content. Live collection and API services require a running deployment.
 
@@ -60,7 +60,9 @@ After deployment, visit `/agent` for endpoints, client configuration and usage e
 
 Screenshots were taken from a local instance on October 26, 2026. The displayed content is not included in the repository.
 
-## Make it your own
+## Build a personal or business information site
+
+Individuals can follow the companies, topics and fields they care about. Businesses can bring together sources for tenders, sales leads, opportunities and customer-related information in a single feed. Available sources depend on their formats; non-standard sources can be added with a custom crawler.
 
 Site and industry configuration are kept in dedicated directories:
 
