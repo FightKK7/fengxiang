@@ -1,6 +1,8 @@
 # 风向 · 全球企业服务资讯
 
 > 可自定义的信息聚合平台：换信源、换行业、换主题，DIY 成你自己的资讯站；默认示例是「全球企业服务资讯」。
+>
+> **在线预览（静态演示）：** https://fightkk7.github.io/fengxiang/
 
 ![风向首页](assets/readme/hero.png)
 

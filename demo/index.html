@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>风向 · 全球企业服务资讯 · 静态演示</title>
+  <meta name="description" content="风向的产品演示：把全球企业服务的官方发布，整理成中文信息流和每日精选。这是冻结的静态快照，不连接模型或数据库。">
+  <meta property="og:title" content="风向 · 全球企业服务资讯">
+  <meta property="og:description" content="把全球企业服务的官方发布，整理成一条中文信息流；每天再编一期每日精选。">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23ffffff'/%3E%3Crect x='8' y='8' width='48' height='48' fill='%23111110'/%3E%3Cpath d='M22 20h20v5H36v19h-5V25H22z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="mast">
+    <a class="brand" href="./">
+      <span class="brand-cn">风向</span>
+      <span class="brand-sub">全球企业服务资讯</span>
+    </a>
+    <nav class="mast-nav" aria-label="演示导航">
+      <a href="#preview">页面预览</a>
+      <a href="#features">它能做什么</a>
+      <a href="#diy">自己 DIY</a>
+      <a class="mast-gh" href="https://github.com/FightKK7/fengxiang">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">静态产品演示 · 不是实时服务</p>
+      <h1>把全球企业服务的官方变化，<br>收进一条中文信息流。</h1>
+      <p class="lede">
+        OpenAI、Google Workspace、Salesforce、微软、飞书、Notion、Slack……这些公司每天都会发博客、公告、更新日志、价格页。风向把它们整理成中文标题和摘要，按时间排到首页；每天再挑几条，编成「每日精选」。
+      </p>
+      <div class="hero-actions">
+        <a class="btn" href="#preview">看看页面</a>
+        <a class="btn btn-ghost" href="https://github.com/FightKK7/fengxiang">查看源码</a>
+      </div>
+      <p class="note">
+        这是 2026-10-26 的页面快照。演示站不连接数据库、不调用模型，也不会产生费用。
+      </p>
+    </section>
+
+    <section class="preview" id="preview">
+      <div class="section-head">
+        <h2>页面预览</h2>
+        <p>点标签切换页面，点图片可以看大图。</p>
+      </div>
+
+      <div class="viewer">
+        <div class="tabs" role="tablist" aria-label="选择页面">
+          <button class="tab is-active" type="button" role="tab" aria-selected="true" data-shot="home">首页</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-shot="daily">每日精选</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-shot="item">条目页</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-shot="topics">企业厂商</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-shot="mobile">手机端</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-shot="agent">Agent 接入</button>
+        </div>
+
+        <div class="frame" id="frame">
+          <a id="shot-link" href="assets/hero.png" target="_blank" rel="noopener noreferrer">
+            <img id="shot" src="assets/hero.png" alt="风向首页：按时间排列的全球企业服务官方动态">
+          </a>
+        </div>
+
+        <div class="viewer-meta">
+          <p id="caption">首页：时间线在左，推荐阅读和订阅在右。</p>
+          <a id="open-original" href="assets/hero.png" target="_blank" rel="noopener noreferrer">打开原图 ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <div class="section-head">
+        <h2>它能做什么</h2>
+        <p>不是又一个 RSS 阅读器，是一条整理过的信息流水线。</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature">
+          <p class="feature-no">01</p>
+          <h3>只收官方一手</h3>
+          <p>公司博客、官方公告、产品更新、定价页。媒体转述和二手分析不进内容源。</p>
+        </article>
+        <article class="feature">
+          <p class="feature-no">02</p>
+          <h3>整理成中文</h3>
+          <p>标题、摘要、正文对照都换成中文；原文始终保留，点一下就能回到来源。</p>
+        </article>
+        <article class="feature">
+          <p class="feature-no">03</p>
+          <h3>每天一期精选</h3>
+          <p>编辑从当天内容里挑出值得看的几条，分节排版。没有值得挑的就不硬凑。</p>
+        </article>
+        <article class="feature">
+          <p class="feature-no">04</p>
+          <h3>接给 Agent</h3>
+          <p>RSS、公开 API、MCP 三种出口，同一份数据，匿名只读，不用注册。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="diy" id="diy">
+      <div>
+        <p class="eyebrow">它不只能做企业服务</p>
+        <h2>换一批信源，就是另一个站。</h2>
+        <p class="diy-lede">
+          信源、分类、提示词和站点文案都在仓库里。换行业、换主题、换公司名单，就能把它改成你自己的资讯站。
+        </p>
+        <a class="btn btn-ghost" href="https://github.com/FightKK7/fengxiang/blob/main/app/docs/customize.md">看看怎么改 ↗</a>
+      </div>
+      <div class="diy-list">
+        <p><span>信源</span> RSS、网页列表、专用抓取</p>
+        <p><span>分类</span> 公司、方向、内容类型</p>
+        <p><span>风格</span> 站点文案与编辑口径</p>
+        <p><span>出口</span> 网页、RSS、API、MCP</p>
+      </div>
+    </section>
+
+    <section class="status" aria-label="演示说明">
+      <p><strong>这是演示，不是线上服务。</strong> 页面内容来自 2026-10-26 的本地快照；没有后台、没有数据库、没有模型调用，刷新不会产生新内容，也不会产生费用。</p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>风向 · 全球企业服务资讯</p>
+    <p>
+      <a href="https://github.com/FightKK7/fengxiang">GitHub</a>
+      <span>·</span>
+      <a href="https://github.com/FightKK7/fengxiang#readme">README</a>
+      <span>·</span>
+      <a href="https://github.com/FightKK7/fengxiang/blob/main/LICENSE">MIT License</a>
+    </p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
