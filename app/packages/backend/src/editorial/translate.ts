@@ -345,7 +345,8 @@ export async function translateQuotes(opts: { days?: number; limit?: number; bud
  * lack a translation of their current revision (all item pages, not only the selected cards), then the
  * posts selected X posts quote. Stops after a time budget. A translation of an older revision is not
  * shown (items.ts), so a revised item is translated again whatever its age. Three failed attempts give an
- * item up; only failures of the item itself count.
+ * item up; only failures of the item itself count. Newest discoveries go first so a fresh page is not held
+ * behind older selected cards.
  */
 export async function translatePending(opts: { limit?: number; budgetMs?: number } = {}): Promise<{ done: TranslateResult[]; quotes: number }> {
   const started = Date.now();
@@ -363,7 +364,7 @@ export async function translatePending(opts: { limit?: number; budgetMs?: number
       AND NOT EXISTS (SELECT 1 FROM translation_attempts t WHERE t.article_id = p.article_id AND t.revision = a.revision
                       AND (t.outcome IN ('translated', 'partial') OR t.attempts >= 3
                         OR (t.outcome='skipped' AND t.reason NOT IN ('already Chinese','no foreign-language body'))))
-    ORDER BY p.selected DESC, p.discovered_at DESC`;
+    ORDER BY p.discovered_at DESC, p.selected DESC`;
   // Reconsider language skips with the shared rule. Filter before taking the batch so Chinese
   // originals do not occupy every slot and starve foreign-language bodies behind them.
   const rows = pending.filter(row => !isChineseText(row.text ?? "", row.language)).slice(0, opts.limit ?? 30);
