@@ -3,143 +3,122 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>风向 · 个人与企业信息聚合平台 · 静态演示</title>
-  <meta name="description" content="可定制的信息聚合平台：个人可追踪关注主题，企业可汇总招投标、销售线索、商机和客户相关信息。这是静态演示，不连接模型或数据库。">
-  <meta property="og:title" content="风向 · 个人与企业信息聚合平台">
-  <meta property="og:description" content="个人追踪关注主题，企业汇总业务信息。默认示例聚合全球企业服务官方动态。">
-  <meta property="og:type" content="website">
+  <title>风向 · README</title>
+  <meta name="description" content="风向 README 的静态镜像。">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23ffffff'/%3E%3Crect x='8' y='8' width='48' height='48' fill='%23111110'/%3E%3Cpath d='M22 20h20v5H36v19h-5V25H22z' fill='%23ffffff'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="readme.css">
 </head>
 <body>
-  <header class="mast">
-    <a class="brand" href="./">
-      <span class="brand-cn">风向</span>
-      <span class="brand-sub">全球企业服务资讯</span>
-    </a>
-    <nav class="mast-nav" aria-label="演示导航">
-      <a href="#preview">页面预览</a>
-      <a href="#features">功能概览</a>
-      <a href="#diy">个人与企业</a>
-      <a class="mast-gh" href="https://github.com/FightKK7/fengxiang">GitHub ↗</a>
-    </nav>
+  <header class="readme-top">
+    <a class="readme-brand" href="./">风向 <span>README</span></a>
+    <a class="readme-source" href="https://github.com/FightKK7/fengxiang#readme">在 GitHub 打开 README ↗</a>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">静态产品演示 · 不是实时服务</p>
-        <h1>个人与企业，<br>都能搭建自己的信息站</h1>
-        <p class="lede">
-          个人可以持续关注自己感兴趣的公司、主题和领域；企业可以按业务需要汇总招投标、销售线索、商机和客户相关信息。风向当前示例聚合全球企业服务官方动态，整理成中文信息流与每日精选。
-        </p>
-        <div class="hero-actions">
-          <a class="btn" href="#preview">查看页面预览</a>
-          <a class="btn btn-ghost" href="#diy">了解定制方式</a>
-        </div>
-        <p class="note">
-          这是 2026-10-26 的页面快照。演示站不连接数据库、不调用模型，也不会产生费用。
-        </p>
-      </div>
-      <figure class="hero-visual">
-        <a href="assets/topics.png" target="_blank" rel="noopener noreferrer">
-          <img src="assets/topics.png" alt="企业厂商目录：按公司追踪 OpenAI、Google Workspace、Salesforce、飞书、Notion 等公司的最新动态">
-        </a>
-        <figcaption>企业厂商目录汇总各公司的已收录动态，进入公司页可继续查看相关内容；首页也支持按厂商筛选。</figcaption>
-      </figure>
-    </section>
+  <main class="readme-wrap">
+    <article class="markdown-body">
+<h1>风向 · 全球企业服务资讯</h1>
+<p>简体中文 | <a href="https://github.com/FightKK7/fengxiang/blob/main/README.en.md">English</a></p>
+<!-- 状态：当前有效 · 最后核对：2026-10-29 -->
 
-    <section class="preview" id="preview">
-      <div class="section-head">
-        <h2>页面预览</h2>
-        <p>选择下方标签查看对应页面；点击图片可打开原图。</p>
-      </div>
+<blockquote>
+<p>可定制的信息聚合平台，适合个人追踪关注主题，也可为企业汇总高价值信息源。</p>
+</blockquote>
+<p>风向关注全球企业服务领域的变化，涵盖 AI 产品、Agent、企业软件、定价调整与市场拓展。它从配置好的信源采集内容，生成中文标题和摘要，按时间汇总展示，并每天编成一期「每日精选」。</p>
+<p>你可以直接部署当前版本，也可以更换信源、分类、提示词和品牌，搭建个人关注主题的信息站，或为企业业务汇总所需信息。</p>
+<p><a href="https://fightkk7.github.io/fengxiang/">在线预览</a>：本 README 的静态镜像；实时采集与接口服务需自行部署。</p>
+<p><img alt="企业厂商目录：按公司追踪 OpenAI、Google Workspace、Salesforce、飞书、Notion 等公司的最新动态" src="assets/readme/topics.png"></p>
+<p>企业厂商目录汇总各公司的已收录动态，进入公司页可继续查看相关内容；首页也支持按厂商筛选。</p>
+<h2>内容与阅读</h2>
+<p>仓库预置了 OpenAI、Google Workspace、Salesforce、Slack 等官方信源。每条动态保留来源与原文链接，便于核对；部分条目附有「风向观察」，提供补充解读。</p>
+<h3>每日精选</h3>
+<p><img alt="每日精选页面" src="assets/readme/daily.png"></p>
+<p>默认每天 08:00（北京时间）出刊，从此前 24 小时的动态中选取少量条目，按栏目编排。当期没有符合精选标准的内容时，页面会明确说明。</p>
+<h3>中文摘要与原文对照</h3>
+<p><img alt="条目页：中文摘要与中英对照正文" src="assets/readme/item.png"></p>
+<p>条目页先展示中文标题、摘要和出处。正文获取成功且允许站内展示时，可在站内阅读；已生成译文的文章支持原文与中文逐段对照。未获取正文或仅展示摘要的条目，提供原文入口。</p>
+<p>桌面端提供收藏、字号调整和译文开关；收藏与阅读偏好保存在当前浏览器。</p>
+<h3>按公司和主题追踪</h3>
+<p>「企业厂商」目录按公司、行业方向和内容类型组织主题。主题页汇总相关动态，展示介绍、近 30 天收录条数与最近更新。</p>
+<h3>手机阅读</h3>
+<p align="center">
+  <img src="assets/readme/mobile.png" width="300" alt="手机端首页">
+</p>
 
-      <div class="viewer">
-        <div class="tabs" role="tablist" aria-label="选择页面">
-          <button class="tab is-active" type="button" role="tab" aria-selected="true" data-shot="home">首页</button>
-          <button class="tab" type="button" role="tab" aria-selected="false" data-shot="topics">企业厂商</button>
-          <button class="tab" type="button" role="tab" aria-selected="false" data-shot="daily">每日精选</button>
-          <button class="tab" type="button" role="tab" aria-selected="false" data-shot="item">条目页</button>
-          <button class="tab" type="button" role="tab" aria-selected="false" data-shot="mobile">手机端</button>
-          <button class="tab" type="button" role="tab" aria-selected="false" data-shot="agent">Agent 接入</button>
-        </div>
-
-        <div class="frame" id="frame">
-          <a id="shot-link" href="assets/hero.png" target="_blank" rel="noopener noreferrer">
-            <img id="shot" src="assets/hero.png" alt="风向首页：按时间排列的全球企业服务官方动态">
-          </a>
-        </div>
-
-        <div class="viewer-meta">
-          <p id="caption">首页：时间线在左，推荐阅读和订阅在右。</p>
-          <a id="open-original" href="assets/hero.png" target="_blank" rel="noopener noreferrer">打开原图 ↗</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="features" id="features">
-      <div class="section-head">
-        <h2>信息如何整理与发布</h2>
-        <p>从配置好的信源采集内容，经筛选与整理后形成中文信息流；入选内容还可编为每日精选。</p>
-      </div>
-      <div class="feature-grid">
-        <article class="feature">
-          <p class="feature-no">01</p>
-          <h3>按需接入信源</h3>
-          <p>支持 RSS、网页列表、JSON 接口、X 账号和外部推送，也可按来源定制抓取。默认示例预置 OpenAI、Google Workspace、Salesforce、Slack 等官方信源。</p>
-        </article>
-        <article class="feature">
-          <p class="feature-no">02</p>
-          <h3>中文整理与原文核对</h3>
-          <p>内容整理为中文标题和摘要，并保留来源链接；正文允许站内展示时可阅读全文，已生成译文的文章支持中英逐段对照。</p>
-        </article>
-        <article class="feature">
-          <p class="feature-no">03</p>
-          <h3>每日精选</h3>
-          <p>默认每天 08:00（北京时间）出刊，从此前 24 小时的动态中选取少量条目，按栏目编排；当期没有符合标准的内容时会明确说明。</p>
-        </article>
-        <article class="feature">
-          <p class="feature-no">04</p>
-          <h3>网页与开放接口</h3>
-          <p>内容可通过网页、RSS、公开 API 和 MCP 阅读；公开读取无需注册或 API Key，MCP 提供 7 个工具。</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="diy" id="diy">
-      <div>
-        <p class="eyebrow">个人关注 · 企业业务</p>
-        <h2>按关注主题或业务需求，配置自己的信息流。</h2>
-        <p class="diy-lede">
-          个人可以跟进自己关注的公司与主题；企业可以接入招投标、销售线索、商机和客户相关信息，按业务分类整理。常见信源可直接配置，非标准来源可定制抓取或通过外部推送接入。
-        </p>
-        <a class="btn btn-ghost" href="https://github.com/FightKK7/fengxiang/blob/main/app/docs/customize.md">查看定制指南 ↗</a>
-      </div>
-      <div class="diy-list">
-        <p><span>个人</span> 关注的公司、主题与领域</p>
-        <p><span>企业</span> 招投标、线索、商机与客户相关信息</p>
-        <p><span>信源</span> RSS、网页、JSON、定制抓取</p>
-        <p><span>阅读</span> 时间线、每日精选、RSS、API、MCP</p>
-      </div>
-    </section>
-
-    <section class="status" aria-label="演示说明">
-      <p><strong>这是静态演示，不是线上服务。</strong> 以上截图来自 2026 年 10 月 26 日的本地实例；演示站没有后台、没有数据库、没有模型调用，刷新不会产生新内容，也不会产生费用。</p>
-    </section>
+<p>手机端提供「动态」「每日精选」「我的」三个主要入口，支持深浅色切换与收藏。</p>
+<h2>订阅与 Agent 接入</h2>
+<p><img alt="Agent 接入页" src="assets/readme/agent.png"></p>
+<p>网页、RSS、公开 API 和 MCP 共用同一套发布数据。公开读取无需注册或 API Key。</p>
+<ul>
+<li><strong>RSS</strong>：在阅读器中订阅动态或每日精选。</li>
+<li><strong>REST API</strong>：供程序读取和查询内容，附 OpenAPI 3.1 定义。</li>
+<li><strong>MCP</strong>：供支持远程 MCP 的客户端接入，提供最新动态、搜索、热点、事件详情、每日精选，以及周报和月报归档共 7 个工具。</li>
+</ul>
+<p>部署后访问 <code>/agent</code>，可查看接入地址、客户端配置和调用示例。</p>
+<p>以上截图来自 2026 年 10 月 26 日的本地实例。截图中的内容仅用于展示，不随仓库分发。</p>
+<h2>搭建个人或企业的资讯站</h2>
+<p>个人可以持续追踪自己关注的公司、主题或领域；企业可以汇总招投标、销售线索、商机和客户相关信息，形成统一的信息流。可接入的内容取决于信源格式；非标准来源可以通过定制抓取接入。</p>
+<p>站点配置与行业配置集中放在以下目录，方便按需调整：</p>
+<table>
+<thead>
+<tr>
+<th>想调整的内容</th>
+<th>配置位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>站名、介绍、导航和出刊时间</td>
+<td><code>app/site/site.ts</code></td>
+</tr>
+<tr>
+<td>信源、分类、标签和主题</td>
+<td><code>app/industry/</code></td>
+</tr>
+<tr>
+<td>摘要、筛选与翻译等提示词</td>
+<td><code>app/industry/prompts/</code></td>
+</tr>
+<tr>
+<td>品牌素材</td>
+<td><code>app/site/brand/</code></td>
+</tr>
+</tbody>
+</table>
+<p>具体步骤见<a href="https://github.com/FightKK7/fengxiang/blob/main/app/docs/customize.md">定制指南</a>。运行后也可以在后台管理信源、编辑条目、编排与发布精选，并查看任务、模型用量和操作记录。</p>
+<h2>快速开始</h2>
+<p>需要 Node.js 24.11 或更新的 24.x 版本，以及带 Compose 的 Docker。自动生成内容还需要一个兼容 OpenAI API 的模型服务。</p>
+<p><strong>1. 获取代码并生成配置</strong></p>
+<pre><code class="language-bash">git clone https://github.com/FightKK7/fengxiang.git
+cd fengxiang/app
+node scripts/init-env.ts
+</code></pre>
+<p>脚本会生成 <code>.env</code>，同时创建随机密钥和管理员密码。</p>
+<p><strong>2. 配置模型与运行开关</strong></p>
+<p>在 <code>.env</code> 中填写 <code>LLM_API_KEY</code>，并核对 <code>LLM_BASE_URL</code> 与 <code>LLM_MODEL</code>。示例配置使用 DeepSeek，也可按服务商要求更换接口地址和模型。</p>
+<p>示例中的 <code>COLLECT_ENABLED</code> 和 <code>MODEL_CALLS_ENABLED</code> 均为 <code>true</code>。填入有效密钥并启动后，后台任务会采集内容并调用模型，费用按模型服务商规则计算。仅调试界面时，将这两项设为 <code>false</code>。</p>
+<p><strong>3. 启动服务</strong></p>
+<pre><code class="language-bash">docker compose up -d --build
+</code></pre>
+<p>打开 <a href="http://localhost:3000">http://localhost:3000</a>，后台位于 <code>/admin</code>，使用 <code>.env</code> 中的 <code>ADMIN_PASSWORD</code> 登录。</p>
+<p>首次启动会导入预置信源配置。采集和处理完成后，站点才会陆续出现内容；每日精选按设定时间出刊。新部署不包含截图中的文章与往期内容。</p>
+<p>域名、HTTPS、更新与备份等说明见<a href="https://github.com/FightKK7/fengxiang/blob/main/app/docs/deploy.md">部署文档</a>。</p>
+<h2>开发与文档</h2>
+<p>项目使用 Node.js、TypeScript、React Router（服务端渲染）、Fastify、PostgreSQL 17 和 pg-boss，支持 Docker Compose 部署。应用代码位于 <code>app/</code>。</p>
+<ul>
+<li><a href="https://github.com/FightKK7/fengxiang/blob/main/app/README.md">应用开发说明</a></li>
+<li><a href="https://github.com/FightKK7/fengxiang/blob/main/app/docs/architecture.md">架构与数据库迁移</a></li>
+<li><a href="https://github.com/FightKK7/fengxiang/blob/main/app/docs/sources.md">信源配置与抓取</a></li>
+<li><a href="https://github.com/FightKK7/fengxiang/blob/main/app/docs/selection.md">精选规则与校准</a></li>
+<li><a href="https://github.com/FightKK7/fengxiang/blob/main/CONTRIBUTING.md">贡献指南</a>与 <a href="https://github.com/FightKK7/fengxiang/blob/main/.github/workflows/check.yml">CI 配置</a></li>
+</ul>
+<h2>许可与来源</h2>
+<p>代码采用 <a href="https://github.com/FightKK7/fengxiang/blob/main/LICENSE">MIT 许可证</a>。风向基于 AIHOT 框架二次开发，保留上游版权声明；原始版权与第三方素材说明见 <a href="https://github.com/FightKK7/fengxiang/blob/main/NOTICE">NOTICE</a>。「风向」名称、站点内容和品牌素材不在 MIT 许可范围内。</p>
+<p>安全问题的报告方式见 <a href="https://github.com/FightKK7/fengxiang/blob/main/SECURITY.md">SECURITY.md</a>。</p>
+    </article>
   </main>
 
-  <footer class="foot">
-    <p>风向 · 全球企业服务资讯</p>
-    <p>
-      <a href="https://github.com/FightKK7/fengxiang">GitHub</a>
-      <span>·</span>
-      <a href="https://github.com/FightKK7/fengxiang#readme">README</a>
-      <span>·</span>
-      <a href="https://github.com/FightKK7/fengxiang/blob/main/LICENSE">MIT License</a>
-    </p>
+  <footer class="readme-foot">
+    <p>这是 README 的静态镜像，不是实时服务。最新内容以 <a href="https://github.com/FightKK7/fengxiang#readme">GitHub README</a> 为准。</p>
   </footer>
-
-  <script src="app.js"></script>
 </body>
 </html>

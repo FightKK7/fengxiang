@@ -10,7 +10,7 @@
 
 你可以直接部署当前版本，也可以更换信源、分类、提示词和品牌，搭建个人关注主题的信息站，或为企业业务汇总所需信息。
 
-[在线预览](https://fightkk7.github.io/fengxiang/)：静态演示，用于浏览界面与示例内容；实时采集与接口服务需自行部署。
+[在线预览](https://fightkk7.github.io/fengxiang/)：本 README 的静态镜像；实时采集与接口服务需自行部署。
 
 ![企业厂商目录：按公司追踪 OpenAI、Google Workspace、Salesforce、飞书、Notion 等公司的最新动态](assets/readme/topics.png)
 
