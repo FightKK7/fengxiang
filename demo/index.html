@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>风向 · 全球企业服务资讯 · 静态演示</title>
-  <meta name="description" content="风向的产品演示：把全球企业服务的官方发布，整理成中文信息流和每日精选。这是冻结的静态快照，不连接模型或数据库。">
-  <meta property="og:title" content="风向 · 全球企业服务资讯">
-  <meta property="og:description" content="把全球企业服务的官方发布，整理成一条中文信息流；每天再编一期每日精选。">
+  <title>风向 · 可按行业定制的资讯聚合平台 · 静态演示</title>
+  <meta name="description" content="可按行业定制的资讯聚合平台，汇集行业动态，提供中文信息流与每日精选。这是静态演示，不连接模型或数据库。">
+  <meta property="og:title" content="风向 · 可按行业定制的资讯聚合平台">
+  <meta property="og:description" content="汇集行业动态，提供中文信息流与每日精选；默认示例是全球企业服务资讯。">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23ffffff'/%3E%3Crect x='8' y='8' width='48' height='48' fill='%23111110'/%3E%3Cpath d='M22 20h20v5H36v19h-5V25H22z' fill='%23ffffff'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
@@ -29,13 +29,13 @@
     <section class="hero">
       <div class="hero-copy">
         <p class="eyebrow">静态产品演示 · 不是实时服务</p>
-        <h1>全球企业服务的变化，<br>按公司收在一页里。</h1>
+        <h1>可按行业定制的<br>资讯聚合平台</h1>
         <p class="lede">
-          企业厂商目录把 OpenAI、Google Workspace、Salesforce、微软、飞书、Notion、Slack 这些公司的最新官方动态收在一起；首页按时间排成中文信息流，每天再挑几条编成「每日精选」。
+          汇集行业动态，提供中文信息流与每日精选。默认示例是「全球企业服务资讯」：从配置好的信源采集内容，生成中文标题和摘要，按时间汇总展示，并每天编成一期「每日精选」。
         </p>
         <div class="hero-actions">
           <a class="btn" href="#preview">看企业厂商目录</a>
-          <a class="btn btn-ghost" href="#features">它还能做什么</a>
+          <a class="btn btn-ghost" href="#diy">搭建自己的资讯站</a>
         </div>
         <p class="note">
           这是 2026-10-26 的页面快照。演示站不连接数据库、不调用模型，也不会产生费用。
@@ -45,7 +45,7 @@
         <a href="assets/topics.png" target="_blank" rel="noopener noreferrer">
           <img src="assets/topics.png" alt="企业厂商目录：按公司追踪 OpenAI、Google Workspace、Salesforce、飞书、Notion 等公司的最新动态">
         </a>
-        <figcaption>企业厂商目录：一家公司一页，点进去看这家公司的全部更新。</figcaption>
+        <figcaption>企业厂商目录汇总各公司的已收录动态，进入公司页可继续查看相关内容；首页也支持按厂商筛选。</figcaption>
       </figure>
     </section>
 
@@ -81,28 +81,28 @@
     <section class="features" id="features">
       <div class="section-head">
         <h2>它能做什么</h2>
-        <p>不是又一个 RSS 阅读器，是一条整理过的信息流水线。</p>
+        <p>从配置好的信源采集内容，生成中文标题和摘要，按时间汇总展示，并每天编成一期「每日精选」。</p>
       </div>
       <div class="feature-grid">
         <article class="feature">
           <p class="feature-no">01</p>
-          <h3>只收官方一手</h3>
-          <p>公司博客、官方公告、产品更新、定价页。媒体转述和二手分析不进内容源。</p>
+          <h3>官方信源</h3>
+          <p>仓库预置了 OpenAI、Google Workspace、Salesforce、Slack 等官方信源；每条动态保留来源与原文链接，便于核对。</p>
         </article>
         <article class="feature">
           <p class="feature-no">02</p>
-          <h3>整理成中文</h3>
-          <p>标题、摘要、正文对照都换成中文；原文始终保留，点一下就能回到来源。</p>
+          <h3>中文摘要与原文对照</h3>
+          <p>条目页先展示中文标题、摘要和出处；正文可用时支持站内阅读，已生成译文的文章支持原文与中文逐段对照。</p>
         </article>
         <article class="feature">
           <p class="feature-no">03</p>
-          <h3>每天一期精选</h3>
-          <p>编辑从当天内容里挑出值得看的几条，分节排版。没有值得挑的就不硬凑。</p>
+          <h3>每日精选</h3>
+          <p>默认每天 08:00（北京时间）出刊，从此前 24 小时的动态中选取少量条目，按栏目编排；当期没有符合标准的内容时会明确说明。</p>
         </article>
         <article class="feature">
           <p class="feature-no">04</p>
-          <h3>接给 Agent</h3>
-          <p>RSS、公开 API、MCP 三种出口，同一份数据，匿名只读，不用注册。</p>
+          <h3>订阅与 Agent 接入</h3>
+          <p>网页、RSS、公开 API 和 MCP 共用同一套发布数据；公开读取无需注册或 API Key，MCP 提供 7 个工具。</p>
         </article>
       </div>
     </section>
@@ -112,7 +112,7 @@
         <p class="eyebrow">它不只能做企业服务</p>
         <h2>换一批信源，就是另一个站。</h2>
         <p class="diy-lede">
-          信源、分类、提示词和站点文案都在仓库里。换行业、换主题、换公司名单，就能把它改成你自己的资讯站。
+          你可以直接部署当前版本，也可以更换信源、分类、提示词和品牌，搭建面向其他行业的资讯站。
         </p>
         <a class="btn btn-ghost" href="https://github.com/FightKK7/fengxiang/blob/main/app/docs/customize.md">看看怎么改 ↗</a>
       </div>
@@ -125,7 +125,7 @@
     </section>
 
     <section class="status" aria-label="演示说明">
-      <p><strong>这是演示，不是线上服务。</strong> 页面内容来自 2026-10-26 的本地快照；没有后台、没有数据库、没有模型调用，刷新不会产生新内容，也不会产生费用。</p>
+      <p><strong>这是静态演示，不是线上服务。</strong> 以上截图来自 2026 年 10 月 26 日的本地实例；演示站没有后台、没有数据库、没有模型调用，刷新不会产生新内容，也不会产生费用。</p>
     </section>
   </main>
 
