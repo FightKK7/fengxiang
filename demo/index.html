@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>风向 · 可按行业定制的资讯聚合平台 · 静态演示</title>
-  <meta name="description" content="可按行业定制的资讯聚合平台，汇集行业动态，提供中文信息流与每日精选。这是静态演示，不连接模型或数据库。">
-  <meta property="og:title" content="风向 · 可按行业定制的资讯聚合平台">
-  <meta property="og:description" content="汇集行业动态，提供中文信息流与每日精选；默认示例是全球企业服务资讯。">
+  <title>风向 · 个人与企业信息聚合平台 · 静态演示</title>
+  <meta name="description" content="可定制的信息聚合平台：个人可追踪关注主题，企业可汇总招投标、销售线索、商机和客户相关信息。这是静态演示，不连接模型或数据库。">
+  <meta property="og:title" content="风向 · 个人与企业信息聚合平台">
+  <meta property="og:description" content="个人追踪关注主题，企业汇总业务信息。默认示例聚合全球企业服务官方动态。">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23ffffff'/%3E%3Crect x='8' y='8' width='48' height='48' fill='%23111110'/%3E%3Cpath d='M22 20h20v5H36v19h-5V25H22z' fill='%23ffffff'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
@@ -19,8 +19,8 @@
     </a>
     <nav class="mast-nav" aria-label="演示导航">
       <a href="#preview">页面预览</a>
-      <a href="#features">它能做什么</a>
-      <a href="#diy">自己 DIY</a>
+      <a href="#features">功能概览</a>
+      <a href="#diy">个人与企业</a>
       <a class="mast-gh" href="https://github.com/FightKK7/fengxiang">GitHub ↗</a>
     </nav>
   </header>
@@ -29,13 +29,13 @@
     <section class="hero">
       <div class="hero-copy">
         <p class="eyebrow">静态产品演示 · 不是实时服务</p>
-        <h1>可按行业定制的<br>资讯聚合平台</h1>
+        <h1>个人与企业，<br>都能搭建自己的信息站</h1>
         <p class="lede">
-          汇集行业动态，提供中文信息流与每日精选。默认示例是「全球企业服务资讯」：从配置好的信源采集内容，生成中文标题和摘要，按时间汇总展示，并每天编成一期「每日精选」。
+          个人可以持续关注自己感兴趣的公司、主题和领域；企业可以按业务需要汇总招投标、销售线索、商机和客户相关信息。风向当前示例聚合全球企业服务官方动态，整理成中文信息流与每日精选。
         </p>
         <div class="hero-actions">
-          <a class="btn" href="#preview">看企业厂商目录</a>
-          <a class="btn btn-ghost" href="#diy">搭建自己的资讯站</a>
+          <a class="btn" href="#preview">查看页面预览</a>
+          <a class="btn btn-ghost" href="#diy">了解定制方式</a>
         </div>
         <p class="note">
           这是 2026-10-26 的页面快照。演示站不连接数据库、不调用模型，也不会产生费用。
@@ -52,7 +52,7 @@
     <section class="preview" id="preview">
       <div class="section-head">
         <h2>页面预览</h2>
-        <p>点标签切换页面，点图片可以看大图。</p>
+        <p>选择下方标签查看对应页面；点击图片可打开原图。</p>
       </div>
 
       <div class="viewer">
@@ -80,19 +80,19 @@
 
     <section class="features" id="features">
       <div class="section-head">
-        <h2>它能做什么</h2>
-        <p>从配置好的信源采集内容，生成中文标题和摘要，按时间汇总展示，并每天编成一期「每日精选」。</p>
+        <h2>信息如何整理与发布</h2>
+        <p>从配置好的信源采集内容，经筛选与整理后形成中文信息流；入选内容还可编为每日精选。</p>
       </div>
       <div class="feature-grid">
         <article class="feature">
           <p class="feature-no">01</p>
-          <h3>官方信源</h3>
-          <p>仓库预置了 OpenAI、Google Workspace、Salesforce、Slack 等官方信源；每条动态保留来源与原文链接，便于核对。</p>
+          <h3>按需接入信源</h3>
+          <p>支持 RSS、网页列表、JSON 接口、X 账号和外部推送，也可按来源定制抓取。默认示例预置 OpenAI、Google Workspace、Salesforce、Slack 等官方信源。</p>
         </article>
         <article class="feature">
           <p class="feature-no">02</p>
-          <h3>中文摘要与原文对照</h3>
-          <p>条目页先展示中文标题、摘要和出处；正文可用时支持站内阅读，已生成译文的文章支持原文与中文逐段对照。</p>
+          <h3>中文整理与原文核对</h3>
+          <p>内容整理为中文标题和摘要，并保留来源链接；正文允许站内展示时可阅读全文，已生成译文的文章支持中英逐段对照。</p>
         </article>
         <article class="feature">
           <p class="feature-no">03</p>
@@ -101,26 +101,26 @@
         </article>
         <article class="feature">
           <p class="feature-no">04</p>
-          <h3>订阅与 Agent 接入</h3>
-          <p>网页、RSS、公开 API 和 MCP 共用同一套发布数据；公开读取无需注册或 API Key，MCP 提供 7 个工具。</p>
+          <h3>网页与开放接口</h3>
+          <p>内容可通过网页、RSS、公开 API 和 MCP 阅读；公开读取无需注册或 API Key，MCP 提供 7 个工具。</p>
         </article>
       </div>
     </section>
 
     <section class="diy" id="diy">
       <div>
-        <p class="eyebrow">它不只能做企业服务</p>
-        <h2>换一批信源，就是另一个站。</h2>
+        <p class="eyebrow">个人关注 · 企业业务</p>
+        <h2>按关注主题或业务需求，配置自己的信息流。</h2>
         <p class="diy-lede">
-          你可以直接部署当前版本，也可以更换信源、分类、提示词和品牌，搭建面向其他行业的资讯站。
+          个人可以跟进自己关注的公司与主题；企业可以接入招投标、销售线索、商机和客户相关信息，按业务分类整理。常见信源可直接配置，非标准来源可定制抓取或通过外部推送接入。
         </p>
-        <a class="btn btn-ghost" href="https://github.com/FightKK7/fengxiang/blob/main/app/docs/customize.md">看看怎么改 ↗</a>
+        <a class="btn btn-ghost" href="https://github.com/FightKK7/fengxiang/blob/main/app/docs/customize.md">查看定制指南 ↗</a>
       </div>
       <div class="diy-list">
-        <p><span>信源</span> RSS、网页列表、专用抓取</p>
-        <p><span>分类</span> 公司、方向、内容类型</p>
-        <p><span>风格</span> 站点文案与编辑口径</p>
-        <p><span>出口</span> 网页、RSS、API、MCP</p>
+        <p><span>个人</span> 关注的公司、主题与领域</p>
+        <p><span>企业</span> 招投标、线索、商机与客户相关信息</p>
+        <p><span>信源</span> RSS、网页、JSON、定制抓取</p>
+        <p><span>阅读</span> 时间线、每日精选、RSS、API、MCP</p>
       </div>
     </section>
 

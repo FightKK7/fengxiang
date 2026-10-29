@@ -3,13 +3,13 @@
     home: {
       src: "assets/hero.png",
       alt: "风向首页：按时间排列的全球企业服务官方动态",
-      caption: "首页：时间线在左，推荐阅读和订阅在右。",
+      caption: "首页：按时间浏览动态，查看推荐阅读并订阅更新。",
       mobile: false
     },
     daily: {
       src: "assets/daily.png",
       alt: "每日精选：一期分节排列的页面",
-      caption: "每日精选：每天一期，编辑挑出值得看的几条，分节排列。",
+      caption: "每日精选：每天一期，按栏目整理值得关注的动态。",
       mobile: false
     },
     item: {
@@ -21,7 +21,7 @@
     topics: {
       src: "assets/topics.png",
       alt: "企业厂商目录：按公司归档与筛选",
-      caption: "企业厂商：按公司归档，每家有介绍、近 30 天条数和最近更新。",
+      caption: "企业厂商目录：按公司查看已收录动态、近期条数和最近更新。",
       mobile: false
     },
     mobile: {
