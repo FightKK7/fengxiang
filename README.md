@@ -1,89 +1,122 @@
 # 风向 · 全球企业服务资讯
 
-> 可自定义的信息聚合平台：换信源、换行业、换主题，DIY 成你自己的资讯站；默认示例是「全球企业服务资讯」。
->
-> **在线预览（静态演示，非实时）：** https://fightkk7.github.io/fengxiang/
+简体中文 | [English](README.en.md)
 
-![风向首页](assets/readme/hero.png)
+<!-- 状态：当前有效 · 最后核对：2026-10-29 -->
 
-*首页：时间线在左，推荐阅读和订阅在右。*
+> 可按行业定制的资讯聚合平台，将分散的信息源整理成中文信息流与每日精选。
 
-## 这是什么
+风向关注全球企业服务领域的变化，涵盖 AI 产品、Agent、企业软件、定价调整与市场拓展。它从配置好的信源采集内容，生成中文标题和摘要，按时间汇总展示，并每天编成一期「每日精选」。
 
-OpenAI、Google Workspace、Salesforce、微软、飞书、Notion、Slack……这些公司每天都会发博客、公告、更新日志、价格页。风向把这些官方内容收进来，整理成中文标题和摘要，按时间排到首页；每天再挑几条值得看的，编成「每日精选」。
+你可以直接部署当前版本，也可以更换信源、分类、提示词和品牌，搭建面向其他行业的资讯站。
 
-内容只收官方一手，不转媒体和二手分析。判断也不是每条都有——少数条目会附一句「风向观察」，没有就不写。
+[在线预览](https://fightkk7.github.io/fengxiang/)：静态演示，用于浏览界面与示例内容；实时采集与接口服务需自行部署。
 
-同一份数据还有三个出口：RSS、公开 API、MCP。不用注册，也不用 API Key。
+![企业厂商目录：按公司追踪 OpenAI、Google Workspace、Salesforce、飞书、Notion 等公司的最新动态](assets/readme/topics.png)
 
-信源、分类、提示词和站点文案都在仓库里。换一批信息源、改一下行业包，就能把它变成另一个行业的资讯站，做法见 [app/docs/customize.md](app/docs/customize.md)。
+企业厂商目录把每家公司的最新动态收在一起，点进公司页就能看这家公司的全部更新；首页也支持按厂商筛选。
 
-## 界面
+## 内容与阅读
 
-### 每天一期「每日精选」
+仓库预置了 OpenAI、Google Workspace、Salesforce、Slack 等官方信源。每条动态保留来源与原文链接，便于核对；部分条目附有「风向观察」，提供补充解读。
 
-![每日精选](assets/readme/daily.png)
+### 每日精选
 
-北京时间每天 08:00 出刊。当天没有值得单独挑出来的变化，页面会直说，不硬凑。
+![每日精选页面](assets/readme/daily.png)
 
-### 点开一条看全文
+默认于北京时间每天 08:00 出刊，从对应时段的动态中选取少量条目，按栏目编排。没有符合条件的内容时，会说明本期情况，不为凑数补稿。
 
-![条目页](assets/readme/item.png)
+### 中文摘要与原文对照
 
-标题和摘要先给中文，正文保留原文，带中文对照。右侧是收藏、字号、译文三个按钮，阅读时用得上。
+![条目页：中文摘要与中英对照正文](assets/readme/item.png)
 
-### 按公司找
+条目页先展示中文标题、摘要和出处。正文获取成功且允许站内展示时，可在站内阅读；已生成译文的文章支持原文与中文逐段对照。未获取正文或仅展示摘要的条目，提供原文入口。
 
-![企业厂商目录](assets/readme/topics.png)
+桌面端提供收藏、字号调整和译文开关；收藏与阅读偏好保存在当前浏览器。
 
-首页顶部可以按公司筛选；「企业厂商」目录里，每家公司有自己的介绍、近 30 天条数和最近更新。
+### 按公司和主题追踪
 
-### 手机上
+「企业厂商」目录按公司、方向和内容类型组织主题。主题页汇总相关动态，展示介绍、近 30 天收录条数与最近更新。
+
+### 手机阅读
 
 <p align="center">
   <img src="assets/readme/mobile.png" width="300" alt="手机端首页">
 </p>
 
-*动态、每日精选、我的，三个入口。*
+手机端提供「动态」「每日精选」「我的」三个主要入口，支持深浅色切换与收藏。
 
-### 接给 Agent
+## 订阅与 Agent 接入
 
 ![Agent 接入页](assets/readme/agent.png)
 
-- MCP：给 Claude Code、Codex、Cursor 这类支持 MCP 的客户端，填个地址就有 7 个工具。
-- RSS：丢进阅读器订阅。
-- REST API：给程序读，带 OpenAPI 3.1 定义。
+网页、RSS、公开 API 和 MCP 共用同一套发布数据。公开读取无需注册或 API Key。
 
-截图来自 2026-10-26 的本地实例，内容是真实抓取的公开信息。
+- **RSS**：在阅读器中订阅动态或每日精选。
+- **REST API**：供程序读取和查询内容，附 OpenAPI 3.1 定义。
+- **MCP**：供支持远程 MCP 的客户端接入，提供最新动态、搜索、热点、事件详情、每日精选，以及周报和月报归档共 7 个工具。
 
-## 自己部署
+部署后访问 `/agent`，可查看接入地址、客户端配置和调用示例。
 
-需要 Docker、Node.js 24，和一个 OpenAI 兼容的模型 API Key（DeepSeek、千问、智谱都行）。
+以上截图来自 2026 年 10 月 26 日的本地实例。截图中的内容仅用于展示，不随仓库分发。
+
+## 搭建自己的资讯站
+
+站点配置与行业配置集中放在以下目录，方便按需调整：
+
+| 想调整的内容 | 配置位置 |
+|---|---|
+| 站名、介绍、导航和出刊时间 | `app/site/site.ts` |
+| 信源、分类、标签和主题 | `app/industry/` |
+| 摘要、筛选与翻译等提示词 | `app/industry/prompts/` |
+| 品牌素材 | `app/site/brand/` |
+
+具体步骤见[定制指南](app/docs/customize.md)。运行后也可以在后台管理信源、编辑条目、编排与发布精选，并查看任务、模型用量和操作记录。
+
+## 快速开始
+
+需要 Node.js 24.11 或更新的 24.x 版本，以及带 Compose 的 Docker。自动生成内容还需要一个兼容 OpenAI API 的模型服务。
+
+**1. 获取代码并生成配置**
 
 ```bash
 git clone https://github.com/FightKK7/fengxiang.git
 cd fengxiang/app
-node scripts/init-env.ts --llm-key <你的模型 API Key>
+node scripts/init-env.ts
+```
+
+脚本会生成 `.env`，同时创建随机密钥和管理员密码。
+
+**2. 配置模型与运行开关**
+
+在 `.env` 中填写 `LLM_API_KEY`，并核对 `LLM_BASE_URL` 与 `LLM_MODEL`。示例配置使用 DeepSeek，也可按服务商要求更换接口地址和模型。
+
+示例中的 `COLLECT_ENABLED` 和 `MODEL_CALLS_ENABLED` 均为 `true`。填入有效密钥并启动后，worker 会采集信源并调用模型，费用按模型服务商规则计算。仅调试界面时，将这两项设为 `false`。
+
+**3. 启动服务**
+
+```bash
 docker compose up -d --build
 ```
 
-打开 <http://localhost:3000>，后台在 `/admin`。
+打开 [http://localhost:3000](http://localhost:3000)，后台位于 `/admin`，使用 `.env` 中的 `ADMIN_PASSWORD` 登录。
 
-新库是空的，只有信源配置。想让它开始采集和生成内容，就把 `.env` 里的 `COLLECT_ENABLED`、`MODEL_CALLS_ENABLED` 打开，重启 worker。内容会慢慢出来。只想看界面的话，上面的截图就够了。
+首次启动会导入预置信源配置，文章、摘要和译文由后续任务生成，每日精选按设定时间出刊。新部署不包含截图中的文章与往期内容。
 
-部署、备份、域名这些，见 [app/docs/deploy.md](app/docs/deploy.md)。
+域名、HTTPS、更新与备份等说明见[部署文档](app/docs/deploy.md)。
 
-## 技术栈与开发
+## 开发与文档
 
-React Router（SSR）+ Fastify + PostgreSQL 17 + pg-boss，Docker Compose 部署。
+项目使用 Node.js、TypeScript、React Router（服务端渲染）、Fastify、PostgreSQL 17 和 pg-boss，支持 Docker Compose 部署。应用代码位于 `app/`。
 
-- 应用代码和开发说明：[`app/`](app/)、[`app/README.md`](app/README.md)
-- 架构与迁移：[`app/docs/architecture.md`](app/docs/architecture.md)
-- 信源与抓取：[`app/docs/sources.md`](app/docs/sources.md)
-- CI：[`.github/workflows/check.yml`](.github/workflows/check.yml)
+- [应用开发说明](app/README.md)
+- [架构与数据库迁移](app/docs/architecture.md)
+- [信源配置与抓取](app/docs/sources.md)
+- [精选规则与校准](app/docs/selection.md)
+- [贡献指南](CONTRIBUTING.md)与 [CI 配置](.github/workflows/check.yml)
 
-## 许可
+## 许可与来源
 
-代码使用 [MIT 许可证](LICENSE)。本项目基于 MIT 许可的 AIHOT 框架二次开发，原始版权与第三方素材说明见 [NOTICE](NOTICE)。「风向」名称、站点内容和品牌素材不在 MIT 许可范围内。
+代码采用 [MIT 许可证](LICENSE)。风向基于 AIHOT 框架二次开发，保留上游版权声明；原始版权与第三方素材说明见 [NOTICE](NOTICE)。「风向」名称、站点内容和品牌素材不在 MIT 许可范围内。
 
-安全问题按 [SECURITY.md](SECURITY.md) 处理；开发流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+安全问题的报告方式见 [SECURITY.md](SECURITY.md)。

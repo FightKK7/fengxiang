@@ -27,18 +27,26 @@
 
   <main>
     <section class="hero">
-      <p class="eyebrow">静态产品演示 · 不是实时服务</p>
-      <h1>把全球企业服务的官方变化，<br>收进一条中文信息流。</h1>
-      <p class="lede">
-        OpenAI、Google Workspace、Salesforce、微软、飞书、Notion、Slack……这些公司每天都会发博客、公告、更新日志、价格页。风向把它们整理成中文标题和摘要，按时间排到首页；每天再挑几条，编成「每日精选」。
-      </p>
-      <div class="hero-actions">
-        <a class="btn" href="#preview">看看页面</a>
-        <a class="btn btn-ghost" href="https://github.com/FightKK7/fengxiang">查看源码</a>
+      <div class="hero-copy">
+        <p class="eyebrow">静态产品演示 · 不是实时服务</p>
+        <h1>全球企业服务的变化，<br>按公司收在一页里。</h1>
+        <p class="lede">
+          企业厂商目录把 OpenAI、Google Workspace、Salesforce、微软、飞书、Notion、Slack 这些公司的最新官方动态收在一起；首页按时间排成中文信息流，每天再挑几条编成「每日精选」。
+        </p>
+        <div class="hero-actions">
+          <a class="btn" href="#preview">看企业厂商目录</a>
+          <a class="btn btn-ghost" href="#features">它还能做什么</a>
+        </div>
+        <p class="note">
+          这是 2026-10-26 的页面快照。演示站不连接数据库、不调用模型，也不会产生费用。
+        </p>
       </div>
-      <p class="note">
-        这是 2026-10-26 的页面快照。演示站不连接数据库、不调用模型，也不会产生费用。
-      </p>
+      <figure class="hero-visual">
+        <a href="assets/topics.png" target="_blank" rel="noopener noreferrer">
+          <img src="assets/topics.png" alt="企业厂商目录：按公司追踪 OpenAI、Google Workspace、Salesforce、飞书、Notion 等公司的最新动态">
+        </a>
+        <figcaption>企业厂商目录：一家公司一页，点进去看这家公司的全部更新。</figcaption>
+      </figure>
     </section>
 
     <section class="preview" id="preview">
@@ -50,9 +58,9 @@
       <div class="viewer">
         <div class="tabs" role="tablist" aria-label="选择页面">
           <button class="tab is-active" type="button" role="tab" aria-selected="true" data-shot="home">首页</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-shot="topics">企业厂商</button>
           <button class="tab" type="button" role="tab" aria-selected="false" data-shot="daily">每日精选</button>
           <button class="tab" type="button" role="tab" aria-selected="false" data-shot="item">条目页</button>
-          <button class="tab" type="button" role="tab" aria-selected="false" data-shot="topics">企业厂商</button>
           <button class="tab" type="button" role="tab" aria-selected="false" data-shot="mobile">手机端</button>
           <button class="tab" type="button" role="tab" aria-selected="false" data-shot="agent">Agent 接入</button>
         </div>

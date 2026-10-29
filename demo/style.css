@@ -48,7 +48,12 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; 
 
 main { max-width: 1160px; margin: 0 auto; padding: 0 28px 40px; }
 
-.hero { padding: 72px 0 56px; border-bottom: 1px solid var(--line); }
+.hero { padding: 64px 0 56px; border-bottom: 1px solid var(--line); }
+.hero-copy { max-width: 880px; }
+.hero-visual { margin: 34px 0 0; }
+.hero-visual a { display: block; border: 1px solid var(--line); padding: 10px; background: var(--soft); }
+.hero-visual img { display: block; width: 100%; height: auto; }
+.hero-visual figcaption { margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.6; }
 .eyebrow {
   margin: 0 0 18px;
   color: var(--red);
