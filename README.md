@@ -1,5 +1,7 @@
 # 风向 · 全球企业服务资讯
 
+![风向：把全球企业服务的官方变化，收进一条中文信息流](demo/assets/fengxiang-promo-4k.png)
+
 简体中文 | [English](.github/README.en.md)
 
 <!-- 状态：当前有效 · 最后核对：2026-10-29 -->
