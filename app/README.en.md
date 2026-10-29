@@ -69,4 +69,4 @@ Use the site's feedback page for product suggestions, content corrections, and s
 
 ## License
 
-The original parts of this repository are source-available under the repository-root [learning-use license](../LICENSE): personal study and research only, no commercial use. The upstream AIHOT framework code remains under the [MIT License](LICENSE). See [NOTICE](NOTICE) for copyright and third-party notices; the upstream name and logo are not covered by the license.
+The code is under the [MIT License](../LICENSE); the upstream AIHOT copy is in [LICENSE](LICENSE). See [NOTICE](NOTICE) for copyright and third-party notices; the upstream name and logo are not covered by the license.

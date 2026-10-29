@@ -1,31 +1,22 @@
-# 风向 · 学习使用许可（非商业）
+MIT License
 
+Copyright (c) 2026 数字生命卡兹克 (AIHOT framework)
 Copyright (c) 2026 风向 contributors
 
-本项目指本仓库中由「风向」项目原创的部分，包括新增或修改的代码、文档、配置与素材。
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-## 允许
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-- 个人学习、研究和技术交流；
-- 为上述目的克隆仓库、在本地运行、阅读和修改代码；
-- 在非商业文章中引用少量内容，并注明来源。
-
-## 禁止
-
-未经版权所有者书面许可，禁止：
-
-- 任何商业用途，包括生产部署、SaaS 或托管服务、收费服务、企业内部商业运营；
-- 销售、再分发、转授权本项目或其修改版本；
-- 移除或修改版权声明与许可说明。
-
-## 上游代码
-
-本仓库包含 AIHOT 框架代码。该部分仍按 MIT 许可证授权（全文见 [app/LICENSE](app/LICENSE)），
-MIT 许可证允许商业使用。上述限制仅适用于「风向」项目原创部分，不能限制上游 AIHOT 代码
-依据 MIT 许可证取得的权利。
-
-## 免责
-
-本项目按“现状”提供，不附带任何明示或默示担保。使用本项目的风险由使用者自行承担。
-
-商业授权或其他许可问题，请联系仓库维护者。
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

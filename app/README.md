@@ -69,4 +69,4 @@ node scripts/smoke.ts --base http://localhost:3000   # 站点跑起来后
 
 ## 许可
 
-本项目原创部分按仓库根 [LICENSE](../LICENSE) 的「学习使用许可（非商业）」授权，仅限个人学习、研究使用；上游 AIHOT 框架代码仍按 [MIT](LICENSE)。原始版权与第三方素材说明见 [NOTICE](NOTICE)；上游名称与 Logo 不在许可范围内，本站使用自己的名称与品牌。
+代码使用 [MIT 许可证](../LICENSE)（上游 AIHOT 副本见 [LICENSE](LICENSE)）。原始版权与第三方素材说明见 [NOTICE](NOTICE)；上游名称与 Logo 不在许可范围内，本站使用自己的名称与品牌。

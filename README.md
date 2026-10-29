@@ -1,8 +1,6 @@
 # 风向 · 全球企业服务资讯
 
 > 可自定义的信息聚合平台：换信源、换行业、换主题，DIY 成你自己的资讯站；默认示例是「全球企业服务资讯」。
->
-> **本项目原创部分源码公开，仅限个人学习、研究使用，禁止任何商业用途；上游 AIHOT 代码仍按 MIT。** 详见 [LICENSE](LICENSE)。
 
 ![风向首页](assets/readme/hero.png)
 
@@ -84,8 +82,6 @@ React Router（SSR）+ Fastify + PostgreSQL 17 + pg-boss，Docker Compose 部署
 
 ## 许可
 
-本项目为源码公开，但**不是 OSI 开源许可**：原创部分按 [学习使用许可](LICENSE) 授权，仅限个人学习、研究使用，禁止任何商业用途。
-
-本项目基于 MIT 许可的 AIHOT 框架二次开发。上游 AIHOT 代码仍按 [MIT 许可证](app/LICENSE)，MIT 允许商业使用；上述限制只适用于「风向」原创部分，不能限制上游代码依 MIT 取得的权利。原始版权与第三方素材说明见 [NOTICE](NOTICE)。
+代码使用 [MIT 许可证](LICENSE)。本项目基于 MIT 许可的 AIHOT 框架二次开发，原始版权与第三方素材说明见 [NOTICE](NOTICE)。「风向」名称、站点内容和品牌素材不在 MIT 许可范围内。
 
 安全问题按 [SECURITY.md](SECURITY.md) 处理；开发流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
