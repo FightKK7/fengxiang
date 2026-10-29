@@ -2,7 +2,7 @@
 // 「跟随系统」仍然只在「我的」页的三态开关里选；这里只做最高频的那个动作。
 import { useEffect, useState } from "react";
 import { IconMoon, IconSun } from "../icons";
-import { applyTheme, resolvedTheme, setThemePreference, useThemePreference } from "../../lib/local-state";
+import { applyThemeWithFade, resolvedTheme, setThemePreference, useThemePreference } from "../../lib/local-state";
 
 export function ThemeToggle() {
   const pref = useThemePreference();
@@ -17,7 +17,7 @@ export function ThemeToggle() {
       onClick={() => {
         const next = dark ? "light" : "dark";
         setThemePreference(next);
-        applyTheme(next, false);
+        applyThemeWithFade(next, false);
       }}
       aria-label={label}
       title={label}

@@ -12,7 +12,7 @@
    ========================================================================== */
 
 /* 动效与发丝线（2026-10-23 壳层改造，UI 提示词 6/7）：
-   - 状态过渡只用 250ms ease-out 一个基准；主题切换不再做整页颜色渐变，点开关直接换色。
+   - 状态过渡只用 250ms ease-out 一个基准；主题切换用 1s 颜色 token 渐变（.fx-theme-fade）。
    - 发丝线用 0.5px；非 Retina 屏（≤1dppx）回退 1px，避免线在低分屏上消失。 */
 :root {
   --hairline: 0.5px;
@@ -25,6 +25,186 @@
   }
 }
 
+
+/* 明暗切换的渐变：把会随主题变化的颜色 token 注册成可动画的 <color> 自定义属性。
+   读者点深浅色开关时，浏览器把 <html> 上的这组变量用 1000ms cubic-bezier(0.4, 0, 0.2, 1) 渐变，
+   元素都读同一组变量，于是整页像天亮 / 天黑一样过渡，不用给每个元素写 transition。 */
+@property --bg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --bg-sunk {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --bg-muted {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --well {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --surface {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --surface-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --raised {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --sidebar {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --daybar {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --ink {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #111110;
+}
+@property --ink-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #4e4e47;
+}
+@property --ink-3 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #4e4e47;
+}
+@property --ink-4 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #6b6b63;
+}
+@property --prose-ink {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #4e4e47;
+}
+@property --line {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e2e0da;
+}
+@property --line-strong {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e2e0da;
+}
+@property --line-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e2e0da;
+}
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #c8102e;
+}
+@property --accent-ink {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #a50d26;
+}
+@property --accent-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(200, 16, 46, 0.06);
+}
+@property --accent-softer {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(200, 16, 46, 0.035);
+}
+@property --accent-contrast {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --note {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #6b6b63;
+}
+@property --hot {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #c8102e;
+}
+@property --hot-soft {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(200, 16, 46, 0.06);
+}
+@property --code-bg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --selection {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgba(200, 16, 46, 0.12);
+}
+
+/* 只在读者手动切换时挂这个类（applyThemeWithFade）；首屏（boot script 直接定主题）和
+   reduced-motion 都是直接换色，不做长过渡。 */
+html.fx-theme-fade {
+  transition-property:
+    --bg,
+    --bg-sunk,
+    --bg-muted,
+    --well,
+    --surface,
+    --surface-2,
+    --raised,
+    --sidebar,
+    --daybar,
+    --ink,
+    --ink-2,
+    --ink-3,
+    --ink-4,
+    --prose-ink,
+    --line,
+    --line-strong,
+    --line-soft,
+    --accent,
+    --accent-ink,
+    --accent-soft,
+    --accent-softer,
+    --accent-contrast,
+    --note,
+    --hot,
+    --hot-soft,
+    --code-bg,
+    --selection;
+  transition-duration: 1000ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0s;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.fx-theme-fade {
+    transition: none;
+  }
+}
 
 /* 浅色：白纸。暗色在下方单独一层（[data-theme="dark"]），只换色值，字号/圆角/阴影不动。 */
 :root {

@@ -319,6 +319,24 @@ export function applyTheme(theme: "light" | "dark", followsSystem: boolean) {
   }
 }
 
+/** 明暗切换的渐变时长（ms），和 fengxiang.css 里 `.fx-theme-fade` 的 transition-duration 一致。 */
+const THEME_FADE_MS = 1000;
+let themeFadeTimer: number | undefined;
+
+/**
+ * Puts a theme on the page and lets the colour tokens fade there (fengxiang.css registers them as
+ * animatable <color> properties): switching light/dark darkens or brightens the whole page over ~1s
+ * instead of a hard cut. The class is only switched on for a reader change, so first paint never fades;
+ * reduced motion turns the transition off in CSS.
+ */
+export function applyThemeWithFade(theme: "light" | "dark", followsSystem: boolean) {
+  const root = document.documentElement;
+  root.classList.add("fx-theme-fade");
+  applyTheme(theme, followsSystem);
+  window.clearTimeout(themeFadeTimer);
+  themeFadeTimer = window.setTimeout(() => root.classList.remove("fx-theme-fade"), THEME_FADE_MS + 60);
+}
+
 /**
  * Keeps the page on the reader's theme after the first paint: a choice made in another tab or by an
  * import, and the system switching between light and dark while the page follows it.
@@ -340,7 +358,7 @@ export function useAppearanceSync() {
     } catch {
       return;
     }
-    const onChange = () => applyTheme(query.matches ? "dark" : "light", true);
+    const onChange = () => applyThemeWithFade(query.matches ? "dark" : "light", true);
     query.addEventListener("change", onChange);
     return () => query.removeEventListener("change", onChange);
   }, [pref]);

@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { IconMonitor, IconMoon, IconSun } from "../icons";
-import { applyTheme, resolvedTheme, setThemePreference, useThemePreference, type ThemePreference } from "../../lib/local-state";
+import { applyThemeWithFade, resolvedTheme, setThemePreference, useThemePreference, type ThemePreference } from "../../lib/local-state";
 
 type Choice = "dark" | "system" | "light";
 
@@ -21,8 +21,8 @@ export function ThemeSwitch({ className = "" }: { className?: string }) {
   const choose = (key: Choice) => {
     const nextPref: ThemePreference = key === "system" ? null : key;
     setThemePreference(nextPref);
-    // 主题直接换色，不做整页渐变；壳层 250ms 只用于图标交叉淡出。
-    applyTheme(resolvedTheme(nextPref), nextPref === null);
+    // 整页颜色 token 用 ~1s 渐变过去；壳层图标另做 250ms 交叉淡出。
+    applyThemeWithFade(resolvedTheme(nextPref), nextPref === null);
   };
 
   return (
