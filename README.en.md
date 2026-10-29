@@ -10,7 +10,7 @@ Fengxiang follows developments in enterprise software and services worldwide, in
 
 Deploy the current configuration, or replace its sources, categories, prompts and branding to build a personal information site or a business-focused hub.
 
-[Online preview](https://fightkk7.github.io/fengxiang/): a static mirror of this README. Live collection and API services require a running deployment.
+[Online preview](https://fightkk7.github.io/fengxiang/): a static demo of the interface and sample content. Live collection and API services require a running deployment.
 
 ![Company directory grouping updates from OpenAI, Google Workspace, Salesforce, Feishu, Notion and others](assets/readme/topics.png)
 
